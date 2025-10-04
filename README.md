@@ -11,10 +11,20 @@ Here is the current status:
 | 🟡 | nudm-ee | local storage implementation |
 | 🟡 | nudm-mt | local storage implementation |
 | 🟡 | nudm-niddau | local storage implementation |
-| 🔴 | nudm-pp | scaffolding |
+| 🟡 | nudm-pp | local storage implementation |
 | 🔴 | nudm-rsds | scaffolding |
 | 🔴 | nudm-sdm | scaffolding |
 | 🔴 | nudm-ssau | scaffolding |
 | 🔴 | nudm-ueau | scaffolding |
 | 🔴 | nudm-uecm | scaffolding |
 | 🔴 | nudm-ueid | scaffolding |
+
+
+### How to start this project
+1. `npm install`
+2. `npm run dev`
+
+#### Run tests
+1. `npm test`
+
+My testing framework of choice is Mocha.
