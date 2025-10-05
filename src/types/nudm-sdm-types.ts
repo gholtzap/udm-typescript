@@ -1,5 +1,5 @@
 // 3GPP TS 29.503 version 17.12.0 Release 17
-// Section 6.?.6
+// Section 6.1.6
 // https://www.etsi.org/deliver/etsi_ts/129500_129599/129503/17.12.00_60/ts_129503v171200p.pdf
 
 export type DefaultDnnIndicator = boolean;
