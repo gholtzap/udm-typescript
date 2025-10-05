@@ -1,0 +1,883 @@
+6.4.6 Data Model
+6.4.6.1 General
+This clause specifies the application data model supported by the API.
+Table 6.4.6.1-1 specifies the data types defined for the Nudm_EE service API.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 323 ETSI TS 129 503 V17.12.0 (2023-09)
+Table 6.4.6.1-1: Nudm_EE specific Data Types
+Data type Clause defined Description
+EeSubscription 6.4.6.2.2 A subscription to Notifications
+MonitoringConfiguration 6.4.6.2.3 Monitoring Configuration
+MonitoringReport 6.4.6.2.4 Monitoring Report
+Report 6.4.6.2.5 Event report
+ReportingOptions 6.4.6.2.6 Report options
+ChangeOfSupiPeiAssociationReport 6.4.6.2.7 Report for change of SUPI/PEI association
+RoamingStatusReport 6.4.6.2.8 Report for roaming status retrieval
+CreatedEeSubscription 6.4.6.2.9 Created subscription for event exposure
+LocationReportingConfiguration 6.4.6.2.10 Configuration for location reporting
+CnTypeChangeReport 6.4.6.2.11 Report for CN type change
+ReachabilityForSmsReport 6.4.6.2.12 Report for reachability status for SMS
+DatalinkReportingConfiguration 6.4.6.2.13 Reporting configuration for events related to data link
+CmInfoReport 6.4.6.2.14 Reporting UE's Connection Management State
+information per access type
+LossConnectivityCfg 6.4.6.2.15 Configuration for loss of connectivity event
+PduSessionStatusCfg 6.4.6.2.16 Reporting configuration for events related to PDU
+session Status
+LossConnectivityReport 6.4.6.2.17 Report of "LOSS_OF_CONNECTIVITY" event
+LocationReport 6.4.6.2.18 Report of "LOCATION_REPORTING" event
+PdnConnectivityStatReport 6.4.6.2.19 Report of "PDN_CONNECTIVITY_STATUS" event
+ReachabilityReport 6.4.6.2.20 Reachability report
+ReachabilityForDataConfiguration 6.4.6.2.21 Reachability for Data Configuration
+EeMonitoringRevoked 6.4.6.2.22 Revoked monitoring events information
+MonitoringEvent 6.4.6.2.23 Monitoring Event
+FailedMonitoringConfiguration 6.4.6.2.24 Failed Monitoring Configuration in the EE subscription
+MaxNumOfReports 6.4.6.3.2 Maximum number of reports
+ReferenceId 6.4.6.3.2 Reference Identity
+EventType 6.4.6.3.3 Event type of UDM Event Exposure service
+LocationAccuracy 6.4.6.3.4 Location Accuracy definition
+CnType 6.4.6.3.5 Core Network Type
+AssociationType 6.4.6.3.6 Association type
+EventReportMode 6.4.6.3.7 Event report mode
+ReachabilityForSmsConfiguration 6.4.6.3.8 Configuration for report of reachablity status for SMS
+PdnConnectivityStatus 6.4.6.3.9 PDN Connectivity Status
+ReachabilityForDataReportConfig 6.4.6.3.10 Configuration for report of reachability status for data
+RevokedCause 6.4.6.3.11 Revocation Cause for the monitoring event
+FailedCause 6.4.6.3.12 Failed cause of the failed Monitoring Configuration in
+the EE subscription
+Table 6.4.6.1-2 specifies data types re-used by the Nudm_EE service API from other specifications, including a
+reference to their respective specifications and when needed, a short description of their use within the Nudm_EE
+service API.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 324 ETSI TS 129 503 V17.12.0 (2023-09)
+Table 6.4.6.1-2: Nudm_EE re-used Data Types
+Data type Reference Comments
+Uri 3GPP TS 29.571 [7] Uniform Resource Identifier
+SupportedFeatures 3GPP TS 29.571 [7] see 3GPP TS 29.500 [4] clause 6.6
+DateTime 3GPP TS 29.571 [7] DateTime
+Pei 3GPP TS 29.571 [7] Permanent Equipment Identifier
+PlmnId 3GPP TS 29.571 [7] PLMN ID
+Gpsi 3GPP TS 29.571 [7] Generic Public Subscription Identifier
+AccessType 3GPP TS 29.571 [7] Access Type
+PatchItem 3GPP TS 29.571 [7] Patch item of JSON PATCH
+PatchResult 3GPP TS 29.571 [7] Patch result of JSON PATCH
+DddTrafficDescriptor 3GPP TS 29.571 [7] Traffic description for downlink data delivery
+SamplingRatio 3GPP TS 29.571 [7] Sampling ratio
+DurationSec 3GPP TS 29.571 [7] A duration expressed in seconds
+DlDataDeliveryStatus 3GPP TS 29.571 [7] Downlink data delivery status
+Dnn 3GPP TS 29.571 [7] Data Network Name with Network Identifier only.
+Snssai 3GPP TS 29.571 [7] Single NSSAI
+DiameterIdentity 3GPP TS 29.571 [7] Diameter Identify (FQDN)
+CmInfo 3GPP TS 29.518 [36] Describe the Connection Management state information
+for an access type
+MtcProviderInformation 3GPP TS 29.571 [7] MTC Provider Information
+NfInstanceId 3GPP TS 29.571 [7] Network Function Instance Identifier
+NotificationFlag 3GPP TS 29.571 [7] Notification flag
+UeReachability 3GPP TS 29.518 [36] Describes the reachability of the UE
+LossOfConnectivityReason 3GPP TS 29.518 [36] Describes the reason of connectivity loss
+UserLocation 3GPP TS 29.571 [7] User Location
+PduSessionId 3GPP TS 29.571 [7] PDU Session Id
+Ipv4Addr 3GPP TS 29.571 [7] IPv4 Address
+Ipv6Addr 3GPP TS 29.571 [7] IPv6 Address
+Ipv6Prefix 3GPP TS 29.571 [7] IPv6 Prefix
+PduSessionType 3GPP TS 29.571 [7] PDU session type.
+ContextInfo 6.1.6.2.69 Contains the HTTP Headers received by the NFs
+DataRestorationNotification 6.2.6.2.25 Contains identities representing those UEs potentially
+affected by a data-loss event at the UDR
+IdleStatusIndication 3GPP TS 29.518 [36] Idle Status Indication
+6.4.6.2 Structured data types
+6.4.6.2.1 Introduction
+This clause defines the structures to be used in resource representations.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 325 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.2.2 Type: EeSubscription
+Table 6.4.6.2.2-1: Definition of type EeSubscription
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 326 ETSI TS 129 503 V17.12.0 (2023-09)
+Attribute name Data type P Cardinality Description Applicability
+callbackReference Uri M 1 URI provided by the NF service consumer to receive
+notifications
+monitoringConfigurations map(Monitoring
+Configuration)
+M 1..N A map (list of key-value pairs where referenceId
+converted from integer to string serves as key; see
+clause 6.4.6.3.2) of MonitoringConfigurations;
+see clause 6.4.6.2.3
+reportingOptions ReportingOptio
+ns
+O 0..1 This IE may be included if the NF service consumer
+wants to describe how the reports of the event to be
+generated.
+supportedFeatures SupportedFeat
+ures
+O 0..1 See clause 6.4.8
+These are the features supported by the NF
+subscribing at the UDM.
+subscriptionId string C 0..1 This attribute shall be present if the EeSubscription
+is sent in a GET response message on Nudr. It
+identifies the individual EeSubscription stored in the
+UDR and may be used by the UDM to delete an
+EeSubscription.
+contextInfo ContextInfo C 0..1 This IE if present may contain e.g. the headers
+received by the UDM along with the EeSubscription.
+Shall be absent on Nudm and may be present on
+Nudr.
+epcAppliedInd boolean O 0..1 This IE indicates whether the subscription applies
+also to EPC or not.
+true: the subscription applies also to EPC.
+false or absent: the subscription doesn't apply to
+EPC.
+scefDiamHost DiameterIdentit
+y
+C 0..1 This IE shall be included if parameter epcAppliedInd
+is set to true and at least one of the notifications to
+subscription applied to EPC will be reported directly
+from the MME to the SCEF (e.g. event
+LOCATION_REPORTING).
+When present, it contains the Diameter Identify
+(FQDN) of the SCEF to which the monitered reports
+may be sent in EPC.
+scefDiamRealm DiameterIdentit
+y
+C 0..1 This IE shall be included if parameter epcAppliedInd
+is set to true and at least one of the notifications to
+subscription applied to EPC will be reported directly
+from the MME to the SCEF (e.g. event
+LOCATION_REPORTING).
+When present, it contains the Diameter realm of the
+SCEF to which the monitered reports may be sent in
+EPC.
+notifyCorrelationId string C 0..1 This attribute identifies the notification correlation ID
+shall be present by NF consumer in subscription.
+The value of this IE shall be unique per subscription
+for a given NF service consumer.
+secondCallbackRef Uri O 0..1 URI provided by the NF service consumer to receive
+Monitoring Revocation Notification.
+gpsi Gpsi O 0..1 This IE if present may contain the GPSI used during
+the Event Exposure subscribe operation. This
+information shall be used to identify if a subscription
+must be cancelled in case this GPSI is no longer
+associated to the UE.
+It shall be absent on Nudm and may be present on
+Nudr.
+excludeGpsiList array(Gpsi) O 1..N This IE may be present for a group subscription.
+When present, this IE shall carry the GPSI of the
+group member UE(s) that are excluded from the
+group subscription.
+DGEM
+includeGpsiList array(Gpsi) O 1..N This IE may be present for a group subscription.
+When present, this IE shall carry the GPSI of the
+group member UE(s) that are added into the group
+subscription.
+DGEM
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 327 ETSI TS 129 503 V17.12.0 (2023-09)
+dataRestorationCallbackU
+ri
+Uri O 0..1 If present, it contains the URI where notifications
+about UDR-initiated data restoration shall be sent by
+UDM.
+udrRestartInd boolean O 0..1 May be present in request messages from the UDM
+consumer to the UDM.
+If present:
+- true: indicates that the registration message sent
+by the UDM consumer is due to a re-synchronization
+event, motivated by a previous reception at the UDM
+consumer of a Data Restoration Notification from the
+UDM
+- false (or absent): indicates that this is a normal
+request message (i.e., not motivated by a data
+restoration notification event)
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 328 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.2.3 Type: MonitoringConfiguration
+Table 6.4.6.2.3-1: Definition of type MonitoringConfiguration
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 329 ETSI TS 129 503 V17.12.0 (2023-09)
+Attribute name Data type P Cardinality Description
+eventType EventType M 1 String; see clause 6.4.6.3.3
+immediateFlag boolean O 0..1 Indicates if an immediate event report in the
+subscription response indicating current value /
+status of the event is required or not. If the flag is not
+present, then immediate reporting shall not be done.
+If the event requested for immediate reporting is
+detected by the UDM, the UDM may include the
+current status of the event if available in the service
+operation response.
+If the event requested for immediate reporting is
+detected by a remote NF (e.g. AMF) and directly
+notified to the NF consumer, the current status of the
+event shall not be included in the service operation
+response (the remote NF shall notify the current
+status of the event via event notification directly).
+locationReportingConfig
+uration
+LocationReportin
+gConfiguration
+C 0..1 shall be present if eventType is
+"LOCATION_REPORTING"
+associationType AssociationType O 0..1 If the eventType indicates
+CHANGE_OF_SUPI_PEI_ASSOCIATION, this
+parameter may be included to identify whether the
+IMSI-IMEI or IMSI-IMEISV association shall be
+detected.
+If the flag is not present, then a value of IMEISV
+shall be used
+datalinkReportCfg DatalinkReportin
+gConfiguration
+C 0..1 shall be present if eventType is
+"DL_DATA_DELIVERY_STATUS"
+"AVAILABILITY_AFTER_DDN_FAILURE".
+lossConnectivityCfg LossConnectivity
+Cfg
+O 0..1 May be present if eventType is
+"LOSS_OF_CONNECTIVITY".
+(NOTE 1)
+maximumLatency DurationSec O 0..1 May be present if eventType is
+"UE_REACHABILITY_FOR_DATA"
+When present, it indicates the configured Maximum
+Latency.
+(NOTE 1)
+maximumResponseTim
+e
+DurationSec O 0..1 May be present if eventType is
+"UE_REACHABILITY_FOR_DATA"
+When present, it indicates the configured Maximum
+Response Time.
+(NOTE 1)
+suggestedPacketNumDl integer O 0..1 May be present if eventType is
+"UE_REACHABILITY_FOR_DATA"
+When present, it indicates the configured Suggested
+number of downlink packets.
+(NOTE 1)
+dnn Dnn O 0..1 May be present if suggestedPacketNumDl is
+present.
+When present, it indicates the DNN for which the
+suggestedPacketNumDl is applicable.
+singleNssai Snssai O 0..1 May be present if suggestedPacketNumDl is
+present.
+When present, it indicates the slice for which the
+suggestedPacketNumDl is applicable.
+reachabilityForDataCfg ReachabilityForD
+ataConfiguration
+O 0..1 May be present if eventType is
+"UE_REACHABILITY_FOR_DATA"
+pduSessionStatusCfg PduSessionStatu
+sCfg
+O 0..1 may be present if eventType is
+"PDN_CONNECTIVITY_STATUS"
+reachabilityForSmsCfg ReachabilityForS
+msConfiguration
+O 0..1 REACHABILITY_FOR_SMS_OVER_NAS (default)
+or
+REACHABILITY_FOR_SMS_OVER_IP
+mtcProviderInformation MtcProviderInfor
+mation
+O 0..1 Indicates MTC provider information for Monitoring
+Configuration authorization.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 330 ETSI TS 129 503 V17.12.0 (2023-09)
+afId string O 0..1 The string identifying the originating AF, which is
+carried in {scsAsId} URI variable in resource URIs on
+T8/N33 interface (see clause 5 of
+3GPP TS 29.122 [45]) or in {afId} URI variable in
+resource URIs on N33 interface (see clause 5 of
+3GPP TS 29.522 [54]).
+idleStatusInd boolean O 0..1 Idle Status Indication request.
+May be present if eventType is
+UE_REACHABILITY_FOR_DATA or
+AVAILABILITY_AFTER_DDN_FAILURE
+true: Idle status indication is requested
+false (default): Idle status indication is not requested
+NOTE 1: Parameters maximumLatency, maximumResponseTime, suggestedPacketNumDl and lossConnectivityCfg
+are not recommendated to be used for the AFs that support to set them by Parameter Provision service
+operation via NEF.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 331 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.2.4 Type: MonitoringReport
+Table 6.4.6.2.4-1: Definition of type MonitoringReport
+Attribute name Data type P Cardinality Description
+referenceId ReferenceId M 1 Shall contain the Reference ID which was provided
+as the key of the associated monitoring configuration
+in subscription request. The consumer can use this
+IE to uniquely associate the report with the
+corresponding event that was requested to be
+monitored.
+eventType EventType M 1 String; see clause 6.4.6.3.3
+only the following values are allowed:
+"UE_REACHABILITY_FOR_SMS"
+"UE_REACHABILITY_FOR_DATA"
+"CHANGE_OF_SUPI_PEI_ASSOCIATION"
+"ROAMING_STATUS"
+"CN_TYPE_CHANGE"
+"UE_CONNECTION_MANAGEMENT_STATE"
+"LOSS_OF_CONNECTIVITY"
+"LOCATION_REPORTING"
+"PDN_CONNECTIVITY_STATUS"
+"UE_MEMORY_AVAILABLE_FOR_SMS"
+(NOTE)
+report Report C 0..1 Shall be present if eventType is
+"CHANGE_OF_SUPI_PEI_ASSOCIATION" or
+"ROAMING_STATUS"
+"CN_TYPE_CHANGE"
+"UE_CONNECTION_MANAGEMENT_STATE"
+"LOSS_OF_CONNECTIVITY"
+"LOCATION_REPORTING"
+"PDN_CONNECTIVITY_STATUS"
+reachabilityForSmsRep
+ort
+ReachabilityForS
+msReport
+C 0..1 Should be present if eventType is
+"UE_REACHABILITY_FOR_SMS" and
+reachabilityForSmsCfg was absent from the
+MonitoringConfiguration or indicated
+REACHABILITY_FOR_SMS_OVER_NAS
+reachabilityReport ReachabilityRepo
+rt
+C 0..1 Should be present if eventType is
+"UE_REACHABILITY_FOR_DATA" with
+configuration "INDIRECT_REPORT" or
+"UE_REACHABILITY_FOR_SMS" with configuration
+"REACHABILITY_FOR_SMS_OVER_IP"
+gpsi Gpsi C 0..1 shall be present if the report is associated to
+exposure subscriptions for a group of UEs or any
+UE.
+timeStamp DateTime M 1 Point in time at which the event occurred
+NOTE: "UE_CONNECTION_MANAGEMENT_STATE", "LOSS_OF_CONNECTIVITY", "LOCATION_REPORTING"
+and "PDN_CONNECTIVITY_STATUS" event types shall only be included in an immediate report, when NF
+consumer has indicated support of "IERSR" feature (see clause 6.4.8) and the immediate report has been
+received from HSS or AMF in subscription creation response.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 332 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.2.5 Type: Report
+Table 6.4.6.2.5-1: Definition of type Report as a list of mutually exclusive alternatives
+Data type Cardinality Description
+ChangeOfSupiPeiAssociat
+ionReport
+1 Report Change of SUPI-PEI Association
+RoamingStatusReport 1 Report Roaming Status
+CnTypeChangeReport 1 Report new CN type after switching
+CmInfoReport 1 Report the UE's CM state
+LossConnectivityReport 1 Report of "LOSS_OF_CONNECTIVITY"
+event
+LocationReport 1 "LOCATION_REPORTING"
+PdnConnectivityStatRepor
+t
+1 "PDN_CONNECTIVITY_STATUS"
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 333 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.2.6 Type: ReportingOptions
+Table 6.4.6.2.6-1: Definition of type ReportingOptions
+Attribute name Data type P Cardinalit
+y
+Description Applicability
+reportMode EventReportMode O 0..1 Indicates the mode of report (e.g, periodic reporting
+along with periodicity, reporting based on event
+detection). See clause 4.15.1 of 3GPP TS23.502 [3].
+maxNumOfReports MaxNumOfReports C 0..1 Maximum number of reports. If the event
+subscription is for a group of UEs, this parameter
+shall be applied to each individual member UE of the
+group.
+(NOTE 2)
+expiry DateTime C 0..1 This IE shall be included in an event subscription
+response, if, based on operator policy, the UDM
+needs to include an expiry time, and may be
+included in an event subscription request. When
+present, this IE shall represent the time at which
+monitoring shall cease and the subscription
+becomes invalid. If the maxNumOfReports included
+in an event subscription response is 1 and if an
+event report is included in the subscription response
+then the value of the expiry included in the response
+shall be an immediate timestamp.
+(NOTE 2)
+samplingRatio SamplingRatio O 0..1 Indicates the percentage of sampling among
+impacted UEs, this parameter is used for groupbased monitoring configuration. See clause 4.15.1 of
+3GPP TS23.502 [3].
+(NOTE 1)
+guardTime DurationSec O 0..1 Indicates the time for which the Monitoring Event
+Reporting(s) detected by the UEs in a group can be
+aggregated before sending them to the consumer
+NF, this parameter is used for group-based
+monitoring configuration. See clause 4.15.1 of
+3GPP TS23.502 [3].
+reportPeriod DurationSec C 0..1 Indicates the interval time between which the event
+notification is reported, shall be present if
+reportMode is "PERIODIC".
+notifFlag NotificationFlag O 0..1 Indicates the notification flag, which is used to
+mute/unmute notifications and to retrieve events
+stored during a period of muted notifications.
+(NOTE 3)
+EneNA
+NOTE 1: Parameter only applicable to certain event IDs reporting metrics (e.g. Number of UEs present in a
+geographical area) used and used e.g. by the NWDAF for data collection.
+NOTE 2 If parameter "maxNumOfReports" and "expiry" are included at the same time, the subscription will expire as
+soon as one of the conditions is met. If the ReportMode is set to "PERIODIC", at least one of the
+"maxNumOfReports" and "expiry" attributes shall be included.
+NOTE 3 The information is only applicable to the event detected by a remote NF (e.g. AMF) and directly notified to
+the NF consumer (e.g. NWDAF), the UDM shall ignore this attribute in other scenarios.
+6.4.6.2.7 Type: ChangeOfSupiPeiAssociationReport
+Table 6.4.6.2.7-1: Definition of type ChangeOfSupiPeiAssociationReport
+Attribute name Data type P Cardinality Description
+newPei Pei M 1 the new PEI
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 334 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.2.8 Type: RoamingStatusReport
+Table 6.4.6.2.8-1: Definition of type RoamingStatusReport
+Attribute name Data type P Cardinality Description
+roaming boolean M 1 True: The new serving PLMN is different from the
+HPLMN;
+False: The new serving PLMN is the HPLMN
+newServingPlmn PlmnId M 1 the new Serving PLMN
+accessType AccessType O 0..1 The access type used for accessing the new Serving
+PLMN
+This information may be used by SoR-AF to
+generate updated SoR information for the UE
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 335 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.2.9 Type: CreatedEeSubscription
+Table 6.4.6.2.9-1: Definition of type CreatedEeSubscription
+Attribute name Data type P Cardinality Description
+eeSubscription EeSubscription M 1 This IE shall contain the representation of the
+created event subscription.
+numberOfUes Uinteger C 0..1 This IE shall be included if the event subscription is
+for a group of UEs. When present, this IE shall
+represent the number of UEs in the group.
+eventReports array(Monitoring
+Report)
+O 1..N This IE when present, shall contain the status of
+events that are requested for immediate reporting as
+well, if those events are available at the time of
+subscription.
+If an event requested for immediate reporting is
+detected by another NF (e.g. AMF or HSS) and both
+the UDM and the NF consumer (e.g. NEF) supports
+the "IERSR" feature, this UDM shall require the other
+NF to include the immediate reporting in subscription
+creation response and the UDM shall include the
+immediate event reports received from other NF in
+this IE; otherwise, the UDM shall require the other
+NF to directly notified to the NF consumer, thus the
+status of the event shall not be included in this IE.
+epcStatusInd boolean C 0..1 This IE indicates whether the subscription was also
+successful in EPC domain or not.
+true: the subscription was also successful in EPC
+domain.
+false: the subscription was not successful in EPC
+domain.
+This IE shall be included if epcAppliedInd is true in
+the subscription request.
+failedMonitoringConfigs map(FailedMonit
+oringConfiguratio
+n)
+O 1..N A map (list of key-value pairs where ReferenceId
+converted from integer to string serves as key; see
+clause 6.4.6.3.2) of FailedMonitoringConfiguration;
+see clause 6.4.6.2.24.
+This IE is used to indicate the failed subscriptions of
+event monitoring configuration and the failed cause
+for them.
+failedMoniConfigsEPC map(FailedMonit
+oringConfiguratio
+n)
+O 1..N A map (list of key-value pairs where ReferenceId
+converted from integer to string serves as key; see
+clause 6.4.6.3.2) of FailedMonitoringConfiguration;
+see clause 6.4.6.2.24.
+In addition to defined EventTypes, the key value
+"ALL" may be used to identify a map entry which
+contains the failed cause of the EE subscription was
+not successful in EPC domain.
+This IE is used to indicate the failed subscriptions of
+event monitoring configuration in EPC and the failed
+cause for them.
+This IE may be present when the EE subscription
+applies also to the EPC. When present,
+- the key-value "ALL" shall be used and only
+one map entry exists if the epcStatusInd sets
+false;
+- the key-values shall be ReferenceId converted
+from integer to string if the epcStatusInd sets
+true or absent.
+resetIds array(string) O 1..N May be present in subscribe response messages.
+The NF service consumer may decide to resubscribe at the UDM when receiving a data
+restoration notification containing a matching resetId.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 336 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.2.10 Type: LocationReportingConfiguration
+Table 6.4.6.2.10-1: Definition of type LocationReportingConfiguration
+Attribute name Data type P Cardinality Description
+currentLocation boolean M 1 When true: Indicates that current location is
+requested.
+When false: Indicates that last known location is
+requested.
+oneTime boolean C 0..1 When true: Indicates that a single report is
+requested.
+When false or absent: Indicates that continuous
+reporting is requested.
+Shall not be absent or set to false when
+currentLocation is false.
+accuracy LocationAccuracy C 0..1 Indicates whether Cell-level or TA-level accuracy is
+requested for 3GPP access. (NOTE 1)
+n3gppAccuracy LocationAccuracy C 0..1 Indicates whether N3IWF or UE IP or UE PORT
+level accuracy is requested for non-3GPP access.
+(NOTE 1)
+NOTE 1: At least one of accuracy and n3gppAccuracy shall be present if continuous reporting is required
+6.4.6.2.11 Type: CnTypeChangeReport
+Table 6.4.6.2.11-1: Definition of type CnTypeChangeReport
+Attribute name Data type P Cardinality Description
+oldCnType CnType O 0..1 the old CN type
+newCnType CnType M 1 the new CN type
+6.4.6.2.12 Type: ReachabilityForSmsReport
+Table 6.4.6.2.12-1: Definition of type ReachabilityForSmsReport
+Attribute name Data type P Cardinality Description
+smsfAccessType AccessType M 1
+maxAvailabilityTime DateTime O 0..1 Indicates the time (in UTC) until which the UE is
+expected to be reachable.
+This information may be used by the SMS Service
+Center to prioritize the retransmission of pending
+Mobile Terminated Short Message to UEs using a
+power saving mechanism (eDRX, PSM etc.).
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 337 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.2.13 Type: DatalinkReportingConfiguration
+Table 6.4.6.2.13-1: Definition of type DatalinkReportingConfiguration
+Attribute name Data type P Cardinality Description
+dddTrafficDes array(DddTraffic
+Descriptor)
+C 1..N This IE shall be present for event type
+"DL_DATA_DELIVERY_STATUS"
+"AVAILABILITY_AFTER_DDN_FAILURE".
+When present, this IE shall indicate the traffic
+descriptors of the downlink data.
+dnn Dnn O 0..1 When present, this IE shall contain the Network
+Identifier only and indicate the DNN of the PDU
+session serving the data link.
+slice Snssai O 0..1 When present, this IE shall indicate the slice
+information of the PDU session serving the data link.
+dddStatusList array(DlDataDeliv
+eryStatus)
+O 1..N This IE shall be present for event type
+"DL_DATA_DELIVERY_STATUS".
+When present, this IE shall indicate the subscribed
+statuses (discarded, transmitted, buffered) for the
+event. If omitted all stati are subscribed.
+6.4.6.2.14 Type: CmInfoReport
+Table 6.4.6.2.11-1: Definition of type CmInfoReport
+Attribute name Data type P Cardinality Description
+oldCmInfoList array(CmInfo) O 1..2 the old CM State information
+newCmInfoList array(CmInfo) M 1..2 the new CM State information
+6.4.6.2.15 Type: LossConnectivityCfg
+Table 6.4.6.2.15-1: Definition of type LossConnectivityCfg
+Attribute name Data type P Cardinality Description
+maxDetectionTime DurationSec O 0..1 When present, it indicates the configured Maximum
+Detection Time
+6.4.6.2.16 Type: PduSessionStatusCfg
+Table 6.4.6.2.16-1: Definition of type PduSessionStatusCfg
+Attribute name Data type P Cardinality Description
+dnn Dnn O 0..1 When present, it indicates the DNN for which the
+event is monitored.
+6.4.6.2.17 Type: LossConnectivityReport
+Table 6.4.6.2.17-1: Definition of type LossConnectivityReport
+Attribute name Data type P Cardinality Description
+lossOfConnectReason LossOfConnectivi
+tyReason
+M 1 Describes the reason for loss of connectivity.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 338 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.2.18 Type: LocationReport
+Table 6.4.6.2.18-1: Definition of type LocationReport
+Attribute name Data type P Cardinality Description
+location UserLocation M 1 This IE shall include all available UE locations.
+6.4.6.2.19 Type: PdnConnectivityStatReport
+Table 6.4.6.2.19-1: Definition of type PdnConnectivityStatReport
+Attribute name Data type P Cardinality Description
+pdnConnStat PdnConnectivityS
+tatus
+M 1 PDN Connectivity Status
+dnn Dnn O 0..1 DNN/APN of the PDN connectivity
+pduSeId PduSessionId O 0..1 PDU session ID.
+ipv4Addr Ipv4Addr O 0..1 IPv4 address.
+ipv6Prefixes array(Ipv6Prefix) O 1..N IPv6 prefixes.
+ipv6Addrs array(Ipv6Addr) O 1..N IPv6 addresses.
+pduSessType PduSessionType O 0..1 PDU session type.
+6.4.6.2.20 Type: ReachabilityReport
+Table 6.4.6.2.20-1: Definition of type ReachabilityReport
+Attribute name Data type P Cardinality Description
+amfInstanceId NfInstanceId O 0..1 The serving AMF which the UE is
+reachable.
+accessTypeList array(AccessTyp
+e)
+O 1..N Describes the access type(s) of the UE
+reachability UeReachability O 0..1 Describes the reachability of the UE (NOTE)
+maxAvailabilityTime DateTime O 0..1 Indicates the time (in UTC) until which the UE is
+expected to be reachable.
+idleStatusIndication IdleStatusIndicati
+on
+O 0..1 Idle Status Indication
+NOTE: Only the value "REACHABLE" is supported in this release.
+6.4.6.2.21 Type: ReachabilityForDataConfiguration
+Table 6.4.6.2.21-1: Definition of type ReachabilityForDataConfiguration
+Attribute name Data type P Cardinality Description
+reportCfg ReachabilityForD
+ataReportConfig
+M 1 Specify the reporting configuration of Reachability for
+Data event.
+minInterval DurationSec O 0..1 When present, this IE indicates the minimal interval
+to report the event, i.e. when an event is reported, a
+subseqnet event report shall not be sent during the
+interval. (NOTE)
+NOTE: This IE is applicable only to AMF. When received, the UDM shall forward this IE when subscribing to AMF
+for UE Reachability for Data event.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 339 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.2.22 Type: EeMonitoringRevoked
+Table 6.4.6.2.22-1: Definition of type EeMonitoringRevoked
+Attribute name Data type P Cardinality Description Applicability
+revokedMonitoringEvent
+List
+map(MonitoringE
+vent)
+M 1..N Shall contain a map (list of key-value pairs where
+referenceId converted from integer to string serves
+as key; see clause 6.4.6.3.2) of the
+MonitoringEvents (see clause 6.4.6.2.20) that shall
+be revoked.
+The Reference ID which was provided as the key of
+the associated monitoring configuration in
+subscription request. The consumer can use this IE
+to uniquely associate the revoked monitoring event
+with the corresponding event that was requested to
+be monitored.
+removedGpsi Gpsi O 1 This IE may be present when Network initiated
+explicit event notification subscription cancel
+procedure, as specified in clause 4.15.3.2.11 of
+3GPP TS 23.502 [3].
+When present, this IE shall indicate the GPSI of the
+individual subscription used during the Event
+Exposure subscribe operation and which is not
+associated to this subscription anymore.
+excludeGpsiList array(Gpsi) O 1..N This IE may be present when Network initiated
+explicit event notification subscription cancel
+procedure, as specified in clause 4.15.3.2.11 of
+3GPP TS 23.502 [3].
+When present, this IE shall indicate the GPSI of the
+group member UE(s) that are excluded from the
+group subscription.
+DGEM
+6.4.6.2.23 Type: MonitoringEvent
+Table 6.4.6.2.23-1: Definition of type MonitoringEvent
+Attribute name Data type P Cardinality Description
+eventType EventType M 1 String; see clause 6.4.6.3.3
+revokedCause RevokedCause O 0..1 When present, it contains the reason for revocation
+of the monitoring event.
+6.4.6.2.24 Type: FailedMonitoringConfiguration
+Table 6.4.6.2.24-1: Definition of type FailedMonitoringConfiguration
+Attribute name Data type P Cardinality Description
+eventType EventType M 1 Contains the Event type, see clause 6.4.6.3.3
+failedCause FailedCause M 1 Contains the failed cause of the subscription of the
+event monitoring.
+6.4.6.3 Simple data types and enumerations
+6.4.6.3.1 Introduction
+This clause defines simple data types and enumerations that can be referenced from data structures defined in the
+previous clauses.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 340 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.3.2 Simple data types
+The simple data types defined in table 6.4.6.3.2-1 shall be supported.
+Table 6.4.6.3.2-1: Simple data types
+Type Name Type Definition Description
+MaxNumOfReports integer Maximum number of reports.
+Minimum: 1
+ReferenceId integer ReferenceId is used as key in a map of MonitoringConfigurations;
+see clause 6.4.6.2.2.
+ReferenceId is also used as key in a map of MonitoringEvents;
+see clause 6.4.6.2.20.
+ReferenceId is used as key in a map of
+FailedMonitoringConfiguration; see clause 6.4.6.2.9.
+The numeric value should not be higher than 2^64-1 (i.e. it should
+be possible to convey it in an unsigned 64 integer Information
+Element, used in other protocols), if interworking with the Event
+Exposure framework in EPC is required.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 341 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.3.3 Enumeration: EventType
+Table 6.4.6.3.3-1: Enumeration EventType
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 342 ETSI TS 129 503 V17.12.0 (2023-09)
+Enumeration value Description
+"LOSS_OF_CONNECTIVITY" Loss of connectivity
+"UE_REACHABILITY_FOR_DATA" UE reachability for data, implements the "UE Reachability"
+monitoring event as specified in clause 4.15.3.1 in
+3GPP TS 23.502 [3].
+When this event is subscribed by an NF service consumer, the
+UDM subscribes to "ReachabilityReport" event for "UE
+Reachability for DL Traffic" on the AMF.
+When this event is subscribed by an NF service consumer, the
+UDM shall request the AMF to directly send notification to NF,
+if reachabilityForDataCfg is not present or indicates
+"DIRECT_REPORT".
+When this event is subscribed by an NF service consumer and
+reachabilityForDataCfg indicates "INDIRECT_REPORT", the
+UDM shall request the AMF to send notification via the UDM.
+The Event is reported to an NF service consumer by the UDM
+when a UE Activity notification or Nudm_UECM_Registration is
+received from AMF, unless the AMF indicated in UECM
+registration that UE is not reachable or the UE reachability is
+unknown and UDM is configured to not report event based on
+operator policy (see clause 5.3.2.2.2).
+"UE_REACHABILITY_FOR_SMS" UE reachability for SMS, implements the "UE Reachability for
+SMS Delivery" event as specified in clause 4.15.3.1 of
+3GPP TS 23.502 [3].
+This Event is reported when an SMSF is being registered in
+UDM for the UE, or when a UE Activity notification is received
+from AMF and there is an SMSF already registered for the UE.
+This Event is also reported when a UE Activity notification or
+Nudm_UECM_Registration is received from AMF regardless of
+an SMSF being registered. when the request configuration is
+for SMS over IP, unless the AMF indicated in UECM
+registration that UE is not reachable or the UE reachability is
+unknown and UDM is configured to not report event based on
+operator policy (see clause 5.3.2.2.2).
+This event only supports One-Time reporting.
+"LOCATION_REPORTING" Location Reporting
+"CHANGE_OF_SUPI_PEI_ASSOCIATION
+"
+Change of SUPI-PEI association
+"ROAMING_STATUS" Roaming Status
+"COMMUNICATION_FAILURE" Communication Failure
+"AVAILABILITY_AFTER_DDN_FAILURE" Availability after DDN failure
+"CN_TYPE_CHANGE" CN type change
+"DL_DATA_DELIVERY_STATUS" Downlink Data Delivery Status
+"PDN_CONNECTIVITY_STATUS" PDU Session Status
+"UE_CONNECTION_MANAGEMENT_STA
+TE"
+UE state of Connection Management
+"ACCESS_TYPE_REPORT" The event is detected and reported by AMF (see
+clause 6.2.6.3.3 of 3GPP TS 29.518 [36]).
+A NF subscribes to this event via UDM to receive the current
+access type(s) of a UE or a group of UEs, and updated access
+type(s) of the UE or any UE in the group when AMF becomes
+aware of the access type change of the UE.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 343 ETSI TS 129 503 V17.12.0 (2023-09)
+"REGISTRATION_STATE_REPORT" The event is detected and reported by AMF (see
+clause 6.2.6.3.3 of 3GPP TS 29.518 [36]).
+A NF subscribes to this event via UDM to receive the current
+registration state of a UE or a group of UEs, and report for
+updated registration state of a UE or any UE in the group when
+AMF becomes aware of a registration state change of the UE.
+"CONNECTIVITY_STATE_REPORT" The event is detected and reported by AMF (see
+clause 6.2.6.3.3 of 3GPP TS 29.518 [36]).
+A NF subscribes to this event via UDM to receive the current
+connection management state of a UE or a group of UEs, and
+report for updated connection management state of a UE or
+any UE in the group when AMF becomes aware of a
+connection management state change of the UE.
+"TYPE_ALLOCATION_CODE_REPORT" The event is detected and reported by AMF (see
+clause 6.2.6.3.3 of 3GPP TS 29.518 [36]).
+A NF subscribes to this event via UDM to receive the TAC of a
+UE or group of UEs.
+"FREQUENT_MOBILITY_REGISTRATION
+_REPORT"
+The event is detected and reported by AMF (see
+clause 6.2.6.3.3 of 3GPP TS 29.518 [36]).
+A NF subscribes to this event via UDM to receive the number
+of mobility registration procedures during a period of a UE or
+group of UEs.
+"PDU_SES_REL" The event is detected and reported by SMF (see
+clause 5.6.3.3 of 3GPP TS 29.508 [40]).
+A NF subscribes to this event via UDM to receive event report
+when a PDU session is released of a UE or group of UEs.
+"PDU_SES_EST" The event is detected and reported by SMF (see
+clause 5.6.3.3 of 3GPP TS 29.508 [40]).
+A NF subscribes to this event via UDM to receive event report
+when a PDU session is established of a UE or group of UEs.
+"UE_MEMORY_AVAILABLE_FOR_SMS" The event is detected and reported by SMS-GMSC/IWMSC
+(see clause 5.1.8 of 3GPP TS 29.540 [66]).
+A NF subscribes to this event via UDM to receive event report
+when UE memory capacity is exceeded.
+6.4.6.3.4 Enumeration: LocationAccuracy
+Table 6.4.6.3.4-1: Enumeration LocationAccuracy
+Enumeration value Description
+"CELL_LEVEL" change of cell shall be reported for 3GPP access
+"RAN_NODE_LEVEL" change of serving RAN node shall be reported for 3GPP
+access
+"TA_LEVEL" change of TA shall be reported for 3GPP access
+"N3IWF_LEVEL" Change of N3IWF node shall be reported for non-3GPP
+access
+"UE_IP" change of UE IP address (used to reach the N3IWF) shall be
+reported for non-3GPP access
+"UE_PORT" Change of UE source port shall be reported for non-3GPP
+access
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 344 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.3.5 Enumeration: CnType
+Table 6.4.6.3.5-1: Enumeration CnType
+Enumeration value Description
+"SINGLE_4G" Single registration in 4G
+"SINGLE_5G" Single registration in 5G
+"DUAL_4G5G" Dual registration in 4G and 5G
+6.4.6.3.6 Enumeration: AssociationType
+Table 6.4.6.3.6-1: Enumeration AssociationType
+Enumeration value Description
+"IMEI_CHANGE" The event shall be reported if the association between IMSI
+and IMEI has changed; if only the Software Version (SV) has
+changed, no event shall be reported.
+"IMEISV_CHANGE" The event shall be reported if the association between IMSI
+and IMEI, or SV, or both, has changed (this includes the case
+where only the SV has changed).
+6.4.6.3.7 Enumeration: EventReportMode
+Table 6.4.6.3.7-1: Enumeration EventReportMode
+Enumeration value Description
+"PERIODIC" The notification is periodically sent.
+"ON_EVENT_DETECTION" The notification is sent based on event detection.
+6.4.6.3.8 Enumeration: ReachabilityForSmsConfiguration
+Table 6.4.6.3.8-1: Enumeration ReachabilityForSmsConfiguration
+Enumeration value Description
+"REACHABILITY_FOR_SMS_OVER_NAS" Indicates that the Monitoring Configuration with Event Type
+UE_REACHABILITY_FOR_SMS requests a notification when
+the UE is reachable for SMS via a registered SMSF (default)
+"REACHABILITY_FOR_SMS_OVER_IP" Indicates that the Monitoring Configuration with Event Type
+UE_REACHABILITY_FOR_SMS requests a notification when
+the UE is reachable for SMS over IP, i.e. regardless of an
+SMSF being registered.
+6.4.6.3.9 Enumeration: PdnConnectivityStatus
+Table 6.4.6.3.9-1: PdnConnectivityStatus
+Enumeration value Description
+"ESTABLISHED" PDN Connection established.
+"RELEASED" PDN Connection released.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 345 ETSI TS 129 503 V17.12.0 (2023-09)
+6.4.6.3.10 Enumeration: ReachabilityForDataReportConfig
+Table 6.4.6.3.10-1: Enumeration ReachabilityForDataReportConfig
+Enumeration value Description
+"DIRECT_REPORT" It indicates UE reachability is detected in AMF and reported
+directly to the consumer NF by AMF (default).
+"INDIRECT_REPORT" It indicates UE reachability is detected in AMF and UDM and
+reported to the consumer NF by the UDM. The UDM shall
+send reporting of "UE_REACHABILITY_FOR_DATA" to the
+consumer NF when it receives "UE Reachability for DL Traffic"
+report or Nudm_UECM_Registration from the AMF (see
+TS 23.502 [3] clause 4.2.5.3).
+6.4.6.3.11 Enumeration: RevokedCause
+Table 6.4.6.3.11-1: Enumeration RevokedCause
+Enumeration value Description
+"NOT_ALLOWED" Monitoring is not allowed
+"EXCLUDED_FROM_GROUP" Group member UE(s) are removed from a group subscription
+"GPSI_REMOVED" The GPSI used in the Event Exposure subscription is not
+longer valid for this individual subscription
+6.4.6.3.12 Enumeration: FailedCause
+Table 6.4.6.3.12-1: Enumeration FailedCause
+Enumeration value Description
+"AF_NOT_ALLOWED" This AF is not allowed to perform monitoring for
+the requested event type.
+"MTC_PROVIDER_NOT_ALLOWED" MTC Provider is now allowed to perform
+monitoring for the requested event type.
+"MONITORING_NOT_ALLOWED" The subscriber does not have the necessary
+subscription for monitoring with the requested
+Event Type.
+"UNSUPPORTED_MONITORING_EVENT_TYPE" The required event type is unsupported.
+"UNSUPPORTED_MONITORING_REPORT_OPTIONS" The monitoring configuration for the required
+event type contains unsupported report options.
+"UNSPECIFIED" The failed cause is unspecified.

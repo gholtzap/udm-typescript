@@ -1,0 +1,141 @@
+6.6.6 Data Model
+6.6.6.1 General
+This clause specifies the application data model supported by the API.
+Table 6.6.6.1-1 specifies the structured data types defined for the Nudm_NIDDAU service API. For simple data types
+defined for the Nudm_NIDDAU service API see table 6.6.6.3.2-1.
+Table 6.6.6.1-1: Nudm_NIDDAU specific Data Types
+Data type Clause defined Description
+AuthorizationData 6.6.6.2.2
+UserIdentifier 6.6.6.2.3
+NiddAuthUpdateInfo 6.6.6.2.4
+NiddAuthUpdateNotification 6.6.6.2.5
+AuthorizationInfo 6.6.6.2.6
+NiddCause 6.6.6.3.3
+Table 6.6.6.1-2 specifies data types re-used by the Nudm_NIDDAU service API from other specifications, including a
+reference to their respective specifications and when needed, a short description of their use within the Nudm_NIDDAU
+service API.
+Table 6.6.6.1-2: Nudm_NIDDAU re-used Data Types
+Data type Reference Comments
+Nssai 6.1.6.2.2 Network Slice Selection Assistance Information
+Gpsi 3GPP TS 29.571 [7] Generic Public Subscription Identifier
+Supi 3GPP TS 29.571 [7]
+Dnn 3GPP TS 29.571 [7] Data Network Name with Network Identifier only.
+MtcProviderInformation 3GPP TS 29.571 [7]
+DateTime 3GPP TS 29.571 [7]
+Snssai 3GPP TS 29.571 [7]
+Uri 3GPP TS 29.571 [7]
+NefId 3GPP TS 29.510 [19] NEF ID
+6.6.6.2 Structured data types
+6.6.6.2.1 Introduction
+This clause defines the structures to be used in resource representations.
+6.6.6.2.2 Type: AuthorizationData
+Table 6.6.6.2.2-1: Definition of type AuthorizationData
+Attribute name Data type P Cardinality Description
+authorizationData array(UserIdentifier) M 1..N May contain a single value or list of (SUPI and
+GPSI). Contains unique items.
+validityTime DateTime O 0..1 Indicates the granted validity time of the
+authorisation result.
+If absent, it indicates the authorisation result is
+valid permanently
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 378 ETSI TS 129 503 V17.12.0 (2023-09)
+6.6.6.2.3 Type: UserIdentifier
+Table 6.6.6.2.3-1: Definition of type UserIdentifier
+Attribute name Data type P Cardinality Description
+supi Supi M 1
+gpsi Gpsi O 0..1
+validityTime DateTime O 0..1 Indicates the granted validity time of the
+authorisation result for this user.
+If absent, the value of the validity time in the
+AuthorizationData is used for this user if it is
+present in AuthorizationData.
+If present, this value has higher priority than the
+value in the AuthorizationData.
+6.6.6.2.4 Type: NiddAuthUpdateInfo
+Table 6.6.6.2.4-1: Definition of type NiddAuthUpdateInfo
+Attribute name Data type P Cardinality Description
+authorizationData AuthorizationData M 1 This IE shall include the Authorization data.
+invalidityInd boolean O 0..1 Indicates whether the authorized NIDD
+authoration data is still valid or not.
+true: the authorized NIDD authoration data is
+not valid.
+false or absent: the authorized NIDD
+authoration data is valid.
+snssai Snssai O 0..1 Indicates Single Network Slice Selection
+Assistance Information for NIDD authorization.
+When absent it indicates authorization for all
+subscribed S-NSSAIs.
+dnn Dnn O 0..1 Indicates DNN for NIDD authorization, shall
+contain the Network Identifier only.
+When absent it indicates authorization for all
+subscribed DNNs.
+niddCause NiddCause O 0..1 NIDD Cause
+6.6.6.2.5 Type: NiddAuthUpdateNotification
+Table 6.6.6.2.5-1: Definition of type NiddAuthUpdateNotification
+Attribute name Data type P Cardinality Description
+niddAuthUpdateInfoList array(NiddAuthUpdat
+eInfo)
+M 1..N List of NiddAuthUpdateInfo.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 379 ETSI TS 129 503 V17.12.0 (2023-09)
+6.6.6.2.6 Type: AuthorizationInfo
+Table 6.6.6.2.6-1: Definition of type AuthorizationInfo
+Attribute name Data type P Cardinality Description
+snssai Snssai M 1 Indicates Single Network Slice Selection
+Assistance Information for NIDD authorization.
+dnn Dnn M 1 Indicates DNN for NIDD authorization, shall
+contain the Network Identifier only.
+mtcProviderInformation MtcProviderInformati
+on
+M 1 Indicates MTC provider information for NIDD
+authorization. (NOTE)
+authUpdateCallbackUri Uri M 1 A URI provided by NEF to receive (implicitly
+subscribed) notifications on authorization data
+update.
+The authUpdateCallbackUri URI shall have
+unique information within NEF to identify the
+authorized result.
+afId string O 0..1 When present, indicates the string identifying
+the originating AF, which is carried in {scsAsId}
+URI variable in resource URIs on T8/N33
+interface (see clause 5 of
+3GPP TS 29.122 [45]) or in {afId} URI variable
+in resource URIs on N33 interface (see
+clause 5 of 3GPP TS 29.522 [54]).
+nefId NefId O 0..1 When present, this IE shall contain the ID of
+the requesting NEF.
+The UDM shall update the NIDD NEF ID for the
+DNN and Slice in corresponding subscription
+data after successful NIDD authorization, as
+specified in clause 4.25.3 of
+3GPP TS 23.502 [3].
+validityTime DateTime O 0..1 Indicates the granted validity time of the
+authorisation result.
+If absent, it indicates the authorisation result is
+valid permanently
+contextInfo ContextInfo O 0..1 This IE if present may contain e.g. the headers
+received by the UDM along with the
+Authorization Data Retrieval request.
+Shall be absent on Nudm and may be present
+on Nudr.
+NOTE: When the service operation is originated by external AF via T8/N33 interface, information carried in
+mtcProviderId attribute in NiddConfiguration structured data type (see clause 5.6.2.1.2 of
+3GPP TS 29.122 [45]) can be used as the value for this IE. If the value is not received via T8/N33, the value
+for the mtcProviderInformation attribute shall be the empty string.
+6.6.6.3 Simple data types and enumerations
+6.6.6.3.1 Introduction
+This clause defines simple data types and enumerations that can be referenced from data structures defined in the
+previous clauses.
+6.6.6.3.2 Simple data types
+The simple data types defined in table 6.6.6.3.2-1 shall be supported.
+Table 6.6.6.3.2-1: Simple data types
+Type Name Type Definition Description
+
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 380 ETSI TS 129 503 V17.12.0 (2023-09)
+6.6.6.3.3 Enumeration: NiddCause
+Table 6.6.6.3.3-1: Enumeration NiddCause
+Enumeration value Description
+"SUBSCRIPTION_WITHDRAWAL" Subscription Withdrawal
+"DNN_REMOVED" DNN used for NIDD service is removed from the UE
+subscription

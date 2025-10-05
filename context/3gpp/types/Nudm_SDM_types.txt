@@ -1,0 +1,3392 @@
+a3GPP TS 29.503 version 17.12.0 Release 17 
+159 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Name 
+Location 
+Table 6.1.5.3-4: Headers supported by the 307 Response Code on this resource 
+Description 
+Contains the Callback URI of the target NF Service Consumer to which the request is redirected 
+Data type string 
+P 
+Cardinality 
+M 
+1 
+О 
+0..1 
+Identifier of the target NF (service) instance ID towards which the request is redirected 
+|3gpp-Sbi-Target- string 
+Nf-Id 
+Data type 
+P 
+Cardinality 
+Location 
+string 
+M 
+1 
+Name 
+Table 6.1.5.3-5: Headers supported by the 308 Response Code on this resource 
+Description 
+Contains the Callback URI of the target NF Service Consumer to which the request is redirected 
+3gpp-Sbi-Target- string 
+O 0..1 
+Nf-Id 
+Identifier of the target NF (service) instance ID towards which |the request is redirected 
+6.1.6 
+Data Model 
+6.1.6.1 
+General 
+This clause specifies the application data model supported by the API. 
+Table 6.1.6.1-1 specifies the data types defined for the Nudm_SDM service API. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+160 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Table 6.1.6.1-1: Nudm_SDM specific Data Types 
+PduSessionTypes 
+SscModes 
+6.1.6.2.12 
+SmsSubscriptionData 
+6.1.6.2.13 
+SmsManagementSubscriptionData 
+6.1.6.2.14 
+SubscriptionDataSets 
+6.1.6.2.15 
+UeContextInSmfData 
+6.1.6.2.16 
+3GPP TS 29.503 version 17.12.0 Release 17 
+Data type 
+161 
+Clause defined 
+Nssai 
+6.1.6.2.2 
+SdmSubscription 
+6.1.6.2.3 
+AccessAndMobilitySubscriptionData 
+6.1.6.2.4 
+SmfSelectionSubscription Data 
+6.1.6.2.5 
+DnnInfo 
+6.1.6.2.6 
+6.1.6.2.7 
+Snssailnfo 
+SessionManagementSubscriptionData 6.1.6.2.8 
+DnnConfiguration 
+6.1.6.2.9 6.1.6.2.11 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Description 
+Network Slice Selection Assistance Information |A subscription to notifications 
+Access and Mobility Subscription Data 
+SMF Selection Subscription Data 
+Data Network Name and associated information (LBO roaming allowed flag) 
+S-NSSAI and associated information (DNN Info) User subscribed session management data User subscribed data network configuration Default/allowed session types for a data network Default/allowed SSC modes for a data network 
+SMS Management Subscription Data 
+UE Context In SMF Data 
+PduSession 
+6.1.6.2.17 
+IdTranslationResult 
+6.1.6.2.18 
+|SUPI that corresponds to a given GPSI 
+Modification Notification 
+6.1.6.2.21 
+IpAddress 
+6.1.6.2.22 
+|IP address (IPv4, or IPv6, or IPv6 prefix) 
+UeContextInSmsfData 
+6.1.6.2.23 
+SmsfInfo 
+6.1.6.2.24 
+AcknowledgeInfo 
+6.1.6.2.25 
+SorInfo 
+6.1.6.2.26 
+Steering Of Roaming Information 
+SharedData 
+6.1.6.2.27 
+PgwInfo 
+6.1.6.2.28 
+TraceDataResponse 
+6.1.6.2.29 
+SteeringContainer 
+6.1.6.2.30 
+SdmSubsModification 
+6.1.6.2.31 
+EmergencyInfo 
+6.1.6.2.32 
+Subscription Data shared by multiple UEs 
+Information about the DNNs/APNs and PGW-C+SMF |FQDNs used in interworking with EPS 
+Contains Trace Data or a shared data Id identifying shared Trace Data 
+Modification instruction for a subscription to 
+notifications 
+Information about emergency session 
+Upulnfo 
+6.1.6.2.33 
+|UE Parameters Update Information 
+GroupIdentifiers 
+6.1.6.2.34 
+NiddInformation 
+6.1.6.2.35 
+|Non-IP Data Delivery information 
+CagData 
+6.1.6.2.36 
+CagInfo 
+6.1.6.2.37 
+DataSetName 
+6.1.6.3.3 
+PduSessionContinuityInd 
+6.1.6.3.7 
+AdditionalSnssaiData 
+6.1.6.2.38 
+|Additional information specific to a slice 
+VnGroupData 
+6.1.6.2.39 
+AppDescriptor 
+6.1.6.2.40 
+AppPortld 
+LcsPrivacyData 
+Lpi 
+UnrelatedClass 
+6.1.6.2.41 
+Application Port Id 
+6.1.6.2.42 
+6.1.6.2.43 
+6.1.6.2.44 
+PlmnOperatorClass 
+6.1.6.2.45 
+ValidTimePeriod 
+6.1.6.2.46 
+LcsMoData 
+6.1.6.2.47 
+EcRestriction DataWb 
+6.1.6.2.48 
+ExpectedUeBehaviourData 
+6.1.6.2.49 
+Enhance Coverage Restriction Data Expected UE Behaviour Data 
+SuggestedPacketNum DI 
+6.1.6.2.52 
+FrameRoutelnfo 
+6.1.6.2.54 
+SorUpdateInfo 
+EdrxParameters 
+6.1.6.2.55 
+EnhancedCoverageRestrictionData 
+6.1.6.2.56 
+6.1.6.2.57 
+PtwParameters 
+6.1.6.2.58 
+OperationMode 
+6.1.6.3.12 
+|Suggested Number of Downlink Packets 
+Frame Route Information 
+Enhanced Coverage Restriction Data 
+eDRX Parameters 
+Paging Time Window Parameters 
+Operation Mode 
+SorUpdateIndicator 
+6.1.6.3.13 
+|SoR Update Indicator 
+External UnrelatedClass 
+6.1.6.2.62 
+AfExternal 
+6.1.6.2.63 
+LcsClientExternal 
+6.1.6.2.64 
+LcsClientGroupExternal 
+6.1.6.2.65 
+ServiceTypeUnrelatedClass 
+6.1.6.2.66 
+3GPP TS 29.503 version 17.12.0 Release 17 
+162 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Ueld 
+6.1.6.2.67 
+DefaultUnrelatedClass 
+6.1.6.2.68 
+ContextInfo 
+6.1.6.2.69 
+UeContextInAmfData 
+6.1.6.2.70 
+V2xSubscriptionData 
+6.1.6.2.71 
+LcsBroadcastAssistanceTypesData 
+6.1.6.2.72 
+DatasetNames 
+PlmnRestriction 
+6.1.6.2.73 6.1.6.2.74 
+ProseSubscriptionData 
+6.1.6.2.76 
+Contains the HTTP Headers received by the NFS 
+|V2X Subscription Data 
+LCS Broadcast Assistance Data Types Data Set Names 
+ProSe Subscription Data 
+AerialUeSubscriptionInfo 
+6.1.6.2.78 
+|Aerial UE Subscription Information 
+SmSubsData 
+6.1.6.2.79 
+ExtendedSmSubsData 
+6.1.6.2.80 
+AmfInfo 
+6.1.6.2.81 
+AMF information 
+ProSeAllowedPlmn 
+6.1.6.2.82 
+ImmediateReport 
+6.1.6.2.83 
+MbsSubscriptionData 
+6.1.6.2.84 
+UcSubscriptionData 
+6.1.6.2.85 
+UeContextInSmfDataSubFilter 
+6.1.6.2.86 
+Ueldentifiers 
+6.1.6.2.87 
+Contains the allowed PLMN information for ProSe Service 
+UDM SDM Immediate Report 
+|5MBS Subscription Data 
+User Consent Subscription Data 
+UE Context In Smf Data Subscription Filter 
+List of UE identifiers 
+Supilnfo 
+6.1.6.2.88 
+List of the SUPIS 
+DefaultDnnIndicator 
+6.1.6.3.2 
+LboRoamingAllowed 
+6.1.6.3.2 
+UeUsageType 
+6.1.6.3.2 
+MpsPriorityIndicator 
+6.1.6.3.2 
+McsPriorityIndicator 
+6.1.6.3.2 
+3GppCharging Characteristics 
+6.1.6.3.2 
+|3GPP Charging Characteristics 
+MicoAllowed 
+6.1.6.3.2 
+SmsSubscribed 
+6.1.6.3.2 
+SharedDatald 
+IwkEpsInd 
+SecuredPacket 
+6.1.6.3.2 
+6.1.6.3.2 
+Interworking with EPS Indication 
+6.1.6.3.2 
+UpuRegInd 
+6.1.6.3.2 
+ExtGroupld 
+6.1.6.3.2 
+NbloTUePriority 
+6.1.6.3.2 
+CodeWord 
+6.1.6.3.2 
+Afld 
+6.1.6.3.2 
+LcsClientld 
+6.1.6.3.2 
+DataSetName 
+6.1.6.3.3 
+PduSessionContinuityInd 
+6.1.6.3.7 
+|LocationPrivacyInd 
+6.1.6.3.8 
+PrivacyCheckRelatedAction 
+6.1.6.3.9 
+LcsClientClass 
+6.1.6.3.10 
+LcsMoServiceClass 
+6.1.6.3.11 
+OperationMode 
+6.1.6.3.12 
+CodeWord Ind 
+6.1.6.3.14 
+MdtUserConsent 
+6.1.6.3.15 
+MDT User Consent 
+Shared Data TreatmentInstruction 
+6.1.6.3.16 
+GpsiType 
+6.1.6.3.17 
+Type of GPSI (MSISDN or External-ID) 
+SorTransparentContainer 
+6.1.6.3.2 
+AerialUelndication 
+6.1.6.3.18 
+UpuTransparentContainer 
+Prose DirectAllowed 
+6.1.6.3.2 
+6.1.6.3.19 
+Indication on whether Aerial service for UE is allowed or not. 
+Contains the ProSe Services that can be authorised by the given PLMN identity. 
+UcPurpose 
+6.1.6.3.20 
+UserConsent 
+6.1.6.3.21 
+Purpose of the user consent User Consent 
+Table 6.1.6.1-2 specifies data types re-used by the Nudm_SDM service API from other specifications, including a reference to their respective specifications and when needed, a short description of their use within the Nudm_SDM service API. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+163 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Table 6.1.6.1-2: Nudm_SDM re-used Data Types 
+3GPP TS 29.503 version 17.12.0 Release 17 
+Data type 
+Dnn 
+DurationSec Problem Details 
+3GPP TS 29.571 [7] 
+3GPP TS 29.571 [7] 
+Snssai 
+Uri 
+Gpsi 
+3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 
+RatType 
+3GPP TS 29.571 [7] 
+Reference 3GPP TS 29.571 [7] 
+164 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Comments 
+Data Network Name with Network Identifier only; this type is used as key in a map of: 
+DnnConfigurations; see clause 6.1.6.2.8; 
+- EpslwkPgws; see clause 6.2.6.2.2; 
+- ExpectedUeBehaviourData; see clause 6.1.6.2.8; 
+Time value in seconds 
+Common data type used in response bodies Single NSSAI 
+Uniform Resource Identifier 
+Generic Public Subscription Identifier Radio Access Technology Type 
+Area 
+3GPP TS 29.571 [7] 
+ServiceAreaRestriction 
+3GPP TS 29.571 [7] 
+CoreNetworkType 
+3GPP TS 29.571 [7] 
+SupportedFeatures 
+3GPP TS 29.571 [7] 
+Plmnld 
+3GPP TS 29.571 [7] 
+PduSessionType 
+3GPP TS 29.571 [7] 
+Subscribed DefaultQos 
+3GPP TS 29.571 [7] 
+see 3GPP TS 29.500 [4] clause 6.6 PLMN Identity 
+Subscribed Default QoS 
+Ambr 
+3GPP TS 29.571 [7] 
+AmbrRm 
+3GPP TS 29.571 [7] 
+SliceMbrRm 
+3GPP TS 29.571 [7] 
+PduSessionld 
+3GPP TS 29.571 [7] 
+PduSessionld is used as key in a map of PduSessions; see clause 6.1.6.2.16. 
+NfInstanceld 
+3GPP TS 29.571 [7] 
+Supi 
+3GPP TS 29.571 [7] 
+RfspIndexRm 
+3GPP TS 29.571 [7] 
+SscMode 
+3GPP TS 29.571 [7] 
+Ipv4Addr 
+3GPP TS 29.571 [7] 
+Ipv6Addr 
+3GPP TS 29.571 [7] 
+Ipv6Prefix 
+3GPP TS 29.571 [7] 
+SorMac 
+3GPP TS 29.509 [24] 
+SteeringInfo 
+3GPP TS 29.509 [24] 
+Acklnd 
+3GPP TS 29.509 [24] 
+CounterSor 
+3GPP TS 29.509 [24] 
+UpuMac 
+3GPP TS 29.509 [24] 
+UpuData 
+3GPP TS 29.509 [24] 
+UpuAckInd 
+3GPP TS 29.509 [24] 
+CounterUpu 
+3GPP TS 29.509 [24] 
+TraceData 
+Trace control and configuration parameters 
+Notifyltem 
+UpSecurity 
+ServiceName OdbPacketServices 
+Groupld 
+DateTime 
+Cagld StnSr CMsisdn 
+3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.510 [19] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 
+3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 
+3GPP TS 29.571 [7] 3GPP TS 29.519 [33] 3GPP TS 29.571 [7] 
+This type is also used as key of a map in attributes: 
+- vnGroupInfo and shared VnGroupDatalds; see clause 6.1.6.2.4, 6.1.6.2.8, 6.1.6.2.27; 
+Session Transfer Number for SRVCC Correlation MSISDN 
+RgWirelineCharacteristics 
+Osld 
+Uint16 
+GeographicArea 
+LcsServiceType 
+LocationArea 
+DataRestorationNotification 
+3GPP TS 29.571 [7] 
+3GPP TS 29.572 [34] 3GPP TS 29.572 [34] 
+ScheduledCommunication Time |3GPP TS 29.571 [7] 
+6.5.6.2.10 
+6.2.6.2.25 
+StationaryIndication 
+3GPP TS 29.571 [7] 
+TrafficProfile 
+3GPP TS 29.571 [7] 
+ScheduledCommunicationType |3GPP TS 29.571 [7] 
+Scheduled Communication Time 
+Contains identities representing those UEs potentially affected by a data-loss event at the UDR 
+Stationary Indication 
+Traffic Profile 
+Scheduled Communication Type 
+BatteryIndication 
+AcsInfo 
+IPv4AddrMask 
+Fqdn 
+Nefld 
+PatchResult 
+NrV2xAuth 
+3GPP TS 29.503 version 17.12.0 Release 17 
+165 
+3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.510 [19] 
+3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Battery Indication ACS Information 
+Fully Qualified Domain Name 
+LteV2xAuth 
+3GPP TS 29.571 [7] 
+ProseServiceAuth 
+3GPP TS 29.571 [7] 
+BitRate 
+3GPP TS 29.571 [7] 
+MdtConfiguration 
+3GPP TS 29.571 [7] 
+Uint64 
+3GPP TS 29.571 [7] 
+WirelineArea 
+3GPP TS 29.571 [7] 
+WirelineServiceArea Restriction 3GPP TS 29.571 [7] 
+NfGroupId 
+EcsServerAddr 
+RedirectResponse 
+3GPP TS 29.571 [7] 
+3GPP TS 29.571 [7] 
+3GPP TS 29.571 [7] 
+Bytes 
+SpatialValidityCond 
+AccessType 
+NsSrg 
+3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 
+3GPP TS 29.571 [7] 
+Response body of the redirect response message 
+Binary data encoded as a base64 character string 
+Access Type NSSRG value 
+MbsSessionld 
+3GPP TS 29.571 [7] 
+5MBS Session Id 
+RoamingRestrictions 
+3GPP TS 29.571 [7] 
+Roaming Restrictions related information 
+PlmnldNid 
+3GPP TS 29.571 [7] 
+6.1.6.2 
+Structured data types 
+6.1.6.2.1 
+Introduction 
+This clause defines the structures to be used in resource representations. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+166 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.2 
+Type: Nssai 
+supportedFeatures 
+defaultSingleNssais 
+Table 6.1.6.2.2-1: Definition of type Nssai 
+Attribute name 
+Data type 
+P 
+Cardinality 
+SupportedFeatures 
+O 
+0..1 
+array(Snssai) 
+M 
+1..N 
+singleNssais 
+array(Snssai) 
+O 
+1..N 
+provisioning Time 
+DateTime 
+C 0..1 
+additionalSnssaiData 
+map(AdditionalSnssa о |1..N 
+iData) 
+suppressNssrgInd 
+boolean 
+O 
+0..1 
+See clause 6.1.8 
+Description 
+A list of Single Nssais used as default. |(NOTE 1) (NOTE 2) (NOTE 3) (NOTE 4) 
+List of non default Single Nssais. (NOTE 1) (NOTE 3) 
+This attribute shall be present if the Nssai is sent to the AMF while reception has not yet been acknowledged from the UE; otherwise shall be absent. 
+This attribute serves as Network Slicing Subscription Change Indication. 
+A map (list of key-value pairs where singleNssai converted to string serves as key) of additional information related to this single Nssai. 
+Indicates whether the AMF shall provide all subscribed S-NSSAIS to the UE not indicating support of subscription-based restrictions to simultaneous registration of network slices, even if these S-NSSAIS do not share a common NSSRG. 
+true: indicates that the AMF shall provide all subscribed S-NSSAIS to the UE not indicating support of subscription-based restrictions to simultaneous registration of network slices. false: indicates that the AMF does not need to provide all subscribed S-NSSAls to the UE not indicating support of subscription-based restrictions to simultaneous registration of network slices. 
+Applicability 
+Nssaa, Nsac, Nssrg 
+Nssrg 
+NOTE 1: If the NF consumer does not support Nssaa optional feature, the UDM shall not include S-NSSAI(s) subject to Network Slice- Specific Authentication and Authorization in Get response messages, immediate reports within Subscribe response messages, or data change notifications where the data change is limited to S-NSSAI(s) subject to Network Slice-Specific Authentication and Authorization. 
+The total number of subscribed S-NSSAIs (including default S-NSSAIS and non-default S-NSSAIs) shall not exceed 16. NOTE 2: If NSSRG information is present in the subscription data, the default S-NSSAIs, if more than one is present, are associated 
+with the same NSSRG values as defined in clause 5.15.12 of 3GPP TS 23.501 [2]. NOTE 3: If NSSRG information is present, at least one NSSRG shall be associated with each of the S-NSSAls in the subscription 
+information. 
+NOTE 4: If the use case requires the UE to remain reachable at all times with at least one slice, it is recommended that at least one 
+default S-NSSAI is not subject to network slice admission control, to avoid registration rejection in the case of no requested NSSAI was provided or none of the S-NSSAIS in the requested NSSAI was allowed (e.g. due to exceeding the maximum number of UEs configured for that S-NSSAI) as specified in clause 4.2.11.2 of 3GPP TS 23.502 [3]. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+167 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.3 
+Type: SdmSubscription 
+Table 6.1.6.2.3-1: Definition of type SdmSubscription 
+3GPP TS 29.503 version 17.12.0 Release 17 
+168 
+Attribute name 
+Data type 
+P 
+Cardinality 
+InfInstanceld 
+NfInstanceld 
+M 
+1 
+implicitUnsubscribe 
+boolean 
+О 
+0..1 
+expires 
+DateTime 
+C 0..1 
+callbackReference 
+Uri 
+M 
+1 
+amfServiceName 
+ServiceName 
+О 0..1 
+monitoredResourceUris array(Uri) 
+M 1..N 
+singleNssai 
+Snssai 
+O 0..1 
+dnn 
+Dnn 
+0..1 
+subscriptionld 
+string 
+C 0..1 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Description 
+Identity of the NF Instance creating the subscription. 
+If present with value true indicates that the subscription expires when the subscribing NF (AMF, SMF, SMSF) identified by the nflnstanceld ceases to be registered at the UDM. 
+When the subscribing NF is an SMF, this 
+means that the subscription is terminated by UDM when the last PDU session of such SMF is deregistered for a given SUPI. 
+If the subscribing NF (AMF. SMF, SMSF) is not registered when the SDM subscription with implicitUnsubscribe indicator set to true is received by the UDM, the UDM should return a confirmed expiry time in the expires attribute to the subscribing NF even when the expires attribute is absent from the request. See NOTE 1. 
+If present, indicates the point in time at which the subscription expires. Shall be present if implicitUnsubscribe is absent or false. 
+Within a POST request the proposed expiry time is conveyed whereas in a POST response or PATCH response the confirmed expiry time is returned. 
+URI provided by the NF service consumer to receive notifications 
+When present, this IE shall contain the name of the AMF service to which Data Change Notifications are to be sent (see clause 6.5.2.2 of 3GPP TS 29.500 [4]). This IE may be included if the NF service consumer is an AMF. A set of URIs that identify the resources for 
+which a change triggers a notification. 
+The URI shall take the form of either an 
+absolute URI or an absolute-path reference as defined in IETF RFC 3986 [31]. 
+See NOTE 3. 
+Monitored Resource URIs should not contain query parameters. Instead, attributes within the SdmSubscription (e.g. singleNssai, dnn, plmnld) may be used for filtering. Received |query parameters may be ignored by the UDM. 
+This IE may be present if the consumer is SMF. This attribute shall be also used as filter for the Nudr notifications when sdmSubscription is included in subscription DataSubscription in Nudr POST operation. 
+See NOTE 2. 
+This IE may be present if the consumer is SMF. This attribute shall be also used as filter for the Nudr notifications when sdmSubscription is included in subscription DataSubscription in Nudr POST operation. 
+When present, this IE shall contain the Network Identifier only, or Wildcard DNN. 
+See NOTE 2. 
+This attribute shall be present if the SdmSubscription is sent in a GET response message on Nudr. It identifies the individual sdmSubscription stored in the UDR and may be used by the UDM to delete an expired or implicitly unsubscribed sdmSubscription. 
+Applicability 
+plmnld 
+3GPP TS 29.503 version 17.12.0 Release 17 
+Plmnld 
+C 0..1 
+169 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+If present, it indicates the PLMN of the NF Instance creating the subscription (i.e., the PLMN serving the UE). 
+It shall be present if the NF Instance is located 
+in a different PLMN than the UDM. 
+If absent, the Home PLMN ID is used as default. 
+immediateReport 
+boolean 
+0..1 
+This IE indicates whether immediate report is needed or not. 
+ImmediateRep 
+ort 
+When present, this IE shall be set as following: 
+- true: immediate report is required 
+|- false (default) immediate report is not required 
+This IE shall be present in Subscribe response, ImmediateRep 
+report 
+Immediate Report 
+C 
+0..1 
+if the immediate Report attribute is set to "true" in Subscribe request. 
+ort 
+supportedFeatures 
+contextInfo 
+SupportedFeatures 
+ContextInfo 
+0..1 
+C 
+0..1 
+nfChangeFilter 
+boolean 
+O 0..1 
+uniqueSubscription 
+boolean 
+О 
+0..1 
+resetlds 
+array(string) 
+O 
+1..N 
+ueConSmfDataSubFilter UeContextInSmfData O 0..1 
+SubFilter 
+dataRestorationCallbac Uri 
+kUri 
+O 0..1 
+When present, this IE shall contain the 
+representation of subscription data sets that to be monitored, i.e. listed in 
+monitored Resource Uris attribute. 
+See clause 6.1.8 
+These are the features supported by the NF subscribing at the UDM. 
+This IE if present may contain e.g. the headers received by the UDM along with the SdmSubscription. 
+Shall be absent on Nudm and may be present Jon Nudr. 
+It may be present when 
+monitoredResourceUris is related to the ue- context-in-amf-data and ue-context-in-smf- 
+data. 
+If present, it indicates the consumer NF wants notification when NF is changed in the ue- context-in-amf-data and ue-context-in-smf- 
+data. 
+When present, this IE shall be set to indicate whether the subscription is a unique subscription, as specified in clause 5.2.2.3.2 and clause 5.2.2.3.3: 
+- true: the subscription is unique 
+- false: the subscription is not unique 
+May be present in subscribe response messages. 
+The NF service consumer may decide to re- subscribe at the UDM when receiving a data restoration notification containing a matching resetld. 
+This IE may be present to receive the notification on changes for information in UeContextInSmfData related to specific PDU 
+sessions. 
+If present, it contains the URI where notifications about UDR-initiated data |restoration shall be sent by UDM. 
+ENA 
+LimitedSubscri ptions 
+UeConSmfDat aSubFilter 
+3GPP TS 29.503 version 17.12.0 Release 17 
+udrRestartInd 
+boolean 
+O 0..1 
+170 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+May be present in request messages from the UDM consumers to the UDM. 
+If present: 
+- true: indicates that the registration message sent by the UDM consumer is due to a re- synchronization event, motivated by a previous reception at the UDM consumer of a Data Restoration Notification from the UDM 
+- false (or absent): indicates that this is a normal request message (i.e., not motivated by a data restoration notification event) 
+NOTE 1: The subscription expires if the last registration identified by the nflnstanceld for the UE is deregistered at the UDM, e.g. the 
+UDM shall remove the SdmSubscription of the SMF, if the UE's last PDU session SMF registration of this SMF is deregistered. 
+NOTE 2: If "singleNssai" is not included, and "dnn" is not included, the UDM shall notify the data change of all DNN configurations 
+and network slice(s). 
+If "singleNssai" is included, and "dnn" is not included, the UDM shall notify the data change of network slice identified by "singleNssai" and all DNN configurations for the requested network slice identified by "singleNssai". 
+If "singleNssai" is not included, and "dnn" is included, the UDM shall notify the data change of all network slices where such DNN is available and all DNN configurations identified by "dnn". 
+If "singleNssai" is included, and "dnn" is included, the UDM shall notify the data change of network slice identified by "singleNssai" where such DNN is available and the DNN configuration identified by "dnn", if such DNN is available in the network slice identified by "singleNssai". 
+NOTE 3: The UDM should handle only the relative-path part (apiSpecificResourceUriPart, see 3GPP TS 29.501 [5] clause 4.4.1) and 
+ignore possible inconsistencies in the base URI part. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+171 
+6.1.6.2.4 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Type: AccessAndMobilitySubscription Data 
+Table 6.1.6.2.4-1: Definition of type AccessAndMobilitySubscription Data 
+3GPP TS 29.503 version 17.12.0 Release 17 
+Attribute name 
+supportedFeatures 
+gpsis 
+internalGrouplds 
+Data type SupportedFeatur 
+es 
+array(Gpsi) 
+172 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+P Cardinality O 0..1 
+Description 
+See clause 6.1.8 
+О O..N 
+array(Groupld) о 1..N 
+sharedVnGroupDatald map(SharedDatal 
+S 
+d) 
+1..N 
+hssGroupld 
+NfGroupId 
+O 0..1 
+subscribedUeAmbr 
+Inssai 
+AmbrRm Nssai 
+ratRestrictions 
+O 0..1 
+0..1 array(RatType) O |0..N 
+O 0..N ServiceAreaRestr O 0..1 
+forbiddenAreas 
+array(Area) 
+serviceArea Restriction 
+iction 
+coreNetworkTypeRestr array(CoreNetwo O 0..N 
+ictions 
+rfspIndex 
+subsRegTimer 
+ueUsageType 
+mpsPriority 
+mcsPriority 
+active Time 
+sorInfo 
+rkType) 
+RfspIndexRm 
+O 0..1 DurationSecRm O 0..1 
+UeUsageType O 0..1 MpsPriorityIndica O 0..1 
+tor 
+McsPriorityIndicat 
+or 
+0..1 
+DurationSecRm O 0..1 
+SorInfo 
+O 0..1 
+List of Generic Public Subscription Identifier; see 3GPP TS 29.571 [7] 
+List of internal group identifier; see |3GPP TS 23.501 [2] clause 5.9.7 
+A map of identifiers of shared 5G VN group data (list of key-value pairs whereGroupId serves as key; see clause 6.1.6.1). 
+This attribute is only applicable to the Nudm interface and shall not be included over the Nudr interface. Identity of the HSS group associated with the subscription, which may be used by the UDM in discovering the HSS; see 3GPP TS 29.510 [19]. This attribute may be included if the coreNetworkTypeRestrictions does not indicate a value of "EPC". 
+This attribute is only applicable to the Nudr interface and shall not be included over the Nudm interface. 
+Network Slice Selection Assistance Information List of RAT Types that are restricted in 5GC and EPC; see 3GPP TS 29.571 [7] (NOTE 2) Contains unique items 
+List of forbidden areas in 5GS (NOTE 6, NOTE 7) Subscribed Service Area Restriction (NOTE 7) 
+List of Core Network Types that are restricted. The use of the value "5GC" is deprecated on Nudm and shall be discarded by the receiving AMF. Index to RAT/Frequency Selection Priority; Subscribed periodic registration timer; (see clause 5.20 of 3GPP TS 23.501 [2], 
+clause 4.15.3.2.3b and 4.15.6.3a of |3GPP TS 23.502 [3] and 3GPP TS 29.571 [7]) 
+subscribed active time for PSM UEs (see clause 5.20 of 3GPP TS 23.501 [2] and clause 4.15.3.2.3b and 4.15.6.3a of 3GPP TS 23.502 [3]). 
+On Nudm, this IE shall be present if the UDM shall send the information for Steering of Roaming during registration or the subscription data update to the UE. The UDM may detect the need to send sorInfo by retrieving context information from the UDR. (NOTE 4) 
+Applicability 
+3GPP TS 29.503 version 17.12.0 Release 17 
+173 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+sorInfoExpectlnd 
+Boolean 
+C 
+0..1 
+sorafRetrieval 
+boolean 
+C 0..1 
+sorUpdate IndicatorList array(SorUpdatel C 1..N 
+Indicator) 
+upulnfo 
+Upulnfo 
+O 0..1 
+routingIndicator 
+string 
+O 0..1 
+micoAllowed 
+MicoAllowed 
+O 0..1 
+Contains the indication on whether or not the UE is expecting to receive SoR information at initial registration. 
+- 
+When set to true; it indicates that the UE is 
+expecting to receive SoR information at initial registration in a VPLMN, i.e. the UDM shall send SOR information to the AMF on Nudm even when nothing was received from UDR or SOR- AF. In case the UDM was not able to obtain SoR information, SoR information sent on Nudm shall contain the indication that "no change" is needed. 
+- When set to false: it indicates that the UE is 
+not expecting to receive SoR information at initial registration, i.e. the UDM shall send SoR information to the AMF based on operator policy. 
+This attribute may be present on Nudr interface and shall be absent on UDM interface. 
+The UDM shall ignore this attribute if the UE is not roaming out of its HPLMN. 
+Contains the indication on whether or not SoR information shall be retrieved from the SOR-AF. 
+- 
+When set to true: it indicates that the UDM 
+shall retrieve SoR information from the SOR-AF. 
+- When set to false or absent: it indicates that the retrieval of SorInfo from the SOR-AF is not required. 
+This attribute may be present on Nudr interface and shall be absent on Nudm interface. 
+The UDM shall ignore this attribute if it is received in |Nudr but the UE is not roaming out of its HPLMN. When present, it contains the list of SoR Update Indicators; 
+- 
+It shall indicate that the AMF shall retrieve SOR information when the UE performs Registration with NAS Registration Type "Initial Registration" if the value 
+"INITIAL_REGISTRATION" is included; 
+- And/or it shall indicate that the AMF shall 
+retrieve SoR information when the UE performs Registration with NAS Registration Type "Emergency Registration" if the value. "EMERGENCY_REGISTRATION" is included. 
+When absent on Nudm interface, it indicates that the AMF is not requested to retrieve SoR information when the UE performs Registration with either NAS Registration Type "Initial Registration" or NAS Registration Type "Emergency Registration". 
+The UDM shall ignore this attribute if the UE is not roaming out of its HPLMN. 
+This IE shall be present if the UDM shall send the information for UE Parameters Update after the UE has been successfully authenticated and registered to the 5G system. 
+This IE may be sent in Nudm_SDM notification as defined in 3GPP TS 23.502 Clause 4.20.2, if UE Parameter Update was sent for Routing Indicator |Update, but without requesting the UE to re-register. Indicates whether the UE subscription allows MICO mode. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+174 
+array(SharedDat O 0..N 
+sharedAmDatalds 
+ald) 
+odbPacketServices 
+OdbPacketServic O 0..1 
+es 
+subscribedDnnList 
+array(Dnn) 
+о 
+0..N 
+serviceGapTime 
+DurationSec 
+O 0..1 
+mdtUserConsent 
+MdtUserConsent 
+mdtConfiguration 
+0..1 
+MdtConfiguration C 0..1 
+0..1 
+traceData 
+TraceData 
+cagData 
+CagData 
+O 0..1 
+stnSr 
+StnSr 
+O 0..1 
+cMsisdn 
+CMsisdn 
+O 0..1 
+nbloTUePriority 
+NbloTUePriority 
+о 0..1 
+nssailnclusionAllowed boolean 
+O 
+0..1 
+rgWirelineCharacteristi RgWirelineChara O 0..1 
+CS 
+cteristics 
+ecRestrictionDataWb EcRestrictionDat O 0..1 
+aWb 
+ecRestrictionDataNb boolean 
+O 0..1 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Identifier of shared Access And Mobility Subscription SharedData data 
+Operator Determined Barring for Packet Oriented Services (NOTE 3). 
+List of the subscribed DNNs for the UE (including optionally the Wildcard DNN). Used to determine the 
+list of LADN available to the UE as defined in 
+clause 5.6.5 of TS 23.501 [2]. 
+When present, this IE shall contain the Network Identifier only. 
+Used to set the Service Gap timer for Service Gap Control (see TS 23.501 [2] clause 5.26.16 and TS 23.502 [3] clause 4.2.2.2.2). 
+When present, this IE shall indicate whether the user has given his consent for MDT activation or not (see clause 4.9 of 3GPP TS 32.422 [48]). 
+When absent, "CONSENT_NOT_GIVEN" is the default value. 
+This IE shall be present if the MDT task is activated. When present, this IE shall contain MDT 
+configuration data for UE (see clause 4.1.2.17 of 3GPP TS 32.422 [48]). 
+Trace requirements about the UE, only sent to AMF in the HPLMN or one of its equivalent PLMN(s) Closed Access Group Data. 
+Shall be absent if both 
+no CAG is subscribed for the serving PLMN and an acknowledgement from the UE is not pending. This IE shall be present if the UE is subscribed to 5G SRVCC. 
+When present, it indicates the STN-SR (Session Transfer Number for SRVCC) of the UE. 
+This IE shall be present if the UE is subscribed to 5G SRVCC. 
+When present, it indicates the C-MSISDN (Correlation MSISDN) of the UE. 
+Indicates NB IoT UE priority which is used by the NG-RAN to prioritise resource allocation between UES accessing via NB-IoT(see clause 5.31.17 of 3GPP TS 23.501 [2]). 
+Indicates that the UE is allowed to include NSSAI in the RRC connection establishment in clear text for 3GPP access, as specified in clause 5.15.9 of 3GPP TS 23.501 [2] and clause 4.2.2.2.2 of 3GPP TS 23.502 [3]. 
+true: indicates that NSSAI can be included in RRC connection establishment by the UE. 
+false or absent: indicates that NSSAI cannot be included. 
+Indicates the RG Level Wireline Access Characteristics as specified in 3GPP TS 23.316 [37]. Indicates Enhanced Coverage Restriction Data for WB-N1 mode. 
+If absent, indicates Enhanced Coverage is not restricted for WB-N1 mode. 
+If present, this IE shall indicate whether Enhanced Coverage for NB-N1 mode is restricted or not. 
+true: Enhanced Coverage for NB-N1 mode is restricted. 
+false or absent: Enhanced Coverage for NB-N1 mode is allowed. 
+CAGFeature 
+3GPP TS 29.503 version 17.12.0 Release 17 
+expectedUeBehaviour 
+List 
+ExpectedUeBeha O 0..1 viourData 
+primaryRatRestrictions array(RatType) O 0..N 
+secondaryRatRestricti array(RatType) 
+O 0..N 
+ons 
+edrxParametersList 
+array(EdrxParam О |1..N eters) 
+ptwParametersList 
+array(PtwParame O 
+1..N 
+ters) 
+iabOperationAllowed 
+boolean 
+0..1 
+adjacentPlmnRestrictio map(PlmnRestric O 1..N 
+ns 
+tion) 
+wireline ForbiddenArea array(WirelineAre о 0..N 
+S 
+a) 
+wirelineServiceAreaRe WirelineServiceA о 0..1 
+striction 
+pcfSelectionAssistanc 
+eInfos 
+reaRestriction 
+array(PcfSelectio C 1..N nAssistanceInfo) 
+AerialUeSubscrip 
+tionInfo 
+aerialUeSubInfo 
+roamingRestrictions 
+ons 
+0..1 
+RoamingRestricti O 0..1 
+remoteProvInd 
+boolean 
+O 0..1 
+3gppChargingCharact 
+eristics 
+3GppChargingCh O 0..1 aracteristics 
+175 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Indicates Expected UE Behaviour parameters associated with AMF(see clause 5.20 of 3GPP TS 23.501 [2] and clause 4.15.6.3 of 3GPP TS 23.502 [3]). 
+This attribute is only applicable to the Nudm interface and shall not be included over the Nudr interface. List of RAT Types that are restricted for use as primary RAT in 5GC and EPC; see 
+3GPP TS 29.571 [7] (NOTE 2) 
+Contains unique items 
+List of RAT Types that are restricted for use as secondary RAT in 5GC and EPC; see 3GPP TS 29.571 [7] (NOTE 2) 
+Contains unique items 
+List of subscribed the extended idle mode DRX parameters (see clause 5.31.7.2.1 of 
+3GPP TS 23.501 [2]). 
+List of subscribed the Paging Time Window parameters (see clause 5.31.7.2.1 of 
+3GPP TS 23.501 [2]). 
+Indicates that the UE is allowed for IAB operation as 
+specified in 3GPP TS 23.501 [2]. 
+true: indicates that the UE is allowed for IAB operation. 
+false or absent: indicates that the UE is not allowed for IAB operation. 
+A map (list of key-value pairs where Plmnld converted to string serves as key; see 
+3GPP TS 29.571 [7]) of PlmnRestrictions for adjacent PLMNs 
+List of forbidden areas for 5G-BRG/5G-CRG/FN- |CRG (NOTE 6, NOTE 7) 
+Subscribed Service Area Restriction for 5G-BRG/5G- CRG/FN-CRG (NOTE 7) 
+List of combination of DNN and S-NSSAI that indicates that the same PCF needs to be selected by the AMF. (NOTE 5) 
+This IE shall contain the subscribed Aerial UE |Subscription Information when present. This IE is used by Nudr_DataRepository API starting with 3GPP Rel-17 and onwards (see Table 5.2.3.3.1- 3 in 3GPP TS 29.505 [10]). If present, this IE contains information on the roaming restrictions. If this IE is absent e.g. if the UDR is not provisioned with the serving PLMN ID, then the UDM may use the UE's home subscribed profile as the default profile to handle the roaming and SNPN scenarios. Indicates whether the UE is allowed only for Remote Provisioning as specified in clause 5.30.2.10.3.2 of 3GPP TS 23.501 [2]. UE subscription either allows, or does not allow the UE to access the PLMN as the Onboarding Network using PLMN credentials. 
+false (default), or the attribute is absent: indicates that the UE is not restricted to the Onboarding only; 
+true: indicates that the UE is allowed only for the Onboarding. 
+Subscribed charging characteristics data associated to the subscription. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+176 
+NOTE 1: AccessAndMobilitySubscription Data can be UE-individual data or shared data. 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+UE-individual data take precedence over shared data unless treatment instructions associated to the shared data indicate otherwise. 
+E.g.: When an attribute of type array is present but empty within UE-Individual data and present (with any cardinality) in shared data and no treatment instructions are applicable, the empty array takes precedence. Similarly, when a nullable attribute is present with value null within the individual data and present (with any value) in shared data and no treatment instructions are applicable, the null value takes precedence (i.e. for the concerned UE the attribute is considered absent). 
+NOTE 2: If the primaryRatRestrictions and secondaryRatRestrictions attributes are supported by the sender, the 
+sender shall include the list of RAT Types that are restricted, if any, in the ratRestrictions attribute, shall include the list of RAT Types that are restricted for use as primary RAT, if any, in the primaryRatRestrictions attribute and shall include the list of RAT Types that are restricted for use as secondary RAT, if any, in the secondaryRatRestrictions attribute. If the primaryRatRestrictions and secondaryRatRestrictions attributes are supported by the receiver, the receiver shall use the data in the primaryRatRestrictions attribute, if received, as the list of RAT Types that are restricted for use as primary RAT, and shall use the data in the secondaryRat Restrictions attribute, if received, as the list of RAT Types that are restricted for use as secondary RAT, otherwise the receiver shall use the data in the ratRestrictions attribute, if received, as the list of RAT Types that are restricted. 
+If the secondaryRatRestictions attribute is included in the subscription profile, the content may be sent to MME during inter RAT handover from NR SA to EN-DC, for the purpose of adequate SGW selection at MME based on subscription profile, and to avoid allocating unnecessary resources for secondary RAT at EPC if it is restricted. 
+NOTE 3: The AMF shall take responsibility to perform PDU session related actions subject to change of 
+OdbPacketService, e.g. release existing PDU session. 
+NOTE 4: The UDM shall ignore the content of sorInfo received on Nudr if "sorafRetrieval" is set to true. NOTE 5: 
+If multiple PDU sessions to one DNN and S-NSSAI are established in EPS, the AMF shall select the same PCF by configuration or by using existing method, e.g. same PCF selection in usage monitoring. NOTE 6: When UE is only permitted in a small area, i.e. the UE is forbidden in most of TAIs in the PLMN, AreaCode 
+(e.g. "All TAls except xxx") may be used to avoid provisoning and transferring large number of TAIS. AeraCode may be used otherwise. 
+NOTE 7: AreaCode for VPLMN(s) may be provisioned under agreement between operators. 
+6.1.6.2.5 
+Type: SmfSelection SubscriptionData 
+Table 6.1.6.2.5-1: Definition of type SmfSelection SubscriptionData 
+Attribute name 
+supportedFeatures subscribedSnssailnfos 
+Data type SupportedFeatures 
+P 
+Cardinality 
+O 
+0..1 
+map(Snssailnfo) 
+О |0..N 
+sharedSnssailnfosld hssGroupld 
+SharedDatald NfGroupld 
+O 0..1 
+О 
+0..1 
+NOTE: 
+See clause 6.1.8 
+Description 
+List of S-NSSAls and associated information (DNN Info); see 3GPP TS 23.501 [2] clause 6.3.2. 
+A map (list of key-value pairs where singleNssai converted to string serves as key; see |3GPP TS 29.571 [7]) of arrays of DnnInfo 
+Identifier of shared Snssailnfos. Identity of the HSS group associated with the subscription, which may be used by the UDM in discovering the HSS; see 3GPP TS 29.510 [19]. 
+May be present on the Nudr interface if there is DNN interworking with EPC and shall not be included over the Nudm interface. 
+A single UE-individual subscribedSnssailnfo (within subscribedSnssailnfos) may clash with a sharedSnssailnfo (i.e. both have the same singleNssai value as key). In this case the UE-individual subscribedSnssailnfo takes precedence unless treatment instructions associated to the shared data indicate otherwise. 
+Applicability 
+SharedData 
+3GPP TS 29.503 version 17.12.0 Release 17 
+177 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.6 
+Type: DnnInfo 
+Table 6.1.6.2.6-1: Definition of type DnnInfo 
+Attribute name 
+Data type 
+P 
+Cardinality 
+dnn 
+Dnn 
+M 
+1 
+defaultDnnIndicator 
+Itor 
+DefaultDnnIndica O 0..1 
+LboRoamingAllo O 0..1 
+IboRoamingAllowed 
+wed 
+iwkEpsInd 
+IwkEpsInd 
+O 0..1 
+dnnBarred 
+boolean 
+C 0..1 
+invokeNeflnd 
+boolean 
+O 0..1 
+Description 
+Data Network Name with Network Identifier only., or Wildcard DNN (NOTE) 
+Indicates whether this DNN is the default DNN: true: The DNN is the default DNN (NOTE); 
+false: The DNN is not the default DNN; 
+If this attribute is absent it means the DNN is not the default DNN. 
+Indicates whether local breakout for the DNN is allowed when roaming: 
+true: Allowed; 
+false: Not allowed; 
+If this attribute is absent it means not allowed. Indicates whether interworking with EPS is subscribed: 
+true: Subscribed; 
+false: Not subscribed; 
+If this attribute is absent it means not subscribed. Indicates whether the DNN is barred. Absence and false indicates "not barred". 
+This attribute is only used on the Nudr interface. The UDM shall handle barred DNNs received from the UDR as not subscribed. 
+Indicates whether the NEF based infrequent small data transfer shall be used for the PDU Session associated with the S-NSSAI and DNN. 
+true: Used; 
+false: Not used; 
+If this attribute is absent it means not used. 
+smfList 
+array(NfInstancel O 1..N 
+d) 
+sameSmflnd 
+boolean 
+O 
+0..1 
+NOTE: 
+Indicate the associated SMF(s) if the static IP 
+|address/prefix is used. 
+Indicates whether the same SMF for multiple PDU sessions to the same DNN and S-NSSAI is required. true: Required; 
+false: Not required; 
+If this attribute is absent it means not required. 
+If the dnn attribute contains the value of the Wildcard DNN ("*"), the defaultDnnIndicator shall not be set to true. 
+6.1.6.2.7 
+Type: Snssailnfo 
+Table 6.1.6.2.7-1: Definition of type Snssailnfo 
+Attribute name 
+dnnInfos 
+Data type array(DnnInfo) 
+P 
+M 
+Cardinality 
+Description 
+1..N 
+list of Data Network Names for an S-NSSAI and |associated information 
+3GPP TS 29.503 version 17.12.0 Release 17 
+178 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.8 
+Type: SessionManagementSubscriptionData 
+Table 6.1.6.2.8-1: Definition of type SessionManagementSubscriptionData 
+Attribute name 
+Data type 
+P 
+Cardinality 
+singleNssai 
+Snssai 
+M 
+1 
+dnnConfigurations 
+map(DnnConfigurati O 
+0..N 
+on) 
+internalGrouplds 
+array(Groupld) 
+1..N 
+sharedVnGroupDatalds map(SharedDatald) O 1..N 
+trace Data 
+TraceData 
+O 0..1 
+sharedDnnConfiguration SharedDatald 
+sld 
+0..1 
+shared TraceDatald 
+odbPacketServices 
+SharedDatald 
+O 0..1 OdbPacketServices O 0..1 
+map(ExpectedUeBe O 1..N haviourData) 
+expectedUeBehaviours 
+List 
+suggested PacketNumDI map(Suggested Pack List 
+O 1..N 
+etNumDI) 
+3gppChargingCharacter 3GppChargingChara 
+0..1 
+listics 
+cteristics 
+supported Features 
+SupportedFeatures О 
+0..1 
+Description 
+A single Network Slice Selection Assistance Information 
+Additional DNN configurations for the network slice; 
+A map (list of key-value pairs where DNN, or optionally the Wildcard DNN, serves as key; see clause 6.1.6.1) of DnnConfigurations. (NOTE 1) 
+List of internal group identifier; see |3GPP TS 23.501 [2] clause 5.9.7 
+A map of identifiers of shared 5G VN group data (list of key-value pairs where Groupld serves as key; see clause 6.1.6.1). This attribute is only applicable to the Nudm interface and shall not be included over the Nudr interface. 
+Trace requirements about the UE, only sent to SMF in the HPLMN or one of its equivalent 
+PLMN(s) 
+Applicability 
+Identifier of shared data for DNN configuration. SharedData 
+Identifier of shared data for trace requirements 
+Operator Determined Barring for Packet 
+Oriented Services (NOTE 2). 
+A map of Expected UeBehaviourDatas 
+associated with SMF (DNN serves as key; see 
+clause 6.1.6.1), see clause 5.20 of 
+3GPP TS 23.501 [2] and clause 4.15.6.3 of 3GPP TS 23.502 [3]. 
+This attribute is only applicable to the Nudm interface and shall not be included over the Nudr interface. 
+A map (list of key-value pairs where dnn serves as key; see clause 6.1.6.1) of 
+Suggested PacketNum Dls which are associated with SMF (see clause 5.20 of 
+3GPP TS 23.501 [2] and clause 4.15.6.3 of 
+3GPP TS 23.502 [3]). 
+This attribute is only applicable to the Nudm interface and shall not be included over the Nudr interface. 
+Subscribed charging characteristics data associated to the subscription. See clause 6.1.8 
+NOTE 1: A given UE-individual dnnConfiguration (within dnnConfigurations) may clash with a shared 
+dnnConfiguration (i.e. both have the same dnn value as key). In this case the clashing attributes of the UE- individual dnnConfiguration take precedence unless treatment instructions indicate otherwise. NOTE 2: The SMF shall not trigger PDU session release when receiving change of OdbPacketService. Only the 
+AMF take responsibility to perform PDU session related actions subject to change of ODB setting, e.g. release existing PDU session. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+179 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.9 
+Type: DnnConfiguration 
+Table 6.1.6.2.9-1: Definition of type DnnConfiguration 
+3GPP TS 29.503 version 17.12.0 Release 17 
+Attribute name 
+pduSessionTypes 
+sscModes 
+iwkEpsInd 
+180 
+Data type 
+P 
+Cardinality 
+PduSessionTypes 
+M 
+1 
+SscModes 
+M 
+1 
+IwkEpsInd 
+O 
+0..1 
+5gQosProfile 
+SubscribedDefaultQ 
+O 
+0..1 
+OS 
+sessionAmbr 
+Ambr 
+O 
+0..1 
+3gppChargingCharacter 3GppChargingChara 
+0..1 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Description 
+Default/Allowed session types 
+Default/Allowed SSC modes 
+Indicates whether interworking with EPS is subscribed: 
+true: Subscribed; 
+false: Not subscribed; 
+If this attribute is absent it means not subscribed. 
+5G QoS parameters associated to the session for a data network 
+The maximum aggregated uplink and downlink bit rates to be shared across all Non-GBR QOS Flows in each PDU Session. 
+Subscribed charging characteristics data associated to the session for a data network. (NOTE 1) 
+istics 
+cteristics 
+staticlpAddress 
+array(IpAddress) 
+|1..2 
+Subscribed static IP address(es) of the IPv4 and/or IPv6 type. 
+upSecurity 
+UpSecurity 
+O 
+0..1 
+pduSessionContinuityIn PduSessionContinuit О 
+d 
+ylnd 
+niddNefld 
+Nefld 
+О 
+0..1 
+IniddInfo 
+NiddInformation 
+0..1 
+redundantSessionAllow boolean 
+ed 
+acsInfo 
+AcsInfo 
+O 
+ipv4FrameRouteList 
+array(FrameRoute Inf 
+O |1..N 
+|0) 
+ipv6FrameRouteList 
+array(FrameRouteInf 
+O 
+|1..N 
+|0) 
+atsssAllowed 
+boolean 
+|0..1 
+secondaryAuth 
+boolean 
+O 
+0..1 
+0..1 
+0..1 
+0..1 
+When present, this IE shall indicate the security policy for integrity protection and encryption for the user plane. 
+When present, this IE shall indicate how to 
+handle a PDU Session when UE the moves to or from NB-IoT. 
+If this attribute is absent it means that Local 
+policy shall be used. 
+Indicates the identity of the NEF to be selected for NIDD service for this DNN. 
+When present, this IE shall indicate information used for SMF-NEF Connection. 
+Indicates whether redundant PDU Sessions are allowed: 
+true: Allowed; 
+false: Not allowed; 
+If this attribute is absent it means not allowed. When present, this IE shall include the ACS information for the 5G-RG as defined in BBF TR-069 [42] or in BBF TR-369 [43]. List of Frame Route information of IPv4, see clause 5.6.14 of 3GPP TS 23.501 [2]. List of Frame Route information of IPv6, see clause 5.6.14 of 3GPP TS 23.501 [2]. 
+Indicates whether this DNN supports ATSSS, i.e. whether Multi-Access PDU session is allowed to this DNN. 
+true: Allowed; 
+false (default): Not allowed; 
+If this attribute is absent it means this DNN does not allow ATSSS. 
+Indicates whether DN-AAA based secondary authentication and authorization is needed. true: required. 
+false: not required. 
+If absent, it indicates that DN-AAA based 
+secondary authentication is not required by 
+subscription data, but it still may be required by local policies at the SMF. 
+(NOTE 2) 
+Indicates whether SBI-based secondary 
+authentication and authorization for Uncrewed 
+Aerial Vehicles (UAV) is needed. 
+true: required. 
+false or absent: not required. 
+uavSecondaryAuth 
+boolean 
+Ο 
+0..1 
+3GPP TS 29.503 version 17.12.0 Release 17 
+181 
+dnAaalpAddressAllocati boolean 
+on 
+dnAaaAddress 
+IpAddress 
+additional DnAaaAddres array(IpAddress) 
+о |1..N 
+ses 
+dnAaaFqdn 
+Fqdn 
+о 
+0..1 
+iptvAccCtrlInfo 
+string 
+о 
+0..1 
+ipv4Index 
+IpIndex 
+O 
+0..1 
+ipv6Index 
+IpIndex 
+O 
+0..1 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+0..1 
+0..1 
+O 
+0..1 
+1..N 
+Indicates whether the SMF is required to request the UE IP address from the DN-AAA server for PDU Session Establishment. true: required 
+false: not required 
+If absent, it indicates that the request by SMF of the UE IP address from the DN-AAA server is not required by subscription data, but it still may be required by local policies at the SMF. (NOTE 2) 
+The IP address of the DN-AAA server used for secondary authentication and authorization. (NOTE 2) 
+Additional IP addresses of the DN-AAA server used for secondary authentication and authorization. 
+(NOTE 2) 
+The FQDN of the DN-AAA server used for secondary authentication and authorization. (NOTE 2) 
+The IPTV access control information used in IPTV access procedure, see clause 7.7.1.1.2 of 3GPP TS 23.316 [37]. 
+Indicates the "IP Index" (i.e. information that 
+identifies an address pool or an external server) to be sent to the SMF for allocation of an IPv4 address to the UE, for this DNN configuration. 
+Indicates the "IP Index" (i.e. information that identifies an address pool or an external server) to be sent to the SMF for allocation of an IPv6 address to the UE, for this DNN configuration. 
+ECS Address Configuration Information Parameters. See 3GPP TS 23.502 [3] This IE may be present when ecsAddrConfigInfo IE is present. 
+When present, this IE shall contain the additional ECS Address Configuration 
+Information Parameters. See 
+3GPP TS 23.548 [60] 
+Identifier of shared data indicating an ECS Configuration Information. 
+This IE may be present when 
+sharedEcsAddrConfigInfold IE is present. 
+When present, this IE shall contain the identifiers of shared data indicating the 
+additional ECS Address Configuration 
+Information. 
+Indicates whether the UE 
+is authorized to use 5GC assisted EAS discovery via EASDF. 
+true: Authorized; 
+false (default): Not authorized; 
+See 3GPP TS 23.548 [60] 
+Indicates whether the UE is allowed to use this DNN for onboarding. UE subscription allows, or does not allow the UE to access the PLMN as the Onboarding Network using PLMN credentials (see clause 5.30.2.10.4.4 in 3GPP TS 23.501 [2]). 
+false (default): not restricted to onboarding only; 
+true: allowed for onboarding only. 
+ecsAddrConfigInfo 
+EcsAddrConfigInfo 
+0..1 
+additionalEcsAddrConfi 
+array(EcsAddrConfig O 1..N 
+gInfos 
+Info) 
+sharedEcsAddrConfigInf SharedDatald 
+old 
+additionalShared EcsAd array(Shared Datald) drConfigInfolds 
+easDiscoveryAuthorized boolean 
+0..1 
+onboardingInd 
+boolean 
+0..1 
+3GPP TS 29.503 version 17.12.0 Release 17 
+182 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+aerialUelnd 
+AerialUelndication 
+subscribedMaxlpv6Prefi integer 
+xSize 
+0..1 
+This IE shall indicate Aerial service for the UE is allowed or not allowed. 
+0..1 
+maximum size of the IPv6 prefix that may be allocated for the PDU Session. See |3GPP TS 23.316 [37] clause 4.6.2.3. 
+NOTE 1: When present, this attribute shall take precedence over the "3gppChargingCharacteristics" attribute in the 
+SessionManagementSubscriptionData level. 
+NOTE 2: These attributes shall be consistent with the information received on the 5GVnGroupData (see 
+clause 6.5.6.2.7), in the Nudm_PP API. If both FQDN and IP addresses are provided, the IP addresses should be preferred to target the DN-AAA server. 
+6.1.6.2.10 
+Void 
+6.1.6.2.11 
+Type: PduSessionTypes 
+Table 6.1.6.2.11-1: Definition of type PduSessionTypes 
+Attribute name 
+defaultSessionType 
+Data type PduSessionType 
+P Cardinality 
+C 
+0..1 
+allowedSessionTypes 
+array(PduSession Ty 
+O |1..N 
+pe) 
+Description 
+Default session type, shall be present unless the VnGroupData is supported. 
+Additional session types allowed for the data network 
+6.1.6.2.12 
+Type: SscModes 
+Table 6.1.6.2.12-1: Definition of type SscModes 
+Attribute name 
+Data type 
+defaultSscMode 
+SscMode 
+allowed SscModes 
+array(SscMode) 
+6.1.6.2.13 
+Attribute name 
+smsSubscribed 
+P 
+Cardinality 
+Description 
+M 
+1 
+Default SSC mode 
+О 
+1..2 
+Additional SSC modes allowed for the data network 
+Type: SmsSubscriptionData 
+Table 6.1.6.2.13-1: Definition of type SmsSubscription Data 
+Data type SmsSubscribed 
+P Cardinality C 0..1 
+Description 
+Indicates whether the UE subscription allows SMS delivery over NAS. Shall not be absent unless the feature Shared Data is supported and 
+smsSubscribed is present within shared data. Identifier of shared data. Shall be present if smsSubscribed is absent. 
+SharedDatald 
+C 0..1 
+Supported Featur 
+O 0..1 
+See clause 6.1.8 
+es 
+sharedSmsSubsDatald 
+supportedFeatures 
+3GPP TS 29.503 version 17.12.0 Release 17 
+183 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.14 
+Attribute name supportedFeatures 
+mtSmsSubscribed 
+Type: SmsManagementSubscription Data 
+Table 6.1.6.2.14-1: Definition of type SmsManagementSubscriptionData 
+Data type SupportedFeatur 
+es 
+boolean 
+P O 0..1 
+Cardinality 
+Description 
+See clause 6.1.8 
+C 0..1 
+mtSmsBarringAll 
+boolean 
+C 
+0..1 
+mtSmsBarringRoaming boolean 
+C 0..1 
+moSmsSubscribed 
+boolean 
+C 0..1 
+moSmsBarringAll 
+boolean moSmsBarring Roaming boolean 
+C 0..1 
+C 
+0..1 
+traceData 
+TraceData 
+0..1 
+sharedSmsMngDatalds array(SharedDat C 1..N 
+ald) 
+Indicates the SMS teleservice subscription for MT- SMS. Shall not be absent unless the feature Shared Data is supported and mtSmsSubscribed is present within shared data. Barring of all MT-SMS 
+Barring of MT-SMS when roaming outside the Home Public Land Mobile Network (PLMN) country Indicates the SMS teleservice subscription for MO- SMS. Shall not be absent unless the feature Shared Data is supported and moSmsSubscribed is present within shared data. 
+Barring of all MO-SMS 
+Barring of MO-SMS when roaming outside the Home Public Land Mobile Network (PLMN) country Trace requirements about the UE, only sent to SMSF in HPLMN 
+Identifier of shared data. Shall be present if mtSmsSubscribed and/or moSmsSubscribed and/or traceData are absent. 
+Applicability 
+SharedData 
+6.1.6.2.15 
+Type: SubscriptionDataSets 
+Table 6.1.6.2.15-1: Definition of type SubcriptionDataSets 
+Data type 
+P 
+Cardinality 
+Description 
+AccessAndMobilityS 
+0..1 
+Access and Mobility Subscription Data 
+ubscriptionData 
+SmfSelectionSubscri 
+0..1 
+SMF Selection Subscription Data 
+ptionData 
+Attribute name 
+amData 
+smfSelData 
+uecAmfData 
+uecSmfData 
+uecSmsfData 
+a 
+smsSubsData 
+a 
+smData 
+traceData 
+smsMngData 
+IcsPrivacyData 
+IcsMoData 
+v2xData 
+IcsBroadcastAssistance 
+TypesData 
+proseData 
+mbsData 
+ucData 
+UeContextInAmfData O 0..1 UeContextInSmfData О 0..1 UeContextInSmsfDat О 0..1 
+SmsSubscriptionDat О 0..1 
+SmSubsData TraceData 
+O 
+0..1 
+O 0..1 
+SmsManagementSu O 0..1 
+bscriptionData 
+LcsPrivacyData LcsMoData 
+UE Context In AMF Data UE Context In SMF Data UE Context In SMSF Data 
+SMS Subscription Data 
+Session Management Subscription Data 
+Trace Data. The Null value indicates that trace is not active. 
+SMS Management Subscription Data 
+О 0..1 
+|LCS Privacy Subscription Data 
+O 0..1 
+V2xSubscriptionData О 0..1 LcsBroadcastAssista о 0..1 nceTypesData 
+ProseSubscriptionDa O 0..1 
+ta 
+MbsSubscriptionDat о 0..1 
+a 
+UcSubscriptionData O 0..1 
+|LCS Mobile Originated Subscription Data |V2x Subscription Data 
+LCS List of Broadcast Assistance Data Types Subscription Data 
+ProSe Service Subscription Data 
+5MBS Subscription Data 
+User Consent Subscription Data 
+3GPP TS 29.503 version 17.12.0 Release 17 
+184 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.16 
+Type: UeContextInSmfData 
+Attribute name pduSessions 
+pgwinfo 
+emergencyInfo 
+NOTE: 
+Table 6.1.6.2.16-1: Definition of type UeContextInSmfData 
+Data type map(PduSession) 
+P Cardinality O 0..N 
+array(PgwInfo) 
+O 1..N 
+EmergencyInfo 
+O 0..1 
+Description 
+A map (list of key-value pairs where pduSessionId converted from integer to string serves as key; see |clause 6.1.6.1) of PduSessions. 
+Information about the DNNs/APNs and PGW- |C+SMF FQDNs used in interworking with EPS 
+Information about emergency session 
+If sdmSubscription contains nfChangeFilter flag, then the UDM shall suppress the change notification for the pgwinfo and emergencyInfo: 
+6.1.6.2.17 
+Type: PduSession 
+Table 6.1.6.2.17-1: Definition of type PduSession 
+Attribute name 
+Data type 
+P 
+Cardinality 
+Description 
+dnn 
+Dnn 
+M 
+1 
+smfInstanceld 
+NfInstanceld 
+M 
+1 
+Data Network Name with Network Identifier only. NF Instance Id of the SMF 
+plmnld 
+Plmnld 
+M 1 
+singleNssai 
+Snssai 
+O 0..1 
+PLMN Id of the SMF 
+A single Network Slice Selection Assistance Information. (NOTE) 
+NOTE: For supporting selection of the same SMF if a UE requests multiple PDU sessions associated with the 
+same DNN and same S-NSSAI, the S-NSSAI associated to the PDU session is required to be included. 
+6.1.6.2.18 
+Type: IdTranslationResult 
+Table 6.1.6.2.18-1: Definition of type IdTranslationResult 
+Attribute name 
+supportedFeatures 
+Data type SupportedFeatures 
+P 
+Cardinality 
+Description 
+О 
+0..1 
+supi 
+gpsi 
+Supi Gpsi 
+M 
+1 
+C 
+0..1 
+additionalSupis 
+array(Supi) 
+O 1..N 
+See clause 6.1.8 SUPI 
+If ueld is a SUPI in Resource URI variables, this shall be present and indicates an MSISDN or external identifier. 
+May be present when ueld is a GPSI in resource URI variables and more than one SUPIS matching the retrieval request have been received from the UDR. 
+additionalGpsis 
+NOTE: 
+array(Gpsi) 
+O 
+1..N 
+May be present when ueld is a SUPI in Resource URI variables and more than one 
+GPSIS matching the retrieval request have been received from the UDR. 
+When the UDM receives an array of more than one SUPIs from the UDR, the supi attribute shall convey the first received array element and the additionalSupis attribute shall convey subsequent received array elements. 
+When the UDM receives an array of more than one GPSIs from the UDR, the gpsi attribute shall convey the first received array element and the additionalGpsis attribute shall convey subsequent received array elements. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+185 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.19 
+Void 
+6.1.6.2.20 
+Void 
+6.1.6.2.21 
+Type: Modification Notification 
+Attribute name notifyItems 
+Table 6.1.6.2.21-1: Definition of type Modification Notification 
+Data type array(Notifyltem) 
+P 
+Cardinality 
+M 1..N 
+6.1.6.2.22 
+Type: IpAddress 
+Table 6.1.6.2.22-1: Definition of type IpAddress 
+Attribute name 
+Data type 
+P 
+Cardinality 
+ipv4Addr 
+Ipv4Addr 
+C 
+0..1 
+ipv6Addr 
+Ipv6Addr 
+C 0..1 
+ipv6Prefix 
+Ipv6Prefix 
+C 
+0..1 
+NOTE: Either ipv4Addr, or ipv6Addr, or ipv6Prefix shall be present. 
+6.1.6.2.23 
+Type: UeContextInSmsfData 
+Description 
+Description 
+Attribute name 
+smsfInfo3GppAccess 
+Table 6.1.6.2.23-1: Definition of type UeContextInSmsfData 
+Data type 
+P 
+Cardinality 
+SmsfInfo 
+O 
+0..1 O 0..1 
+Description SMSF Info for 3GPP Access SMSF Info for Non 3GPP Access 
+smsfInfoNon3GppAcc SmsfInfo 
+ess 
+6.1.6.2.24 
+Type: SmsfInfo 
+Attribute name 
+smsflnstanceld 
+plmnld 
+smsfSetld 
+Table 6.1.6.2.24-1: Definition of type SmsfInfo 
+Data type NfInstanceld 
+P M 1 
+Cardinality 
+Plmnld 
+M 1 
+NfSetld 
+C 
+0..1 
+Description 
+NF Instance Id of the SMSF 
+PLMN Id of the SMSF 
+NF Set Id of SMSF Set the registered SMSF instance belongs to; it shall be present if provided in SMSF registration procedure (see clauses 5.3.2.2.5 and 5.3.2.2.6) 
+3GPP TS 29.503 version 17.12.0 Release 17 
+186 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.25 
+Type: AcknowledgeInfo 
+Table 6.1.6.2.25: Definition of type AcknowledgeInfo 
+Attribute name 
+Data type SorMac 
+P Cardinality C 0..1 
+sorMaclue 
+upuMaclue 
+UpuMac 
+C 0..1 
+provisioning Time 
+DateTime 
+M 1 
+sorTransparentContaine SorTransparentC C 0..1 
+r 
+ontainer 
+ueNotReachable 
+boolean 
+O 0..1 
+upuTransparentContain UpuTransparent C 0..1 
+Container 
+er 
+Description 
+Shall be present when the Acknowledgement is sent to acknowledge receipt of SorInfo. Shall be absent when sorTransparentContainer is present. Shall be present when the Acknowledgement is sent to acknowledge receipt of Upulnfo. Shall be absent when upuTransparentContainer is present. the provisioning time is used to correlate the acknowledgement with the modification request, to address glare cases when multiple modifications are ongoing simultaneously. 
+This attribute contains SoR transparent container as received from UE, encoded as defined in clause 6.1.6.3.2 and shall be present when sent to acknowledge receipt of SorInfo, if the UDM supports receiving SoR Transparent Container. 
+Transmission of SorInfo / UE Parameter Update data to the UE was not successful due to the UE not being reachable. 
+default: false 
+may be present if sorMaclue and upuMaclue and sorTransparentContainer are absent. 
+This attribute contains UE Parameter Update 
+Applicability 
+sorTranspare ntSupport 
+upuTranspare 
+transparent container as received from UE, encoded ❘ntSupport 
+as defined in clause 6.1.6.3.2 and shall be present 
+when sent to acknowledge receipt of Upulnfo, if the UDM supports receiving UE Parameter Update Transparent Container. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+187 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.26 
+Type: SorInfo 
+Table 6.1.6.2.26: Definition of type Sorinfo 
+3GPP TS 29.503 version 17.12.0 Release 17 
+188 
+Attribute name 
+ackInd 
+Data type Acklnd 
+P 
+Cardinality 
+M 
+1 
+sorMaclausf 
+SorMac 
+C 0..1 
+countersor 
+CounterSor 
+C 0..1 
+steeringContainer 
+SteeringContaine C 0..1 
+provisioning Time 
+DateTime 
+M 1 
+sorTransparentContaine SorTransparentC C 0..1 
+ontainer 
+sorCmci 
+SorCmci 
+O 0..1 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Description 
+Contains the indication on whether an acknowledgement from UE is to be requested to the UE. 
+If sorTransparentContainer is present, the AMF should ignore the value of acklnd on Nudm. 
+Contains the SOR-MAC-IAUSF. Shall be present when SorInfo is sent within AccessAndMobilitySubscriptionData on Nudm, and shall be absent when sent on Nudr or within PpData. Shall be absent when sorTransparentContainer is present. Contains the CounterSoR. Shall be present when SorInfo is sent within AccessAndMobilitySubscription on Nudm, and shall be absent when sent on Nudr or within PpData. 
+Shall be absent when 
+sorTransparentContainer is present. When present, this information contains the information needed to update the "Operator Controlled PLMN Selector with Access Technology" list stored in the USIM either as an array of preferred PLMN/AccessTechnologies combinations in priority order (with the first entry in the array indicating the highest priority and the last entry indicating the lowest) or a secured packet. 
+If no change of the "Operator Controlled PLMN Selector with Access Technology" list stored in the USIM is needed, then this attribute shall be absent. 
+This attribute shall be present when SorInfo is sent within PpData. Shall be absent when 
+sorTransparentContainer is present. Point in time of SorInfo provisioning at the UDR or SOR-AF. 
+This attribute contains protected SOR transparent container encoded as defined in clause 6.1.6.3.2 and shall be present when sent on Nudm, if NF Consumer (e.g. AMF) supports receiving SoR information encoded as transparent containers. Shall be absent when sent on Nudr or within PpData. 
+When present, provides the SOR-CMCI values as defined in 3GPP TS 24.501 [27] 
+This attribute may be present on Nudr, Nsoraf, PpData. Shall be absent on Nudm (since the content on Nudm is provided within sorTransparentContainer) 
+Applicability 
+sorTransparentSuppor 
+t 
+3GPP TS 29.503 version 17.12.0 Release 17 
+storeSorCmcilnMe 
+Boolean 
+usimSupportOfSorCmci Boolean 
+189 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+0..1 
+O 0..1 
+When present, indicates "Store the SOR- CMCI in the ME", i.e. whether to instruct UE to store SOR-CMCI in the ME as defined in 3GPP TS 23.122 [14] and 3GPP TS 24.501 [27]. 
+- 
+True: Indicates to store the SOR- CMCI in the ME 
+- 
+False or absent: Indicates storing the SOR-CMCI in the ME is not required 
+This attribute may be present on Nudr, Nsoraf, PpData. Shall be absent on Nudm (since the content on Nudm is provided within sorTransparentContainer) 
+When present, indicates "USIM support of SOR-CMCI" based on pre-configuration. 
+- 
+True: Indicates that USIM supports SOR-CMCI 
+False or absent: Indicates that 
+USIM does not support SOR-CMCI 
+This attribute may be present on Nudr. Shall be absent on Nudm (since the content on Nudm is provided within sorTransparentContainer) 
+3GPP TS 29.503 version 17.12.0 Release 17 
+6.1.6.2.27 
+Type: SharedData 
+190 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Attribute name 
+haredDatald 
+haredAmData 
+Table 6.1.6.2.27-1: Definition of type SharedData 
+Data type 
+P 
+Cardinality 
+SharedDatald 
+M 
+1 
+AccessAndMobilityS 
+O 
+0..1 
+ubscriptionData 
+haredSmsSubsData 
+SmsSubscription Dat 
+O 
+0..1 
+a 
+haredSmsMngSubsD SmsManagementSu 
+O 0..1 
+bscriptionData 
+on) 
+TraceData map(Snssailnfo) 
+О 0..1 
+O 1..N 
+ta 
+haredDnnConfigurati map(DnnConfigurati О |1..N 
+ns 
+hared TraceData 
+haredSnssailnfos 
+haredVnGroupDatas map(VnGroupData) О 1..N 
+*eatmentInstructions 
+map(SharedDataTre о 1..N atmentInstruction) 
+haredSmSubsData 
+haredEcsAddrConfigl 
+SessionManagement Subscription Data EcsAddrConfigInfo 
+O 0..1 
+О 0..1 
+fo 
+Description Identifier of the shared data 
+Shared Access and Mobility Subscription Data sharedAmData shall not contain upulnfo, sorInfo, stnSr or cMsisdn. 
+Shared SMS Subscription Data 
+Shared SMS Management Subscription Data 
+A map of shared DNN configuration (list of key- value pairs where DNN, or optionally the Wildcard DNN, serves as key) 
+Shared Trace Data 
+A map of Shared Snssai Info (list of key-value pairs where singleNssai converted to string serves as key; see 3GPP TS 29.571 [7]) 
+A map of shared 5G VN group data (list of key- value pairs where Groupld serves as key; see clause 6.1.6.1). 
+Applicability 
+A map of Shared Data TreatmentInstructions (list Shared DataTreatment of key-value pairs where a JSON pointer 
+pointing to an attribute within the SharedData serves as key) 
+Shared Session Management Subscription Data 
+Shared SmSubsData 
+Shared ECS Address Configuration Information 
+JOTE 1: Exactly one of sharedAmData, sharedSmsSubsData, sharedSmsMngSubsData shared DnnConfigurations, shared TraceData and 
+sharedSnssailnfos shall be present. JOTE 2: The attributes sharedAmData, sharedSmsSubsData and SharedSms MngSubsData shall not contain sharedDatalds JOTE 3: When shared data clash with individual data, individual data shall take precedence as default treatment unless the feature 
+SharedDataTreatment is supported and the Shared Data contains treatment instructions different from the default treatment. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+191 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.28 
+Type: PgwInfo 
+Table 6.1.6.2.28-1: Definition of type PgwInfo 
+Attribute name 
+Data type 
+P 
+Cardinality 
+dnn 
+Dnn 
+M 
+1 
+pgwFqdn 
+Fqdn 
+M 
+1 
+pgwlpAddr 
+IpAddress 
+O 
+0..1 
+plmnld 
+Plmnld 
+0..1 
+epdgInd 
+boolean 
+0..1 
+OO 
+pcfld 
+NfInstanceld 
+C 0..1 
+registration Time 
+DateTime 
+O 0..1 
+NOTE: 
+Description 
+|DNN/APN with Network Identifier only. 
+FQDN of the PGW in the "PGW-C+SMF" (NOTE) 
+IP Address of the PGW in the "PGW-C+SMF" PLMN where the PGW-C+SMF is located 
+If present, it indicates whether access is from ePDG or not. 
+true: access is from ePDG. 
+false or absent: access is not from ePDG This IE shall be present if the PCF Selection Assistance Info is received from the UDM. 
+When present, it indicates the PCF identifier serving the PDU Session/PDN Connection that should be selected by the AMF. 
+Time of PGW-C+SMF Registration (i.e. point in time when the HSS received SWX-SAR with SA_TYPE=REGISTRATION). May be present when used on Nhss within UeContextInPgwData. 
+This IE may contain an empty string when the PGW Information is mapped from HSS and PGW FQDN is not registered in HSS. 
+6.1.6.2.29 
+Type: TraceDataResponse 
+Table 6.1.6.2.29-1: Definition of type TraceDataResponse 
+Attribute name 
+traceData 
+Data type TraceData 
+P 
+Cardinality 
+C 
+0..1 
+shared TraceDatald 
+SharedDatald 
+C 0..1 
+Description 
+UE-individual trace data. Shall not be absent unless the feature Shared Data is supported and traceData is present within shared data. Shared data identifier. Shall be present if trace Data is absent. 
+Applicability 
+6.1.6.2.30 
+Type: Steering Container 
+Table 6.1.6.2.30-1: Definition of type Steering Container as a list of mutually exclusive alternatives 
+Data type 
+array(SteeringInfo) 
+SecuredPacket 
+Cardinality 
+1..N 
+1 
+Description 
+List of PLMN/Access Technologies combinations. 
+A Secured packet containing one or more APDUS commands dedicated to Remote File Management or command responses |(see ETSI TS 102.225 [28]). 
+3GPP TS 29.503 version 17.12.0 Release 17 
+192 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.31 
+Type: SdmSubsModification 
+Table 6.1.6.2.31-1: Definition of type SdmSubsModification 
+Attribute name 
+Data type 
+P 
+Cardinality 
+expires 
+DateTime 
+O 
+0..1 
+monitored ResourceUris array(Uri) 
+1..N 
+Description 
+If present, indicates the point in time at which the subscription expires. Within a PATCH request the proposed new expiry time is conveyed. 
+If present, indicates the updated resources URIS to be monitored. 
+The URI shall take the form of either an absolute URI or an absolute-path reference as defined in IETF RFC 3986 [31]. 
+See NOTE. 
+NOTE: The UDM should handle only the relative-path part (apiSpecificResourceUriPart, see 3GPP TS 29.501 [5] 
+clause 4.4.1) and ignore possible inconsistencies in the base URI part. 
+6.1.6.2.32 
+Type: EmergencyInfo 
+Table 6.1.6.2.32-1: Definition of type EmergencyInfo 
+P 
+Cardinality 
+C 
+0..1 
+Attribute name 
+Data type 
+pgwFqdn 
+Fqdn 
+pgwlpAddress 
+smflnstanceld 
+IpAddress 
+NfInstanceld 
+C 0..1 
+O 0..1 
+epdgInd 
+boolean 
+о 0..1 
+Description 
+FQDN of the PGW-C+SMF for emergency session; either pgwFqdn or ipAddress shall be present. (NOTE) 
+IP address of the PGW-C+SMF for emergency session (NOTE) 
+NF Instance Id of the SMF for emergency session (NOTE) 
+If present, it indicates whether access is from ePDG or not. 
+true: access is from ePDG. 
+false or absent: access is not from ePDG. 
+plmnld 
+NOTE: 
+Plmnld 
+O 
+0..1 
+PLMN where the PGW-C+SMF is located 
+If the AMF fails to contact the SMF/PGW based on the provided information 
+(pgwFqdn/pgwlpAddress/smfInstanceld) when needed, the AMF should use a locally configured SMF 
+instance ID or SMF set ID for the SMF/PGW for emergency services. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+193 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.33 
+Type: Upulnfo 
+Table 6.1.6.2.33-1: Definition of type Upulnfo 
+Attribute name upuDataList 
+Data type array(UpuData) 
+P 
+Cardinality 
+C 
+1..N 
+upuRegind 
+UpuRegInd 
+C 0..1 
+upuAckInd 
+UpuAckInd 
+C 0..1 
+upuMaclausf 
+UpuMac 
+C 0..1 
+counterUpu 
+CounterUpu 
+C 0..1 
+DateTime 
+provisioning Time 
+M 1 upuTransparentContain UpuTransparent C 0..1 
+Container 
+er 
+Description 
+This information defines the UE Parameters Update (UPU). 
+A secured packet with the Routing indicator update data is included and/or the Default configured NSSAI update data are included on Nudm. 
+An unsecured Routing indicator update data or secured packet with the Routing indicator update data, and/or the Default configured NSSAI update data, and/or Disaster Roaming Enabled Indication, and/or the indication of 'applicability of "lists of PLMN(s) to be used in disaster condition" provided by a VPLMN' are included on Nudr. 
+Shall be absent when the NF Consumer (e.g. AMF) supports receiving UE Parameters Update information encoded as transparent containers, and the upuTransparentContainer attribute is present. Contains the indication of whether the re-registration is requested. 
+Shall be absent when the NF Consumer (e.g. AMF) supports receiving UE Parameters Update information encoded as transparent containers, and the upuTransparentContainer attribute is present. Contains the indication of whether the acknowledgement from UE is needed. Shall be absent when the NF Consumer (e.g. AMF) supports receiving UE Parameters Update information encoded as transparent containers, and the upuTransparentContainer attribute is present. Contains the UPU-MAC-IAUSF. Shall be present when Upulnfo is sent within 
+AccessAndMobilitySubscriptionData on Nudm, and shall be absent when sent on Nudr. 
+Shall be absent when the NF Consumer (e.g. AMF) supports receiving UE Parameters Update information encoded as transparent containers, and the upuTransparentContainer attribute is present. Contains the Counterupu. Shall be present when Upulnfo is sent within 
+AccessAndMobilitySubscriptionData on Nudm, and shall be absent when sent on Nudr. 
+Shall be absent when the NF Consumer (e.g. AMF) supports receiving UE Parameters Update information encoded as transparent containers, and the upuTransparentContainer attribute is present. Point in time of provisioning of UPU by the UDR. This attribute contains protected UE Parameters Update transparent container encoded as defined in clause 6.1.6.3.2 and shall be present when sent on Nudm, if NF Consumer (e.g. AMF) supports receiving UE Parameters Update information encoded as transparent containers. Shall be absent when sent on Nudr or within PpData. 
+Applicability 
+upuTransparent Support 
+3GPP TS 29.503 version 17.12.0 Release 17 
+194 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.34 
+Type: Groupldentifiers 
+Table 6.1.6.2.34-1: Definition of type Groupldentifiers 
+Attribute name 
+extGroupld 
+Data type ExtGroupld 
+P 
+Cardinality 
+C 0..1 
+intGroupld 
+Groupld 
+C 0..1 
+ueldList 
+array(Ueld) 
+C 1..N 
+Description 
+This IE shall contain the External Group ID associated to the provided Internal Group ID. This IE shall contain the Internal Group ID associated to the provided External Group ID.. This IE shall contain a list of the UE identifiers that belong to the provided Internal/External Group ID if |they are required. 
+6.1.6.2.35 
+Type: NiddInformation 
+Table 6.1.6.2.35-1: Definition of type NiddInformation 
+Attribute name 
+Data type 
+P 
+Cardinality 
+afld 
+string 
+M 
+1 
+Description 
+The string identifying the AF as the owner of associated NIDD Configuration on T8 interface, which is carried in {scsAsld} URI variable in NIDD API (see clause 5.6.3.2.2 of 3GPP TS 29.122 [45]). 
+gpsi 
+Gpsi 
+O 0..1 
+Generic Public Subscription Identifier 
+extGroupld 
+ExternalGroupld 
+O 0..1 
+Indicates External Group Identifier which the user belongs to. 
+6.1.6.2.36 
+Type: CagData 
+Table 6.1.6.2.36-1: Definition of type CagData 
+Attribute name 
+cagInfos 
+Data type map(CagInfo) 
+P 
+M 
+Cardinality 0..N 
+provisioning Time 
+DateTime 
+C 0..1 
+Description 
+A map (list of key-value pairs where Plmnld converted to string serves as key; see 3GPP TS 29.571 [7]) of CagInfo 
+An empty map indicates that for no PLMN CAG 
+is subscribed and shall only be sent when provisioning Time is present (i.e. when acknowledgement from the UE is pending). 
+If provisioning Time is present (i.e. the acknowledgement from the UE is still pending), the complete map of CagInfo (i.e. for all PLMNs) shall be present; otherwise only the CagInfo relevant to the Serving PLMN should be present. 
+This attribute shall be present if the CagData is sent to the AMF while reception has not yet been acknowledged from the UE; otherwise shall be absent. Presence of this attribute indicates that the AMF needs to update the UE with the complete map of CagInfo. 
+This attribute serves as CAG information Subscription Change Indication 
+3GPP TS 29.503 version 17.12.0 Release 17 
+195 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.37 
+Type: CagInfo 
+Table 6.1.6.2.37-1: Definition of type CagInfo 
+Attribute name 
+allowedCagList 
+Data type array(Cagld) 
+P 
+M 
+Cardinality 1..N 
+cagOnlyIndicator 
+boolean 
+о 0..1 
+6.1.6.2.38 
+Type: AdditionalSnssaiData 
+Description 
+List of allowed CAG Ids. 
+true indicates that the UE is restricted to only access 5GS via CAG cells; 
+absence and false indicate that the UE is not restricted to only access 5GS via CAG cells. 
+Attribute name requiredAuthnAuthz 
+Data type boolean 
+P Cardinality О 0..1 
+Table 6.1.6.2.38-1: Definition of type AdditionalSnssaiData 
+Description 
+Applicability 
+Indicates whether an S-NSSAI is subject to Network Slice-Specific Authentication and Authorization: 
+Nssaa 
+subscribedUeSliceMbr 
+subscribedNsSrgList 
+SliceMbrRm 
+array(NsSrg) 
+O 0..1 
+1..N 
+true: subject to network slice-specific authentication and authorization 
+- false, or absent: not subject to network slice- 
+specific authentication and authorization Indicates the subscribed UE-Slice-MBR for an S- NSSAI if the access type is 3GPP access. Indicates the subscribed Network Slice Silumtaneous Group values for an S-NSSAI. (NOTE 1) 
+Nsac 
+Nssrg 
+NOTE 1: If the NF consumer does not support the Nssrg feature, the subset of the Subscribed S-NSSAls as defined in clause 5.15.12 
+of 3GPP TS 23.501 [2], may be included without providing the subscribedNsSrgList information. i.e. UDM may send default S- NSSAIS and subscribed S-NSSAIs sharing all the NSSRGs of the Default S-NSSAIs as part of the subscription information. 
+6.1.6.2.39 
+Type: VnGroupData 
+Table 6.1.6.2.39-1: Definition of type VnGroupData 
+Attribute name 
+pduSessionTypes 
+Data type PduSessionTypes 
+P Cardinality 
+Description 
+dnn 
+singleNssai 
+appDescriptors 
+NOTE: 
+Dnn 
+О 
+0..1 0..1 
+Allowed session types 
+Data Network Name with Network Identifier only. (NOTE) 
+Snssai 
+O 0..1 
+array(AppDescriptor) O 1..N 
+Single Nssai 
+List of Application Descriptors 
+Only a 1:1 mapping between DNN and 5G VN group is supported in this release 
+6.1.6.2.40 
+Type: AppDescriptor 
+Table 6.1.6.2.40-1: Definition of type AppDescriptor 
+Attribute name 
+Data type 
+P 
+Cardinality 
+osld 
+Osld 
+O 
+0..1 
+appld 
+string 
+0..1 
+Description 
+OS identifier, does not include an OS version number 
+Application identifier, does not include a version number for the application 
+3GPP TS 29.503 version 17.12.0 Release 17 
+196 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.41 
+Type: AppPortld 
+Table 6.1.6.2.41-1: Definition of type AppPortld 
+Attribute name 
+Data type 
+P 
+Cardinality 
+destination Port 
+Uint16 
+O 
+0..1 
+originatorPort 
+Uint16 
+O 0..1 
+Description 
+Indicates the receiving port of application in the |receving device or AF. 
+Indicates the sending port of application in sending device. 
+6.1.6.2.42 
+Type: LcsPrivacyData 
+Table 6.1.6.2.42-1: Definition of type LcsProfileData 
+Attribute name 
+Data type 
+P 
+Cardinality 
+Ipi 
+Lpi 
+O 
+0..1 
+unrelatedClass 
+UnrelatedClass 
+0..1 
+plmnOperatorClasse array(PlmnOpera O 1..N 
+S 
+torClass) 
+Description 
+If present, indicates the Location Privacy Indication (see 3GPP TS 23.273 [38] clause 5.4.2.3) 
+If absent, indicates that location for UE is allowed. Indicates Call/Session unrelated Classes for the user |(see 3GPP TS 23.273 [38] clause 5.4.2.2.3). 
+Indicates PLMN Operator Class for the user (see 3GPP TS 23.273 [38] clause 5.4.2.2.4). 
+6.1.6.2.43 
+Type: Lpi 
+1 
+Table 6.1.6.2.43-1: Definition of type Lpi 
+Data type 
+P Location Privacyln M 
+Cardinality 
+Description 
+Indication of one of the following mutually exclusive global settings: 
+- 
+Location is disallowed 
+Attribute name locationPrivacylnd 
+d 
+validTimePeriod 
+ValidTimePeriod O 0..1 
+6.1.6.2.44 
+Type: UnrelatedClass 
+- Location is allowed 
+If present, indicate Time period during which the Location Privacy Indication is valid. 
+If absent, indicates there is no time limitation. 
+Attribute name 
+defaultUnrelatedCI 
+ass 
+Table 6.1.6.2.44-1: Definition of type UnrelatedClass 
+Data type DefaultUnrelatedCl 
+Р 
+Cardinality 
+M 
+1 
+ass 
+0..1 
+external UnrelatedC External Unrelated 
+lass 
+Class 
+serviceTypeUnrelat array(ServiceType 
+edClasses 
+UnrelatedClass) 
+Description 
+The default Call/Session unrelated Class subscription for unidentified value added LCS clients or AFs. The Call/Session unrelated Class subscriptions for identified value added LCS Clients, AFs and value added LCS Client groups. 
+O 
+1..X(NOTE 2) 
+The Call/Session unrelated Class subscriptions for identified service types for UE.( NOTE 1) 
+NOTE 1: It is possible that there are multiple serviceTypeUnrelatedClasses, whose maximum number is decied by 
+total number of service type defined in 3GPP TS 22.071 [47], 
+NOTE 2: X indicates the total number of service type defined in 3GPP TS 22.071 [47]. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+6.1.6.2.45 
+Type: PlmnOperatorClass 
+197 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Table 6.1.6.2.45-1: Definition of type PlmnOperatorClass 
+Attribute name IcsClientClass 
+Data type LcsClientClass 
+P 
+Cardinality 
+M 
+1 
+IcsClientIds 
+array(LcsClientId) 
+M 
+1..N 
+Description 
+Indicated the PLMN operator class of LCS client that are allowed to locate the particular UE (see 3GPP TS 23.273 [38] clause 5.4.2.2.4). 
+List of LCS clients for the corresponding LCS Client Class 
+6.1.6.2.46 
+Type: ValidTimePeriod 
+Table 6.1.6.2.46-1: Definition of type Valid TimePeriod 
+Attribute name 
+startTime 
+Data type DateTime 
+P 
+O 
+Cardinality 0..1 
+lendTime 
+DateTime 
+O 0..1 
+NOTE 1: The end time shall be later than start time. 
+Description 
+If present, indicates the start time 
+If absent, indicates there is no start time, and it shall 
+be valid immediately. 
+(NOTE 1) 
+If present, indicates the end time. 
+If absent, indicates there is no end time. (NOTE 1) 
+6.1.6.2.47 
+Type: LcsMoData 
+Table 6.1.6.2.47-1: Definition of type LcsMoData 
+Attribute name 
+Data type allowed ServiceClass array(LcsMoServi 
+es 
+P 
+M 
+Cardinality 1..N 
+ceClass) 
+O 
+0..1 
+istanceTypes Dat 
+a 
+moAssistance DataTy LcsBroadcastAss 
+pes 
+Description 
+List of MO-LR services allowed for a UE subscriber 
+A list of one or more types of location assistance data that may be provided to the UE in the MO-LR procedure. 
+6.1.6.2.48 
+Type: EcRestriction DataWb 
+Table 6.1.6.2.48-1: Definition of type EcRestrictionData 
+Attribute name ecModeARestricted 
+Data type boolean 
+P 
+Cardinality 
+о 
+0..1 
+ecModeBRestricted boolean 
+0..1 
+NOTE: 
+Description 
+If present, indicates whether Enhanced Coverage Mode A is restricted or not. 
+true: Enhanced Coverage Mode A is restricted. false or absent: Enhanced Coverage Mode A is not restricted. 
+If present, indicates whether Enhanced Coverage Mode B is restricted or not. 
+true: Enhanced Coverage Mode B is restricted. false or absent: Enhanced Coverage Mode B is not restricted. 
+At least one of the attributes ecModeARestricted and ecModeBRestricted shall be contained, and If the value of attribute ecModeARestricted is set to true, the value of attribute ecModeBRestricted shall be set to true. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+198 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.49 
+Attribute name 
+stationaryIndication 
+Type: ExpectedUeBehaviourData 
+Table 6.1.6.2.49-1: Definition of type ExpectedUeBehaviourData 
+Data type StationaryIndicati 
+P 
+Cardinality 
+O 0..1 
+on 
+O 0..1 
+communication Duration DurationSec 
+Time 
+periodicTime 
+DurationSec 
+O 0..1 
+scheduledCommunicati 
+ScheduledComm 
+O 0..1 
+onTime 
+unication Time 
+scheduledCommunicati 
+onType 
+expectedUmts 
+ea) 
+trafficProfile 
+O 0..1 
+Scheduled Comm unicationType 
+array(LocationAr O 1..N 
+TrafficProfile 
+O 0..1 
+BatteryIndication O 0..1 
+batteryIndication 
+validityTime 
+DateTime 
+O 0..1 
+Description 
+Identifies whether the UE is stationary or mobile (see TS 23.502 [3] clause 4.15.6.3). 
+Indicates for how long the UE will normally stay in CM-Connected for data transmission (see |TS 23.502 [3] clause 4.15.6.3). 
+Identifies interval time of periodic communication |(see TS 23.502 [3] clause 4.15.6.3). 
+Identifies time and day of the week when the UE is available for communication (see TS 23.502 [3] clause 4.15.6.3). 
+Indicates that the Scheduled Communication Type (see TS 23.502 [3] clause 4.15.6.3). (NOTE 5) 
+Identifies the UE's expected geographical 
+movement. The attribute is only applicable in 5G |(see TS 23.502 [3] clause 4.15.6.3). 
+(NOTE 3, NOTE 4) 
+Identifies the type of data transmission: single packet transmission (UL or DL), dual packet transmission (UL with subsequent DL or DL with subsequent UL), multiple packets transmission 
+Indicates the power consumption type(s) of the UE |(see TS 23.502 [3] clause 4.15.6.3). 
+If present, identifies when the expected UE behaviour parameters expire and shall be deleted locally if it expire (see TS 23.502 [3] clause 4.15.6.3). (NOTE 2) 
+NOTE 1: At least one of optional parameters (expect for validityTime) above shall be present. NOTE 2: If this attribute is omitted, no expiry for the expected UE behaviour parameters applies. 
+NOTE 3: The first instance of the attribute represents the start of the location, and the last one represents the stop of 
+the location. 
+NOTE 4: The parameter expected Umts is only used by AMF. 
+NOTE 5: The value of attribute "scheduledCommunicationType" shall be used together with the value of 
+"scheduledCommunicationTime". 
+6.1.6.2.50 
+Void 
+6.1.6.2.51 
+Void 
+6.1.6.2.52 
+Type: Suggested PacketNumDI 
+Table 6.1.6.2.52-1: Definition of type Suggested PacketNumDI 
+Attribute name 
+Data type suggestedPacketNumDI integer 
+validityTime 
+DateTime 
+P Cardinality M 1 
+O 0..1 
+Description Value in number of packets. 
+If present, identifies the time to which the Network Configuration Parameters expire and shall be deleted locally if it expire (see TS 23.502 [3] clause 4.15.6.3a). 
+(NOTE 1) 
+NOTE 1: If this attribute is omitted, no expiry for the expected UE behaviour parameters applies. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+199 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.53 
+Void 
+6.1.6.2.54 
+Type: FrameRouteInfo 
+Table 6.1.6.2.54-1: Definition of type FrameRoutelnfo 
+Attribute name 
+ipv4Mask 
+Data type IPv4AddrMask 
+P 
+Cardinality 
+C 
+0..1 
+ipv6Prefix 
+Ipv6Prefix 
+C 
+0..1 
+Description 
+Indicates IPv4 address mask. Indicates IPv6 prefix. 
+NOTE: Either ipv4Mask or ipv6Prefix shall be present. 
+6.1.6.2.55 
+Type: SorUpdateInfo 
+Table 6.1.6.2.55-1: SorUpdateInfo 
+Attribute name 
+Data type 
+Р Cardinality 
+Description 
+vplmnld 
+Plmnld 
+M 
+|1 
+supportedFeatures 
+SupportedFeatures 
+O 0..1 
+Serving node PLMN identity. See clause 6.1.8 
+6.1.6.2.56 
+Type: EnhancedCoverageRestrictionData 
+Table 6.1.6.2.56-1: Definition of type Enhanced CoverageRestrictionData 
+Attribute name plmnEcInfoList 
+Data type array(PlmnEcInfo) 
+P 
+O 
+Cardinality 
+1..N 
+Description It may indicate a complete list of serving PLMNs where Enhanced Coverage Restriction shall be allowed and the detailed enhanced coverage restriction configuration under per the |PLMN. 
+6.1.6.2.57 
+Type: EdrxParameters 
+Table 6.1.6.2.57-1: EdrxParameters 
+Attribute name 
+Data type 
+P 
+Cardinality 
+ratType 
+RatType 
+M 
+1 
+Description 
+This IE shall indicate the RAT type which eDRX value are applicable to. 
+Only the following values are allowed: 
+"EUTRA" 
+"NBIOT" 
+"LTE-M" 
+"NR" 
+edrxValue 
+string 
+M 
+1 
+NOTE: 
+"NR REDCAP" 
+This IE shall indicate eDRX Cycle length value, 
+it shall be encoded as a string of bits 4 to 1 of octet 3 in the "Extended DRX parameter" IE (see Figure 10.5.5.32 of 3GPP TS 24.008 [46]). Pattern: "^([0-1]{4})$' 
+The relationship between values of ratType and edrxValue shall be in line with clause 10.5.5.32 of 3GPP TS 24.008 [46]. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+200 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.58 
+Type: PtwParameters 
+Table 6.1.6.2.58-1: PtwParameters 
+Attribute name operationMode 
+Data type OperationMode 
+P 
+Cardinality 
+M 
+1 
+ptwValue 
+string 
+M 
+1 
+extendedPtwValue 
+string 
+C 0..1 
+NOTE: 
+Description 
+This IE shall indicate the Operation Mode which PTW value are applicable to. 
+This IE shall indicate RAT specific Subscribed Paging Time Window length value, it shall be encoded as a string of bits 8 to 5 of octet 3 in the "Extended DRX parameter" IE (see Figure 10.5.5.32 of 3GPP TS 24.008 [46]). 
+Pattern: '^([0-1]{4})$' 
+This IE shall be applied only when the operation mode is set to NR-N1 mode. 
+It shall indicate RAT specific Subscribed Paging Time Window length value, it shall be encoded as a string of octet 4 in the "Extended DRX parameters" IE (see Figure 10.5.5.32 of 3GPP TS 24.008 [46]). 
+Pattern: "^([0-1]{8})$' 
+When this IE is present, the value set in ptwValue attribute shall be omitted. 
+The relationship between values of operation Mode and ptwValue shall be in line with clause 10.5.5.32 of 3GPP TS 24.008 [46]. 
+6.1.6.2.59 
+Void 
+6.1.6.2.60 
+Void 
+6.1.6.2.61 
+Type: Void 
+6.1.6.2.62 
+Type: External UnrelatedClass 
+Attribute name IcsClientExternals 
+afExternals 
+Table 6.1.6.2.62-1: Definition of type External UnrelatedClass 
+Data type array(LcsClientExt 
+ernal) 
+P Cardinality O 1..N 
+array(AfExternal) O 1..N 
+IcsClientGroupExte array(LcsClientGro O 1..N upExternal) 
+rnals 
+Description 
+The list of Call/session Unrelated Class identified by LCS client in the external LCS client list for the list The list of Call/session Unrelated Class identified by AF in the external LCS client list 
+The list of Call/session Unrelated Class identified by |LCS client group in the external LCS client list 
+6.1.6.2.63 
+Type: AfExternal 
+Table 6.1.6.2.63-1: Definition of type AfExternal 
+Attribute name 
+Data type 
+P 
+afld 
+Afld 
+Cardinality 0..1 
+allowed Geographic array(GeographicA O 1..N Area 
+PrivacyCheckRelat O 0..1 
+rea) 
+privacyCheckRelat 
+edAction 
+ledAction 
+validTimePeriod 
+ValidTimePeriod 
+О 0..1 
+Description 
+AF Identifier (see 3GPP TS 23.273 [38] clause 5.4.2.2.3) 
+Indicates Geographical area where positioning is allowed (see 3GPP TS 23.273 [38] clause 5.4.2.2.3). Indicates action related to privacy check. 
+(NOTE) 
+Time period when positioning is allowed 
+NOTE: "LOCATION_ALLOWED_WITHOUT_NOTIFICATION" is default value and "LOCATION_NOT_ALLOWED" is not optional for the attribute. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+201 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.64 
+Type: LcsClientExternal 
+Table 6.1.6.2.64-1: Definition of type LcsClientExternal 
+Attribute name 
+Data type 
+IcsClientId 
+LcsClientld 
+allowedGeographic array(GeographicA О 
+Area 
+rea) 
+privacyCheckRelat PrivacyCheckRelat 
+edAction 
+edAction 
+validTimePeriod 
+ValidTimePeriod 
+P 
+Cardinality 
+0..1 
+1..N 
+0..1 
+О 0..1 
+Description 
+Lcs Client Identifier (see 3GPP TS 23.273 [38] clause 5.4.2.2.3) 
+Indicates Geographical area where positioning is allowed (see 3GPP TS 23.273 [38] clause 5.4.2.2.3). Indicates action related to privacy check. 
+(NOTE) 
+Time period when positioning is allowed 
+NOTE: "LOCATION_ALLOWED_WITHOUT_NOTIFICATION" is default value and "LOCATION_NOT_ALLOWED" is not optional for the attribute. 
+6.1.6.2.65 
+Type: LcsClientGroupExternal 
+Table 6.1.6.2.65-1: Definition of type LcsClientGroupExternal 
+Attribute name 
+IcsClientGroupld 
+Data type ExtGroupId 
+P Cardinality 
+O 0..1 
+allowed Geographic 
+array(GeographicA 
+O 1..N 
+Area 
+rea) 
+edAction 
+privacyCheckRelat PrivacyCheckRelat о 0..1 
+edAction 
+validTimePeriod ValidTimePeriod 
+О 0..1 
+Description 
+|LCS Client Group Identifier 
+Indicates Geographical area where positioning is allowed (see 3GPP TS 23.273 [38] clause 5.4.2.2.3). Indicates action related to privacy check. 
+(NOTE) 
+|Time period when positioning is allowed 
+NOTE: "LOCATION ALLOWED WITHOUT NOTIFICATION" is default value and "LOCATION NOT ALLOWED" is not optional for the attribute. 
+6.1.6.2.66 
+Type: ServiceTypeUnrelatedClass 
+Attribute name 
+serviceType 
+Table 6.1.6.2.66-1: Definition of type ServiceTypeUnrelatedClass 
+Data type LcsServiceType 
+P 
+Cardinality 
+M 
+1 
+allowedGeographic array(GeographicA О 1..N 
+privacyCheckRelat PrivacyCheckRelat 
+Area 
+edAction 
+codeWordInd 
+rea) 
+O 
+0..1 
+edAction 
+CodeWord Ind 
+0..1 
+Description 
+One of the service type defined in 3GPP TS 22.071 [47]. 
+Indicates Geographical area where positioning is allowed (see 3GPP TS 23.273 [38] clause 5.4.2.2.3). Indicates action related to privacy check. |(NOTE) 
+Indication that codeword shall be checked in UE or one or more codeword values to be checked in GMLC 
+validTimePeriod 
+codeWordList 
+ValidTimePeriod 
+array(CodeWord) 
+O 0..1 
+Time period when positioning is allowed 
+C 1..N 
+This IE shall be present when codeWordlnd is CODEWORD_CHECK_IN_GMLC". 
+" 
+When present, this IE shall contain one or more |CodeWords used by GMLC for verification. 
+NOTE: "LOCATION_ALLOWED_WITHOUT_NOTIFICATION" is default value and "LOCATION_NOT_ALLOWED" is not optional for the attribute. 
+6.1.6.2.67 
+Type: Ueld 
+Table 6.1.6.2.67-1: Definition of type Ueld 
+Attribute name 
+supi gpsiList 
+Data type Supi array(gpsi) 
+Р 
+Cardinality 
+M 1 
+O 1..N 
+Description 
+This IE shall indicate the SUPI. 
+This IE shall indicate a list of GPSIs that is associated with the SUPI. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+202 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.68 
+Type: DefaultUnrelatedClass 
+Table 6.1.6.2.68-1: Definition of type DefaultUnrelatedClass 
+Attribute name 
+Data type allowed Geographic array(GeographicA Area 
+P Cardinality 
+O 
+1..N 
+rea) 
+privacyCheckRelat PrivacyCheckRelat 
+О 
+0..1 
+ledAction 
+ledAction 
+codeWordInd 
+CodeWord Ind 
+0..1 
+validTimePeriod ValidTimePeriod 
+О 0..1 codeWordList array(CodeWord) C 1..N 
+NOTE: 
+Description 
+Indicates Geographical area where positioning is |allowed (see 3GPP TS 23.273 [38] clause 5.4.2.2.3). 
+Indicates action related to privacy check. (NOTE) 
+Indication that codeword shall be checked in UE or one or more codeword values to be checked in GMLC 
+Time period when positioning is allowed 
+This IE shall be present when codeWordInd is present with value 
+"CODEWORD_CHECK_IN_GMLC". 
+When present, this IE shall contain one or more |CodeWords used by GMLC for verification. 
+"LOCATION_NOT_ALLOWED" is default value and only values "LOCATION_NOT_ALLOWED", 
+"LOCATION_ALLOWED_WITHOUT_NOTIFICATION", 
+"LOCATION_ALLOWED_WITHOUT_RESPONSE", "LOCATION_RESTRICTED_WITHOUT_RESPONSE" 
+can be contained. 
+6.1.6.2.69 
+Type: ContextInfo 
+Cardinality 
+O 1..N 
+Description 
+Table 6.1.6.2.69-1: Definition of type ContextInfo 
+Attribute name 
+origHeaders 
+Data type array(string) 
+P 
+requestHeaders 
+array(string) 
+O 1..N 
+Headers received by the UDM from NFS consuming Nudm services. The encoding of the header shall comply with clause 3.2 of IETF RFC 7230 [50] Headers sent by the UDM to NFs (e.g.AMF). May be present when ContextInfo is stored by the UDM in UDR as part of AmfSubscriptionInfo. The encoding of the header shall comply with clause 3.2 of IETF RFC 7230 [50] 
+6.1.6.2.70 
+Attribute name epsInterworking Info 
+amfInfo 
+NOTE: 
+Type: UeContextInAmfData 
+Table 6.1.6.2.70-1: Definition of type UeContextInAmfData 
+Data type EpsInterworkingInfo 
+P Cardinality O 0..1 
+Description 
+This IE contains the associations between APN/DNN and PGW- C+SMF selected by the AMF for EPS interworking. 
+array(AmfInfo) 
+O 0..2 
+Applicability 
+This IE shall contain the list of AmfInfo. 
+ENA 
+If sdmSubscription contains nfChangeFilter flag, then the UDM shall suppress the change notification for the epsInterworkingInfo 
+3GPP TS 29.503 version 17.12.0 Release 17 
+203 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.71 
+Type: V2xSubscriptionData 
+Table 6.1.6.2.71-1: Definition of type V2xSubscriptionData 
+Attribute name nrV2xServicesAuth 
+Data type NrV2xAuth 
+P Cardinality 
+O 0..1 
+Description 
+Indicates whether the UE is authorized to use the NR sidelink for V2X services. 
+IteV2xServicesAuth 
+LteV2xAuth 
+O 0..1 
+Indicates whether the UE 
+is authorized to use the LTE sidelink for V2X services. 
+nrUePc5Ambr 
+BitRate 
+O 0..1 
+ItePc5Ambr 
+BitRate 
+O 0..1 
+Indicates UE-PC5-AMBR for V2X communication |over PC5 reference point for NR PC5. 
+Indicates UE-PC5-AMBR for V2X communication over PC5 reference point for LTE PC5. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+204 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.72 
+Type: LcsBroadcastAssistanceTypesData 
+Table 6.1.6.2.72-1: Definition of type LcsBroadcastAssistanceTypes Data 
+3GPP TS 29.503 version 17.12.0 Release 17 
+205 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Description 
+Attribute name 
+Data type 
+P Cardinality 
+3GPP TS 29.503 version 17.12.0 Release 17 
+locationAssistanceTy Bytes 
+pe 
+M 
+1 
+206 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+This IE contains a bitmap,encoded as a base64 string, which indicates the broadcast location assistance data types for which the UE is subscribed to receive ciphering keys used to decipher broadcast assistance data. A bit set to 1 indicates that the UE is subscribed to receive ciphering keys applicable to corresponding positioning SIB type. 
+The bits are ordered as following in the bitmap: 
+first octet is the right-most octet. E.g. in "Ox0123", "first octet" would be "0x23" and "second octet" would be "Ox01" 
+bit 1 is the right-most bit and bit 8 is the left-most bit in the octet. E.g. for octet "0x01", "bit 1" would be "1", and "bit 2" to "bit 8" would be "0" 
+The mapping of the bits to the positioning SIB types is as follows: 
+bit 8 in the first octet maps to positioning SIB Type 1-1 
+—— 
+bit 7 in the first octet maps to positioning SIB Type 1-2 
+bit 6 in the first octet maps to positioning SIB Type 1-3 
+bit 5 in the first octet maps to positioning SIB Type 1-4 
+bit 4 in the first octet maps to positioning SIB Type 1-5 
+-- 
+bit 3 in the first octet maps to positioning SIB Type 1-6 
+bit 2 in the first octet maps to positioning SIB Type 1-7 
+bit 1 in the first octet maps to positioning SIB Type 1-8 
+bit 8 in the second octet maps to positioning SIB Type 2-1 
+bit 7 in the second octet maps to positioning SIB Type 2-2 
+bit 6 in the second octet maps to positioning SIB Type 2-3 
+bit 5 in the second octet maps to positioning SIB Type 2-4 
+—— 
+bit 4 in the second octet maps to positioning SIB Type 2-5 
+bit 3 in the second octet maps to positioning SIB Type 2-6 
+bit 2 in the second octet maps to positioning SIB Type 2-7 
+bit 1 in the second octet maps to positioning SIB Type 2-8 
+bit 8 in the third octet maps to positioning SIB Type 2-9 
+bit 7 in the third octet maps to positioning SIB Type 2-10 
+bit 6 in the third octet maps to positioning SIB Type 2-11 
+bit 5 in the third octet maps to positioning SIB Type 2-12 
+—— 
+bit 4 in the third octet maps to positioning SIB Type 2-13 
+bit 3 in the third octet maps to positioning SIB Type 2-14 
+bit 2 in the third octet maps to positioning SIB Type 2-15 
+3GPP TS 29.503 version 17.12.0 Release 17 
+207 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+bit 1 in the third octet maps to positioning SIB Type 2-16 
+bit 8 in the fourth octet maps to positioning SIB Type 2-17 
+—— 
+bit 7 in the fourth octet maps to positioning SIB Type 2-18 
+bit 6 in the fourth octet maps to positioning SIB Type 2-19 
+bit 5 in the fourth octet maps to positioning SIB Type 2-20 
+—— 
+bit 4 in the fourth octet maps to positioning SIB Type 2-21 
+bit 3 in the fourth octet maps to positioning SIB Type 2-22 
+bit 2 in the fourth octet maps to positioning SIB Type 2-23 
+--bit 1 in the fourth octet maps to positioning SIB Type 2-24 
+bit 7 in the fifth octet maps to positioning SIB Type 2-25 
+bit 6 in the fifth octet maps to positioning SIB Type 3-1 
+bit 5 in the fifth octet maps to positioning SIB Type 4-1 
+bit 4 in the fifth octet maps to positioning SIB Type 5-1 
+—— 
+bit 3 in the fifth octet maps to positioning SIB Type 6-1 
+bit 2 in the fifth octet maps to positioning SIB 
+Type 6-2 
+bit 1 in the fifth octet maps to positioning SIB Type 6-3 
+Any unassigned bits are spare and shall be coded as zero. Non-included bits shall be treated as being coded as zero. 
+NOTE: The mapping of possibType to assistance data element is further described in clause 7.2 of 
+3GPP TS 37.355 [56]. 
+6.1.6.2.73 
+Type: DatasetNames 
+Table 6.1.6.2.73-1: Definition of type DatasetNames 
+Data type array(DataSetName) 2..N 
+Cardinality 
+Description List of names of the data sets 
+3GPP TS 29.503 version 17.12.0 Release 17 
+208 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.74 
+Type: PlmnRestriction 
+Table 6.1.6.2.74-1: Definition of type PlmnRestriction 
+Attribute name 
+ratRestrictions 
+Data type array(RatType) 
+P 
+Cardinality 
+O 0..N 
+forbiddenAreas 
+|array(Area) 
+serviceAreaRestriction ServiceArea Restr 
+coreNetworkTypeRestr array(CoreNetwo 
+O 0..N 
+O 0..1 
+O 0..N 
+liction 
+lictions 
+rkType) 
+primaryRatRestrictions array(RatType) 
+O 0..N 
+secondaryRatRestricti array(RatType) 
+O 0..N 
+ons 
+Description 
+List of RAT Types that are restricted in 5GC and EPC; see 3GPP TS 29.571 [7] 
+Contains unique items 
+List of forbidden areas in 5GS 
+Subscribed Service Area Restriction 
+List of Core Network Types that are restricted. 
+The use of the value "5GC" is deprecated on Nudm and shall be discarded by the receiving AMF. List of RAT Types that are restricted for use as primary RAT in 5GC and EPC; see 
+3GPP TS 29.571 [7] 
+Contains unique items 
+List of RAT Types that are restricted for use as secondary RAT in 5GC and EPC; see 3GPP TS 29.571 [7] 
+Contains unique items 
+6.1.6.2.75 
+Type: PcfSelectionAssistanceInfo 
+Table 6.1.6.2.75-1: Definition of type PcfSelectionAssistanceInfo 
+Attribute name 
+Data type 
+P 
+Cardinality 
+Description 
+dnn 
+singleNssai 
+Dnn Snssai 
+M 
+1 
+M 
+1 
+Identifies a DNN. Identifies a S-NSSAI. 
+Applicability 
+6.1.6.2.76 
+Type: ProseSubscriptionData 
+Table 6.1.6.2.76-1: Definition of type ProseSubscription Data 
+Attribute name proseServiceAuth 
+Data type ProseServiceAut 
+P 
+Cardinality 
+O 
+0..1 
+h 
+nrUePc5Ambr 
+BitRate 
+0..1 
+proseAllowed Plmn 
+edPlmn) 
+array(ProSeAllow O 1..N 
+Description 
+Indicates whether the UE is authorized to use ProSe related services. 
+Indicates the AMBR of UE's NR sidelink (i.e. PC5) communication for ProSe services. 
+Contains a list of the ProSeAllowed Plmn which 
+contain the PLMN identities where the Prose services are authorised to use and the authorised Prose services on these given PLMNs. 
+6.1.6.2.77 
+Type: IpIndex 
+Table 6.1.6.2.77-1: Definition of type IpIndex as a list of non-exclusive alternatives 
+Data Type 
+integer string 
+Cardinality 
+11 
+1 
+Description IP Index expressed as an integer value IP Index expressed as a string 
+3GPP TS 29.503 version 17.12.0 Release 17 
+209 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.78 
+Attribute name 
+aerialUelnd 
+3gppUavld 
+Type: AerialUeSubscriptionInfo 
+Table 6.1.6.2.78-1: Definition of type AerialUeSubscriptionInfo 
+Data type AerialUelndicatio 
+n 
+Gpsi 
+P 
+Cardinality 
+M 
+1 
+C 0..1 
+Description 
+This UE shall indicate Aerial service for the UE is allowed or not allowed. 
+When present, this IE shall contain the 3GPP UAV ID, it is encoded as GPSI in the format of External Identifier. 
+If aerialUelnd indicates "AERIAL_UE_ALLOWED", this IE shall be present. 
+Applicability 
+6.1.6.2.79 
+Data type 
+Type: SmSubs Data 
+Table 6.1.6.2.79-1: Definition of type SmSubsData as a list of alternatives 
+Description 
+Applicability 
+Cardinality 
+array(SessionManage 
+1..N 
+mentSubscriptionData) ExtendedSmSubsData 1 
+Individual Session Management Subscription Data. 
+Extended Session Management Subscription Data. 
+SharedSmSubsData 
+6.1.6.2.80 
+Type: ExtendedSmSubsData 
+Table 6.1.6.2.80-1: Definition of type ExtendedSmSubsData 
+Attribute name individualSmSubs Data 
+sharedSmSubsDatald 
+S 
+Applicability SharedSmSubsDat 
+Data type array(SessionMa nagementSubscri ptionData) 
+P Cardinality O 1..N 
+array(SharedDat 
+M 1..N 
+Description individual Session Management Subscription Data (NOTE 1) 
+Identifier of shared data 
+a 
+ald) 
+a 
+SharedSmSubsDat 
+NOTE 1: A given UE-individual SessionManagementSubscriptionData (within individualSmSubs Data) may clash with a shared 
+SessionManagementSubscriptionData (i.e. both have the same singleNssai value). In this case the clashing attributes of the UE-individual SessionManagementSubscriptionData take precedence unless treatment instructions indicate otherwise. 
+6.1.6.2.81 
+Type: AmfInfo 
+Table 6.1.6.2.81-1: Definition of type UeContextInAmfData 
+Attribute name 
+amfInstanceld 
+guami 
+accessType 
+Data type NfInstanceld Guami AccessType 
+P Cardinality M 1 
+M 1 
+M 
+1 
+Description 
+The identity the AMF uses to register in the NRF |This IE shall contain the serving AMF's GUAMI. 
+This IE shall contain the access type 
+3GPP TS 29.503 version 17.12.0 Release 17 
+210 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.82 
+Type: ProSeAllowedPlmn 
+Table 6.1.6.2.82-1: Definition of type ProSeAllowedPlmn 
+Attribute name 
+Data type 
+P 
+Cardinality 
+visitedPlmn 
+Plmnld 
+M 
+1 
+proseDirectAllowed 
+array(Prose Direct 
+О 
+1..N 
+Allowed) 
+Description 
+This IE shall contain the PLMN identity where the UE is authorised for 5G ProSe services. 
+When present, this IE contains the 5G ProSe Direct services are authorised to use in the PLMN indicated by visited Plmn for the UE. 
+If this IE is absent, it indicates that all the 5G ProSe Direct services are authorised to use in the PLMN indicated by visitedPlmn for the UE. 
+6.1.6.2.83 
+Data type 
+Type: ImmediateReport 
+Table 6.1.6.2.83-1: Definition of type Immediate Report as a list of alternatives 
+Cardinality 
+Subscription DataSets 
+1 
+array(SharedData) 
+1..N 
+Description 
+UE based subscription data sets that to be monitored in SdmSubscription. 
+Shared subscription data sets that to be monitored in SdmSubscription. 
+6.1.6.2.84 
+Type: MbsSubscriptionData 
+Table 6.1.6.2.84-1: Definition of type MbsSubscriptionData 
+Applicability 
+Attribute name mbsAllowed 
+Data type boolean 
+P 
+C 
+Cardinality 
+0..1 
+array(MbsSessio C 1..N 
+mbsSessionIdList 
+nld) 
+Description 
+This IE indicates whether the UE is authorized to receive multicast MBS session data. 
+When present, this IE shall be set as following: 
+- true: the UE is authorized to receive multicast MBS session data 
+- false (default): UE is not authorized to receive multicast MBS session data 
+This IE shall be present if available and the mbsAllowed attribute is set to "true". 
+If present, this IE identifies the MBS Session(s) that the UE is allowed to join. 
+6.1.6.2.85 
+Type: UcSubscriptionData 
+Table 6.1.6.2.85-1: Definition of type UcSubscriptionData 
+Attribute name 
+Data type userConsentPerPurp map(UserConsen 
+P 
+O 
+1..N 
+oseList 
+t) 
+Cardinality 
+Description 
+A map user consent (list of key-value pairs where UcPurpose serves as key; see clause 6.1.6.3.20). 
+3GPP TS 29.503 version 17.12.0 Release 17 
+211 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.2.86 
+Attribute name 
+dnnList 
+Type: UeContextInSmfDataSubFilter 
+Table 6.1.6.2.86-1: Definition of type UeContextInSmfDataSubFilter 
+Data type array(Dnn) 
+P 
+Cardinality 
+C 1..N 
+snssaiList 
+array(Snssai) 
+0 1..N 
+emergencylnd 
+boolean 
+C 0..1 
+Description 
+This IE shall be present to get the pduSesion and pgwinfo in UeContextInSmfData for specific DNN(s). 
+When present, the UDM shall notify the changes of pduSesion and pgwInfo in UeContextInSmfData for the indicated DNN(s). 
+When this IE is not present, the UDM will not notify |changes of pduSesion and pgwInfo. |This IE may be present when dnnList IE is present. 
+When present, the UDM shall notify the changes of pduSesion and pgwInfo in UeContextInSmfData for the DNN(s) that are associated the indicated S- NSSAIS(s). 
+This IE shall be present and set to value "true" for changes on the emergency Info in UeContextInSmfData. 
+When present, this IE shall indicate whether the UDM shall notify the changes on emergencyInfo in UeContextInSmfData: 
+- true: changes on emergencyInfo to be notified 
+false (default) changes on emergencyInfo not to be notified. 
+6.1.6.2.87 
+Type: Ueldentifiers 
+Table 6.1.6.2.87-1: Definition of type Ueldentifiers 
+Attribute name 
+ueldList 
+Data type map(Supilnfo) 
+P 
+C 
+Cardinality 1..N 
+Description 
+A map (list of key-value pairs where Gpsi serves as |key; see 3GPP TS 29.571 [7]) of arrays of Supi. 
+6.1.6.2.88 
+Type: Supilnfo 
+Table 6.1.6.2.88-1: Definition of type Supilnfo 
+Attribute name 
+supiList 
+Data type array(Supi) 
+P Cardinality M O..N 
+6.1.6.3 
+Simple data types and enumerations 
+Description 
+This IE shall indicate a list of SUPIs that is associated with the GPSI. 
+An empty array shall be returned if there is no SUPIs associated with the GPSI. 
+6.1.6.3.1 
+Introduction 
+This clause defines simple data types and enumerations that can be referenced from data structures defined in the previous clauses. 
+6.1.6.3.2 
+Simple data types 
+The simple data types defined in table 6.1.6.3.2-1 shall be supported. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+212 
+Table 6.1.6.3.2-1: Simple data types 
+Type Name 
+DefaultDnnIndicator 
+Type Definition boolean 
+boolean 
+integer 
+LboRoamingAllowed 
+UeUsageType 
+MpsPriorityIndicator boolean McsPriorityIndicator boolean 3GppChargingChara❘ string 
+cteristics 
+MicoAllowed 
+boolean 
+SmsSubscribed 
+boolean 
+SharedDatald 
+string 
+IwkEpsInd 
+boolean 
+Secured Packet 
+string 
+UpuRegInd 
+boolean 
+ExtGroupld 
+string 
+NbloTUePriority 
+integer 
+CodeWord 
+string 
+Afld 
+LcsClientld 
+string string 
+ainer 
+SorTransparentCont Bytes 
+UpuTransparentCon Bytes 
+tainer 
+SorCmci 
+Bytes 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Description 
+Indicates whether a DNN is the default DNN 
+This flag indicates whether local breakout is allowed when roaming. 
+Indicates the usage characteristics of the UE, enables the selection of a specific Dedicated Core Network for EPS interworking 
+|Indicates whether UE is subscribed to multimedia priority service 
+Indicates whether UE is subscribed to mission critical service |16-bit string identifying charging characteristics as specified in |3GPP TS 32.255 [11] Annex A and 3GPP TS 32.298 [12] clause 
+5.1.2.2.7, in hexadecimal representation. Each character in the string shall take a value of "0" to "9" or "A" to "F" and shall represent 4 bits. The most significant character representing the 4 most significant bits of the charging characteristics shall appear first in the string, and the character representing the 4 least significant bits of the charging characteristics shall appear last in the string. 
+Example: 
+The charging characteristic 0x123A shall be encoded as "123A". |See also 3GPP TS 32.256 [67] Annex A 
+Indicates whether MICO mode is allowed for the UE. 
+Indicates whether the UE subscription allows SMS delivery over NAS. 
+Identifies globally and uniquely a piece of subscription data shared by multiple UEs. The value shall start with the HPLMN id (MCC/MNC) followed by a hyphen followed by a local Id as allocated by the home network operator. 
+pattern: "^[0-9]{5,6}-.+$" 
+Indicates whether Interworking with EPS is supported 
+Indicates the secured packet as specified in 
+|3GPP TS 24.501 [27]. It is encoded using base64 and 
+represented as a String. 
+Format: byte 
+true indicates that re-registration is requested after the successful UE parameters update. 
+String containing a External Group ID. 
+Pattern: "^extgroupid-[^@]+@[^@]+$" 
+Unsigned integer indicating the NB-IoT UE Priority (see 
+clause 5.31.17 of 3GPP TS 23.501 [8]), the value is between 0 and 255 and lower value indicates higher priority. 
+Indicates the codeword as specified in 3GPP TS 23.273 [38] clause 5.4.2.2.3. 
+|AF Identifier (see 3GPP TS 23.273 [38] clause 5.4.2.2.3) 
+Lcs Client Identifier (see 3GPP TS 23.273 [38] clause 5.4.2.2.3) String with format "byte" as defined in 
+OpenAPI Specification [14], i.e. base64-encoded characters, encoding the "SOR transparent container" IE as specified in clause 9.11.3.51 of 3GPP TS 24.501 [27] (starting from octet 1). String with format "byte" as defined in 
+OpenAPI Specification [14], i.e. base64-encoded characters, encoding the "UE Parameters Update transparent container" IE as specified in clause 9.11.3.53A of 3GPP TS 24.501 [27] (starting from octet 1). 
+String with format "byte" as defined in 
+OpenAPI Specification [14], i.e. base64-encoded characters, encoding the "SOR-CMCI " IE as specified in figure 9.11.3.51.7 of 3GPP TS 24.501 [27] (starting from octet 1). 
+3GPP TS 29.503 version 17.12.0 Release 17 
+213 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.3.3 
+Enumeration: DataSetName 
+Enumeration value 
+"AM" 
+"SMF SEL" 
+"UEC SMF" 
+"UEC SMSF" 
+"SMS SUB" 
+"SM" 
+"TRACE" 
+"SMS MNG" 
+"LCS PRIVACY" 
+"LCS MO" 
+"UEC AMF" "V2X" 
+"LCS BCA" 
+"PROSE" 
+"UC" 
+"MBS" 
+NOTE: 
+Table 6.1.6.3.3-1: Enumeration DataSetName 
+Description 
+Access and Mobility Subscription Data 
+SMF Selection Subscription Data 
+UE Context in SMF Data 
+UE Context in SMSF Data 
+SMS Subscription Data 
+Session Management Subscription Data Trace Data 
+SMS Management Subscription Data 
+LCS Privacy Subscription Data 
+LCS Mobile Originated Subscription Data 
+UE Context in AMF Data 
+V2X Subscription Data 
+LCS Broadcast Assistance Subscription Data ProSe Service Subscription Data 
+User Consent Data 
+5MBS subscription data 
+The current naming conventions for Enumerations (uppercase with underscore), when their intended usage is for query parameters is not consistent with the naming conventions for URI components (lowercase with hyphen). 
+6.1.6.3.4 
+Void 
+6.1.6.3.5 
+Void 
+6.1.6.3.6 
+Void 
+6.1.6.3.7 
+Enumeration: PduSessionContinuityInd 
+Table 6.1.6.3.7-1: Enumeration PduSessionContinuityInd 
+Enumeration value 
+Description 
+"MAINTAIN PDUSESSION" 
+"RECONNECT PDUSESSION" 
+"RELEASE PDUSESSION" 
+Maintain the PDU session 
+Disconnect the PDU session with a reactivation request Disconnect PDU session without reactivation request 
+6.1.6.3.8 
+Enumeration: Location Privacylnd 
+Table 6.1.6.3.8-1: Enumeration LocationPrivacylnd 
+Enumeration value 
+"LOCATION DISALLOWED" 
+"LOCATION ALLOWED" 
+Description 
+Location for UE is disallowed 
+Location for UE are allowed 
+3GPP TS 29.503 version 17.12.0 Release 17 
+214 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.3.9 
+Enumeration: PrivacyCheckRelatedAction 
+Table 6.1.6.3.9-1: Enumeration PrivacyCheckRelatedAction 
+Enumeration value 
+"LOCATION NOT ALLOWED" 
+"LOCATION ALLOWED WITH NOTIFICATION" 
+"LOCATION ALLOWED WITHOUT NOTIFICATION" 
+"LOCATION_ALLOWED_WITHOUT_RESPONSE" 
+Location not allowed 
+Description 
+Location allowed with notification 
+Location allowed without notification 
+Location with notification and privacy verification; location allowed if no response 
+"LOCATION_RESTRICTED_WITHOUT_RESPONSE" | Location with notification and privacy verification; 
+location restricted if no response 
+6.1.6.3.10 
+Enumeration: LcsClientClass 
+Table 6.1.6.3.10-1: Enumeration LcsClientClass 
+Enumeration value 
+"BROADCAST SERVICE" 
+"OM IN HPLMN" 
+"OM IN VPLMN" 
+"ANONYMOUS_LOCATION_SERVICE" 
+"SPECIFIC_SERVICE" 
+Description 
+LCS client broadcasting location related information O&M LCS client in the HPLMN 
+O&M LCS client in the VPLMN 
+LCS client recording anonymous location 
+information 
+LCS Client supporting a bearer service, teleservice 
+or supplementary service to the target UE 
+6.1.6.3.11 
+Enumeration: LcsMoServiceClass 
+Table 6.1.6.3.11-1: Enumeration LcsMoServiceClass 
+Enumeration value 
+"BASIC_SELF_LOCATION" 
+"AUTONOMOUS_SELF_LOCATION" "TRANSFER TO THIRD PARTY" 
+UE requests own location 
+Description 
+UE requests location assistance data 
+UE requests transfer of own location to another LCS Client 
+6.1.6.3.12 
+Enumeration: OperationMode 
+Enumeration value 
+"WB S1" 
+"NB S1" 
+"WB N1" 
+"NB N1" 
+"NR N1" 
+Table 6.1.6.3.12-1: Enumeration OperationMode 
+Description 
+WB-S1 mode, i.e. EUTRAN connected to EPC 
+NB-S1 mode, i.e. EUTRAN NB-IoT connected to EPC WB-N1 mode, i.e. EUTRAN connected to 5GC NB-N1 mode, i.e. EUTRAN NB-IoT connected to 5GC NR-N1 mode, i.e. NR connected to 5GC 
+6.1.6.3.13 
+Enumeration: SorUpdateIndicator 
+Table 6.1.6.3.13-1: Enumeration SorUpdateIndicator 
+Enumeration value "INITIAL_REGISTRATION" 
+"EMERGENCY REGISTRATION" 
+Description 
+NAS registration type "Initial Registration" NAS registration type "Emergency Registration" 
+3GPP TS 29.503 version 17.12.0 Release 17 
+215 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.3.14 
+Enumeration: CodeWordInd 
+Table 6.1.6.3.14-1: Enumeration CodeWordInd 
+Enumeration value 
+"CODEWORD CHECK IN UE" "CODEWORD CHECK IN GMLC" 
+Description 
+codeword shall be checked in UE 
+one or more codeword values to be checked in GMLC 
+6.1.6.3.15 
+Enumeration: MdtUserConsent 
+Enumeration value 
+"CONSENT GIVEN" 
+"CONSENT_NOT_GIVEN" 
+Table 6.1.6.3.15-1: Enumeration MdtUserConsent 
+Description 
+It shall indicate the user has given his consent for MDT activation. It shall indicate the user hasn't given his consent for MDT activation. 
+6.1.6.3.16 
+Enumeration: SharedDataTreatmentInstruction 
+Table 6.1.6.3.16-1: Enumeration Shared DataTreatmentInstruction 
+Enumeration value 
+"USE_IF_NO_CLASH" 
+"OVERWRITE" 
+"MAX" 
+"MIN" 
+Description 
+If the attribute is not present in the individual data (no clash), the value of the shared data attribute shall be used. Otherwise the individual data takes precedence. (default) 
+The value of the shared data attribute shall be used (even when clashing with individual data). 
+If the shared data attribute is absent, the value of the individual attribute (if any) shall not be used, i.e. the attribute shall be handled as being absent. 
+If no clash (i.e. individual data is absent) the shared data attribute value shall be used. Otherwise the higher value shall be used. (NOTE) 
+If no clash (i.e. individual data is absent) the shared data attribute value shall be used. Otherwise the lower value shall be used. (NOTE) 
+NOTE: Treatment instructions "MIN" and "MAX" are applicable to attributes that can take numeric values. 
+6.1.6.3.17 
+Enumeration: GpsiType 
+Table 6.1.6.3.17-1: Enumeration GpsiType 
+Enumeration value 
+Description 
+"MSISDN" 
+GPSI type of MSISDN 
+"EXT ID" 
+"EXT GROUP ID" 
+GPSI type of external identity GPSI type of external group identity 
+6.1.6.3.18 
+Enumeration: AerialUelndication 
+Table 6.1.6.3.18-1: Enumeration AerialUelndication 
+Enumeration value "AERIAL UE ALLOWED" "AERIAL UE NOT ALLOWED" 
+Description 
+Aerial service for the UE is allowed. 
+Aerial service for the UE is not allowed. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+216 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.1.6.3.19 
+Enumeration: ProseDirectAllowed 
+Table 6.1.6.3.19-1: Enumeration ProseDirectAllowed 
+Enumeration value 
+"ANNOUNCE" 
+"MONITOR" 
+"RESTRICTD_ANNOUNCE" 
+"RESTRICTD_MONITOR" 
+"DISCOVERER" 
+"DISCOVEREE" 
+"BROADCAST" 
+"GROUPCAST" 
+"UNICAST" 
+"LAYER2 RELAY" 
+"LAYER3_RELAY" 
+Description 
+It indicates that the user is allowed to announce in the 
+corresponding PLMN for open 5G Direct Discovery Model A. 
+It indicates that the user is allowed to monitor in the corresponding PLMN for open 5G Direct Discovery Model A. 
+It indicates that the user is allowed to announce in the corresponding PLMN for restricted 5G ProSe Direct Discovery Model A. 
+It indicates that the user is allowed to monitor in the corresponding PLMN for restricted 5G ProSe Direct Discovery Model A. 
+It indicates that the user is allowed to perform discoverer operation in the corresponding PLMN for restricted 5G ProSe Direct Discovery Model B. 
+It indicates that the user is allowed to perform discoveree operation in the corresponding PLMN for restricted 5G ProSe Direct Discovery Model B. 
+It indicates that the user is allowed to perform Broadcast mode 5G ProSe Direct Communication for NR PC5 in the corresponding PLMN. 
+It indicates that the user is allowed to perform Groupcast mode 5G ProSe Direct Communication for NR PC5 in the corresponding PLMN. 
+It indicates that the user is allowed to perform Unicast mode 5G ProSe Direct Communication for NR PC5 in the corresponding PLMN. 
+It indicates that the user is allowed to act as a 5G ProSe Layer-2 UE-to-Network Relay. 
+It indicates that the user is allowed to act as a 5G ProSe Layer-3 UE-to-Network Relay. 
+6.1.6.3.20 
+Enumeration: UcPurpose 
+Table 6.1.6.3.20-1: Enumeration UcPurpose 
+Enumeration value 
+"ANALYTICS" 
+"MODEL TRAINING" 
+"NW CAP EXPOSURE" 
+"EDGEAPP_UE_LOCATION" 
+Description 
+User consent for analytics. 
+User consent for model training. 
+User consent for network capability exposure. 
+User consent for the manipulation of UE information for the purpose of UE Location retrieval by the EDGEAPP EAS entity. 
+6.1.6.3.21 
+Enumeration: UserConsent 
+Enumeration value 
+"CONSENT NOT GIVEN" 
+"CONSENT GIVEN" 
+Table 6.1.6.3.21-1: Enumeration UserConsent 
+Description 
+It shall indicate the user hasn't given his consent. It shall indicate the user has given his consent. 
+6.1.7 
+Error Handling 
+6.1.7.1 
+General 
+HTTP error handling shall be supported as specified in clause 5.2.4 of 3GPP TS 29.500 [4]. 

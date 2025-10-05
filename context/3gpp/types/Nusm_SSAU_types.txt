@@ -1,0 +1,147 @@
+6.8.6 Data Model
+6.8.6.1 General
+This clause specifies the application data model supported by the API.
+Table 6.8.6.1-1 specifies the structured data types defined for the Nudm_SSAU service API. For simple data types
+defined for the Nudm_SSAU service API see table 6.8.6.3.2-1.
+Table 6.8.6.1-1: Nudm_SSAU specific Data Types
+Data type Clause defined Description
+AuthUpdateNotification 6.8.6.2.2
+AuthUpdateInfo 6.8.6.2.3
+ServiceSpecificAuthorizationInfo 6.8.6.2.4
+ServiceSpecificAuthorizationData 6.8.6.2.5 Authorization Response for a specific service
+AuthorizationUeId 6.8.6.2.6 UE Id of the Authorization Data
+ServiceSpecificAuthorizationRemoveData 6.8.6.2.7 Information for Authorization removal of a
+specific service
+ServiceType 6.8.6.3.2 Service Type of the Authorization
+InvalidCause 6.8.6.3.3 Authorization Invalid Cause
+Table 6.8.6.1-2 specifies data types re-used by the Nudm_SSAU service API from other specifications, including a
+reference to their respective specifications and when needed, a short description of their use within the Nudm_SSAU
+service API.
+Table 6.8.6.1-2: Nudm_SSAU re-used Data Types
+Data type Reference Comments
+AuthorizationData 6.6.6.2.2
+Dnn 3GPP TS 29.571 [7] Data Network Name with Network Identifier only.
+Snssai 3GPP TS 29.571 [7]
+ExternalGroupId 3GPP TS 29.571 [7]
+GroupId 3GPP TS 29.571 [7]
+6.8.6.2 Structured data types
+6.8.6.2.1 Introduction
+This clause defines the structures to be used in resource representations.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 394 ETSI TS 129 503 V17.12.0 (2023-09)
+6.8.6.2.2 Type: AuthUpdateNotification
+Table 6.8.6.2.2-1: Definition of type AuthUpdateNotification
+Attribute name Data type P Cardinality Description
+serviceType ServiceType M 1 Specific service for which the authorization is
+updated
+snssai Snssai C 0..1 Identifies the Single Network Slice.
+dnn Dnn C 0..1 Identifies the DNN, shall contain the Network
+Identifier only.
+authUpdateInfoList array(AuthUpdateInf
+o)
+M 1..N List of AuthUpdateInfo.
+mtcProviderInformation MtcProviderInformati
+on
+O 0..1 When present, this IE shall indicate the MTC
+provider information for the Service Specific
+authorization.
+afId string O 0..1 When present, this IE shall indicate the string
+identifying the originating AF.
+6.8.6.2.3 Type: AuthUpdateInfo
+Table 6.8.6.2.4-1: Definition of type AuthUpdateInfo
+Attribute name Data type P Cardinality Description
+authorizationData ServicepecificAuthori
+zationData
+M 1 This IE shall include the Authorization data.
+invalidityInd boolean O 0..1 Indicates whether the authorized Service
+Specific authoration data is still valid or not.
+true: the authorized Service Specific
+authoration data is not valid.
+false or absent: the authorized Service Specific
+authoration data is valid.
+invalidCause InvalidCause O 0..1 This IE may be included when invalidityInd IE is
+included with the value true.
+When present, this IE shall indicate the cause
+why the authorization becomes invalid.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 395 ETSI TS 129 503 V17.12.0 (2023-09)
+6.8.6.2.4 Type: ServiceSpecificAuthorizationInfo
+Table 6.8.6.2.4-1: Definition of type ServiceSpecificAuthorizationInfo
+Attribute name Data type P Cardinality Description
+snssai Snssai C 0..1 This IE shall be included for following service
+type(s):
+- AF_GUIDANCE_FOR_URSP
+When present, this IE shall indicate the Single
+Network Slice Selection Assistance Information
+for the Service Specific authorization.
+dnn Dnn C 0..1 This IE shall be included for following service
+type(s):
+- AF_GUIDANCE_FOR_URSP
+When present, this IE shall indicate the DNN
+for the Service Specific authorization, shall
+contain the Network Identifier only.
+mtcProviderInformation MtcProviderInformati
+on
+C 0..1 This IE shall be included if available.
+When present, this IE shall indicate the MTC
+provider information for the Service Specific
+authorization.
+authUpdateCallbackUri Uri O 0..1 A URI provided by NEF to receive (implicitly
+subscribed) notifications on authorization data
+update.
+The authUpdateCallbackUri URI shall have
+unique information within NEF to identify the
+authorized result.
+(NOTE)
+afId string O 0..1 When present, indicates the string identifying
+the originating AF.
+nefId NefId O 0..1 When present, this IE shall contain the ID of
+the requesting NEF.
+NOTE: The NEF should always include the authUpdateCallbackUri IE to receive the change of Service Specific
+Authorization Data from the UDM.
+6.8.6.2.5 Type: ServicepecificAuthorizationData
+Table 6.8.6.2.5x-1: Definition of type ServiceSpecificAuthorizationData
+Attribute name Data type P Cardinality Description
+authorizationUeId AuthorizationUeId C 0..1 This IE shall be present for the service specific
+authorisation of the individual UE.
+extGroupId ExternalGroupId C 0..1 This IE shall be present for the service specific
+authorisation of the group of UEs.
+IntGroupId GroupId C 0..1 This IE shall be present for the service specific
+authorisation of the group of UEs.
+When present, this IE shall indicate the Internal
+Group identifier mapped from the External
+Group Identifier indicated by extGroupId IE.
+authId string C 0..1 This IE shall be included in a successful
+Service Specific Authorization response.
+When present, this IE shall indicate the Id of
+the Service Specific Authorization.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 396 ETSI TS 129 503 V17.12.0 (2023-09)
+6.8.6.2.6 Type: AuthorizationUeId
+Table 6.8.6.2.6-1: Definition of type AuthorizationUeId
+Attribute name Data type P Cardinality Description
+supi Supi M 1
+gpsi Gpsi O 0..1
+6.8.6.2.7 Type: ServicepecificAuthorizationRemoveData
+Table 6.8.6.2.7-1: Definition of type ServiceSpecificAuthorizationRemoveData
+Attribute name Data type P Cardinality Description
+authId string M 1 Indicates the Id of the authorization of specific
+service's configuration to be removed.
+6.8.6.3 Simple data types and enumerations
+6.8.6.3.1 Introduction
+This clause defines simple data types and enumerations that can be referenced from data structures defined in the
+previous clauses.
+6.8.6.3.2 Enumeration: ServiceType
+Table 6.8.6.3.2-1: Enumeration ServiceType
+Enumeration value Description
+"AF_GUIDANCE_FOR_URSP" AF guidance for URSP allowed for the subscription
+6.8.6.3.3 Enumeration: InvalidCause
+Table 6.8.6.3.2-1: Enumeration InvalidCause
+Enumeration value Description
+"SUBSRIPTION_WITHDRAWAL" Indicates that the authorization becomes invalid due to UE
+Subscription withdrawal.
+"DNN_REMOVED" Indicates that the authorization becomes invalid because the DNN
+associated to the authorization is removed from UE subscription.
+"SLICE_REMOVED" Indicates that the authorization becomes invalid because the Slice
+associated to the authorization is removed from UE subscription.
+"AUTHORIZATION_REVOKED" Indicates that the authorization is revoked at the UDM.

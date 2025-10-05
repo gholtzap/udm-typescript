@@ -1,0 +1,35 @@
+6.10.6 Data Model
+6.10.6.1 General
+This clause specifies the application data model supported by the API.
+Table 6.10.6.1-1 specifies the structured data types defined for the Nudm_UEID service API. For simple data types
+defined for the Nudm_UEID service API see table 6.10.6.3.2-1.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 405 ETSI TS 129 503 V17.12.0 (2023-09)
+Table 6.10.6.1-1: Nudm_UEID specific Data Types
+Data type Clause defined Description
+DeconcealReqData 6.10.6.2.2 Deconceal Request Data
+DeconcealRspData 6.10.6.2.3 Deconceal Response Data
+Table 6.10.6.1-2 specifies data types re-used by the Nudm_UEID service API from other specifications, including a
+reference to their respective specifications and when needed, a short description of their use within the Nudm_UEID
+service API.
+Table 6.10.6.1-2: Nudm_UEID re-used Data Types
+Data type Reference Comments
+Suci 3GPP TS 29.509 [24] Subscription Concealed Identifier
+Supi 3GPP TS 29.571 [7] Subscription Permanent Identifier
+6.10.6.2 Structured data types
+6.10.6.2.1 Introduction
+This clause defines the structures to be used in resource representations.
+6.10.6.2.2 Type: DeconcealReqData
+Table 6.10.6.2.2-1: Definition of type DeconcealReqData
+Attribute name Data type P Cardinality Description
+suci Suci M 1 This IE shall contain the SUCI to be
+deconcealed
+6.10.6.2.3 Type: DeconcealRspData
+Table 6.10.6.2.2-1: Definition of type DeconcealRspData
+Attribute name Data type P Cardinality Description
+supi Supi M 1 This IE shall contain the SUPI that is
+deconcealed from the input SUCI.
+6.10.6.3 Simple data types and enumerations
+6.10.6.3.1 Introduction
+This clause defines simple data types and enumerations that can be referenced from data structures defined in the
+previous clauses

@@ -1,0 +1,29 @@
+6.9.6 Data Model
+6.9.6.1 General
+This clause specifies the application data model supported by the API.
+Table 6.9.6.1-1 specifies the structured data types defined for the Nudm_RSDS service API. For simple data types
+defined for the Nudm_RSDS service API see table 6.9.6.3.2-1.
+Table 6.9.6.1-1: Nudm_RSDS specific Data Types
+Data type Clause defined Description
+SmDeliveryStatus 6.9.6.2.2 SM Delivery Status-Report
+Table 6.9.6.1-2 specifies data types re-used by the Nudm_RSDS service API from other specifications, including a
+reference to their respective specifications and when needed, a short description of their use within the Nudm_RSDS
+service API.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 401 ETSI TS 129 503 V17.12.0 (2023-09)
+Table 6.9.6.1-2: Nudm_RSDS re-used Data Types
+Data type Reference Comments
+Gpsi 3GPP TS 29.571 [7] Generic Public Subscription Identifier
+6.9.6.2 Structured data types
+6.9.6.2.1 Introduction
+This clause defines the structures to be used in resource representations.
+6.9.6.2.2 Type: SmDeliveryStatus
+Table 6.9.6.2.2-1: Definition of type SmDeliveryStatus
+Attribute name Data type P Cardinality Description
+gpsi Gpsi M 1 Generic Public Subscription Identifier
+smStatusReport string M 1 Indicates SMS-STATUS-REPORT as defined
+in 3GPP TS 23.040 [53]
+6.9.6.3 Simple data types and enumerations
+6.9.6.3.1 Introduction
+This clause defines simple data types and enumerations that can be referenced from data structures defined in the
+previous clauses.

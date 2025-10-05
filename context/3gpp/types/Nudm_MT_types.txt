@@ -1,0 +1,122 @@
+6.7.6 Data Model
+6.7.6.1 General
+This clause specifies the application data model supported by the API.
+Table 6.7.6.1-1 specifies the structured data types defined for the Nudm_MT service API. For simple data types defined
+for the Nudm_MT service API see table 6.7.6.3.2-1.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 385 ETSI TS 129 503 V17.12.0 (2023-09)
+Table 6.7.6.1-1: Nudm_MT specific Data Types
+Data type Clause defined Description
+UeInfo 6.7.6.2.2
+LocationInfoRequest 6.7.6.2.3
+LocationInfoResult 6.7.6.2.4
+5GSrvccInfo 6.7.6.2.5
+Table 6.7.6.1-2 specifies data types re-used by the Nudm_MT service API from other specifications, including a
+reference to their respective specifications and when needed, a short description of their use within the Nudm_MT
+service API.
+Table 6.7.6.1-2: Nudm_MT re-used Data Types
+Data type Reference Comments
+UeContextInfo 3GPP TS 29.518 [36]
+Supi 3GPP TS 29.571 [7]
+5GsUserState 3GPP TS 29.518 [36]
+NfInstanceId 3GPP TS 29.571 [7] Network Function Instance Identifier
+PlmnId 3GPP TS 29.571 [7] PLMN Identity
+Ecgi 3GPP TS 29.571 [7] EUTRAN cell identity
+Ncgi 3GPP TS 29.571 [7] NR cell identity
+Tai 3GPP TS 29.571 [7] Tracking area identity
+GeographicArea 3GPP TS 29.572 [34] Estimate of the location of the UE
+AgeOfLocationEstimate 3GPP TS 29.572 [34] Age Of Location Estimate
+RatType 3GPP TS 29.571 [7] RAT type
+TimeZone 3GPP TS 29.571 [7] Time Zone
+SupportedFeatures 3GPP TS 29.571 [7]
+ProblemDetails 3GPP TS 29.571 [7]
+StnSr 3GPP TS 29.571 [7] Session Transfer Number for 5G-SRVCC
+CMsisdn 3GPP TS 29.571 [7] Correlation MSISDN
+6.7.6.2 Structured data types
+6.7.6.2.1 Introduction
+This clause defines the structures to be used in resource representations.
+6.7.6.2.2 Type: UeInfo
+Table 6.7.6.2.2-1: Definition of type UeInfo
+Attribute name Data type P Cardinality Description
+tadsInfo UeContextInfo O 0..1 See 3GPP TS 29.518 [36]
+userState 5GsUserState O 0..1 See 3GPP TS 29.518 [36]
+5gSrvccInfo 5GSrvccInfo O 0..1
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 386 ETSI TS 129 503 V17.12.0 (2023-09)
+6.7.6.2.3 Type: LocationInfoRequest
+Table 6.7.6.2.3-1: Definition of type LocationInfoRequest
+Attribute name Data type P Cardinality Description
+req5gsLoc boolean C 0..1 This IE shall be present and set to "true", if
+5GS location information is requested.
+When present, the IE shall be set as following:
+- true: the location of the UE is requested
+- false (default): the location of the UE is not
+requested
+reqCurrentLoc boolean C 0..1 This IE may be present if location information is
+requested.
+When present, the IE shall be set as following:
+- true: the current location of the UE is
+requested
+- false (default): the current location of the
+UE is not requested
+reqRatType boolean C 0..1 This IE shall be present and set to "true", if the
+RAT Type of the UE is requested.
+When present, the IE shall be set as following:
+- true: the RAT type of the UE is requested
+- false (default): the RAT type of the UE is
+not requested
+reqTimeZone boolean C 0..1 This IE shall be present and set to "true", if the
+local timezone of the UE is requested.
+When present, the IE shall be set as following:
+- true: the local timezone of the UE is
+requested
+- false (default): the local timezone of the
+UE is not requested.
+reqServingNode boolean C 0..1 This IE shall be present and set to "true", if only
+serving node(s) address/identity is requested
+as location information.
+When present, the IE shall be set as following:
+- true: only serving node(s) identity is
+requested
+- false(default)
+supportedFeatures SupportedFeatures O 0..1 See clause 6.7.8
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 387 ETSI TS 129 503 V17.12.0 (2023-09)
+6.7.6.2.4 Type: LocationInfoResult
+Table 6.7.6.2.4-1: Definition of type LocationInfoResult
+Attribute name Data type P Cardinality Description
+vPlmnId PlmnId M 1 Visiting PLMN Identity
+amfInstanceId NfInstanceId O 0..1 NF instance ID of the serving AMF for 3GPP
+access
+smsfInstanceId NfInstanceId O 0..1 NF instance ID of the serving SMSF
+ecgi Ecgi O 0..1 E-UTRA Cell Identity
+ncgi Ncgi O 0..1 NR Cell Identity
+tai Tai O 0..1 Tracking Area Identity
+currentLoc boolean O 0..1 When present, this IE shall be set as following:
+- true: the current location of the UE is
+returned
+- false: the last known location of the UE is
+returned.
+geoInfo GeographicArea O 0..1 If present, this IE shall contain the geographical
+information of the UE.
+locationAge AgeOfLocationEstim
+ate
+O 0..1 If present, this IE shall contain the age of the
+location information.
+ratType RatType O 0..1 If present, this IE shall contain the current RAT
+type of the UE.
+timezone TimeZone O 0..1 If present, this IE shall contain the local time
+zone of the UE.
+supportedFeatures SupportedFeatures O 0..1 See clause 6.7.8
+NOTE: Either the "ecgi" attribute or the "ncgi" attribute may be included.
+6.7.6.2.5 Type: 5GSrvccInfo
+Table 6.7.6.2.5-1: Definition of type 5GSrvccInfo
+Attribute name Data type P Cardinality Description
+ue5GSrvccCapability boolean M 1 This IE indicates whether the UE supports 5G
+SRVCC:
+- true: 5G SRVCC is supported by the UE
+- false: 5G SRVCC is not supported.
+stnSr StnSr O 0..1 Session Transfer Number for 5G-SRVCC
+cMsisdn CMsisdn O 0..1 Correlation MSISDN of the UE.
+6.7.6.3 Simple data types and enumerations
+In this release of this specification, no simple data types and enumerations are defined for the Nudm_MT Service. 

@@ -1,0 +1,1520 @@
+3GPP TS 29.503 version 17.12.0 Release 17 
+257 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.2.6 
+Data Model 
+6.2.6.1 
+General 
+This clause specifies the application data model supported by the API. 
+Table 6.2.6.1-1 specifies the data types defined for the Nudm_UECM service API. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+258 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Table 6.2.6.1-1: Nudm_UECM specific Data Types 
+3GPP TS 29.503 version 17.12.0 Release 17 
+259 
+Data type 
+Amf3GppAccessRegistration 
+Clause defined 
+6.2.6.2.2 
+AmfNon3GppAccess Registration 
+6.2.6.2.3 
+SmfRegistration 
+6.2.6.2.4 
+SmsfRegistration 
+6.2.6.2.6 
+Deregistration Data 
+6.2.6.2.5 
+Amf3GppAccessRegistration Modification 
+6.2.6.2.7 
+AmfNon3GppAccess Registration Modification 6.2.6.2.8 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Description 
+The complete set of information relevant to the AMF where the UE has registered via 3GPP 
+access. 
+The complete set of information relevant to the AMF where the UE has registered via non 3GPP 
+access. 
+The complete set of information relevant to an SMF serving the UE 
+The complete set of information relevant to the |SMSF serving the UE. 
+Data sent with the Deregistration Notification Contains attributes of 
+Amf3GppAccess Registration that can be modified using PATCH 
+Contains attributes of 
+AmfNon3GppAccess Registration that can be modified using PATCH 
+Information sent to the AMF or SMF when P- CSCF restoration is triggered. 
+PcscfRestoration Notification 
+6.2.6.2.9 
+NetworkNode DiameterAddress 
+6.2.6.2.10 
+EpslwkPgw 
+6.2.6.2.11 
+TriggerRequest 
+6.2.6.2.12 
+AmfDereginfo 
+6.2.6.2.13 
+|EpsInterworkingInfo 
+6.2.6.2.14 
+LocationInfo 
+6.2.6.2.15 
+Registration LocationInfo 
+6.2.6.2.16 
+Information used by (H)GMLC to send Location Service Request 
+Serving AMF, optional VGMLC and access type related informations used by (H)GMLC to send Location Request 
+VgmlcAddress 
+6.2.6.2.17 
+The address(es) of VGMLC 
+PeiUpdateInfo 
+6.2.6.2.18 
+Registration DataSets 
+6.2.6.2.19 
+IpSmGwRegistration 
+6.2.6.2.20 
+SmfRegistrationInfo 
+6.2.6.2.20A 
+NwdafRegistration 
+6.2.6.2.21 
+NwdafRegistrationModification 
+6.2.6.2.22 
+SmfRegistration Modification 
+6.2.6.2.23 
+RoamingInfoUpdate 
+6.2.6.2.24 
+DataRestoration Notification 
+6.2.6.2.25 
+UDR 
+PcscfAddress 
+6.2.6.2.26 
+|NwdafRegistrationInfo 
+6.2.6.2.27 
+List of NwdafRegistration 
+RoutingInfoSmRequest 
+6.2.6.2.28 
+RoutingInfoSmResponse 
+6.2.6.2.29 
+IpSmGwInfo 
+6.2.6.2.30 
+IpSmGwGuidance 
+6.2.6.2.31 
+SmsRouterInfo 
+6.2.6.2.32 
+PurgeFlag 
+6.2.6.3.2 
+E164Number 
+6.2.6.3.2 
+DualRegistrationFlag 
+6.2.6.3.2 
+Dual Registration Flag 
+Deregistration Reason 
+6.2.6.3.3 
+ImsVoPs 
+6.2.6.3.4 
+RegistrationReason 
+6.2.6.3.5 
+|Registration DataSetName 
+6.2.6.3.6 
+SMF Registration Information 
+The complete set of information relevant to an |NWDAF serving the UE 
+Contains attributes of NwdafRegistration that can be modified using PATCH 
+Contains attributes of SmfRegistration that can |be modified using PATCH 
+Roaming Information Update 
+Contains identities representing those UEs 
+potentially affected by a data-loss event at the 
+Contains the addressing information (IP 
+addresses and/or FQDN) of the P-CSCF 
+Request body of the send-routing-info-sm custom operation. 
+Addressing information of available nodes for SMS delivery. 
+Addressing information of the IP-SM-GW. 
+Contains guidance information (e.g. minimum and recommended delivery times) of the IP-SM- GW. 
+Addressing information of the SMS Router |configured at the UDM. 
+This flag indicates whether or not the NF has deregistered. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+UeReachableInd 
+260 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.2.6.3.7 
+UE Reachable Indication 
+Table 6.2.6.1-2 specifies data types re-used by the Nudm_uecm service API from other specifications, including a reference to their respective specifications and when needed, a short description of their use within the Nudm_uecm service API. 
+Table 6.2.6.1-2: Nudm_UECM re-used Data Types 
+Comments 
+Data type 
+Reference 
+Dnn 
+3GPP TS 29.571 [7] 
+NfInstanceld 
+3GPP TS 29.571 [7] 
+Data Network Name with Network Identifier only. Network Function Instance Identifier 
+PduSessionId 
+3GPP TS 29.571 [7] 
+Pei 
+3GPP TS 29.571 [7] 
+Problem Details 
+3GPP TS 29.571 [7] 
+|Uri 
+3GPP TS 29.571 [7] 
+SupportedFeatures 
+Supi 
+Guami 
+Plmnld 
+DiameterIdentity 
+AccessType 
+BackupAmfInfo 
+PatchResult 
+Gpsi 
+Ipv4Addr 
+Ipv6Addr 
+Snssai 
+RedirectResponse 
+3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.571 [7] |3GPP TS 29.571 [7] 
+Fadn 
+3GPP TS 29.571 [7] 
+FqdnRm 
+NfGroupld ServiceName 
+SupiRange 
+3GPP TS 29.571 [7] 3GPP TS 29.571 [7] 3GPP TS 29.510 [19] 3GPP TS 29.510 [19] 
+PDU Session ID 
+Permanent Equipment Identifier 
+Common data type used in response bodies 
+Uniform Resource Identifier 
+see 3GPP TS 29.500 [4] clause 6.6 |see 3GPP TS 23.501 [2] clause 5.9.2 |Globally Unique AMF Identifier PLMN Identity 
+Access Type Backup AMFs 
+Generic Public Subscription Identitfier IPv4 address IPv6 address Single NSSAI 
+Response body of the redirect response message Fully Qualified Domain Name 
+|Fully Qualified Domain Name, nullable 
+NF Group ID 
+IdentityRange 
+3GPP TS 29.510 [19] 
+Eventld 
+ContextInfo 
+3GPP TS 29.520 [58] 6.1.6.2.69 
+Describes the type of analytics. 
+Defined in the Nudm_SDM API. 
+|Contains the HTTP Headers received by the NFS 
+6.2.6.2 
+Structured data types 
+Introduction 
+6.2.6.2.1 
+This clause defines the structures to be used in resource representations. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+261 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.2.6.2.2 
+Type: Amf3GppAccessRegistration 
+Table 6.2.6.2.2-1: Definition of type Amf3GppAccess Registration 
+3GPP TS 29.503 version 17.12.0 Release 17 
+Attribute name 
+amfInstanceld 
+deregCallbackUri 
+262 
+Cardinality 
+Data type NfInstanceld 
+P 
+M 
+1 
+Uri 
+M 1 
+Guami RatType 
+M 1 
+M 1 
+SupportedFeatur O 0..1 
+guami 
+ratType 
+supportedFeatures 
+es 
+purgeFlag 
+PurgeFlag 
+pei 
+О 
+0..1 
+Pei 
+O 0..1 
+imsVoPs 
+ImsVoPs 
+O 0..1 
+amfServiceNameDereg ServiceName 
+O 0..1 
+O 0..1 
+pcscfRestorationCallba Uri 
+ckUri 
+amfServiceNamePcscf 
+ServiceName 
+O 0..1 
+Rest 
+initialRegistrationInd boolean 
+C 0..1 
+emergencyRegistration boolean 
+C 0..1 
+nd 
+backupAmfInfo 
+array(BackupAmf C 
+1..N 
+Info) 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Description 
+|The identity the AMF uses to register in the NRF. A URI provided by the AMF to receive (implicitly subscribed) notifications on deregistration. The deregistration callback URI shall have unique information within AMF set to identify the UE to be deregistered. 
+This IE shall contain the serving AMF's GUAMI. This IE shall indicate the current RAT type of the UE. 
+See clause 6.2.8 
+These are the features supported by the AMF. This flag indicates whether or not the AMF has deregistered. It shall not be included in the Registration service operation. 
+Permanent Equipment Identifier. 
+Absence of PEI indicates that the PEI is not available at the AMF. In this case the UDM/UDR shall not delete the PEI value stored from a previous registration. 
+If the UDR supports the PeiResource feature, the UDM shall also use the Peilnfo resource of the UDR to store the received PEI if it is different from the previously stored PEI or if the Peilnfo resource does not exist. 
+Indicates per UE if "IMS Voice over PS Sessions" is homogeneously supported in all TAs in the serving AMF for the current PLMN and access 
+type, or homogeneously not supported, or if support is non-homogeneous/unknown. Absence of this attribute shall be interpreted as "non homogenous or unknown" support. 
+When present, this IE shall contain the name of the AMF service to which the Deregistration 
+Notification is to be sent (see clause 6.5.2.2 of 3GPP TS 29.500 [4]). 
+A URI provided by the AMF to receive (implicitly subscribed) notifications on the need for P-CSCF Restoration. 
+When present, this IE shall contain the name of the AMF service to which P-CSCF Restoration Notifications are to be sent (see clause 6.5.2.2 of 3GPP TS 29.500 [4]). This IE may be included if |pcscfRestorationCallbackUri is present. 
+This IE shall be included by the AMF and set to true if the UE performs an Initial Registration. If the UE does not perform initial registration it shall be absent or set to false. When present and true, the UDM+HSS is requested to cancel previous registration in SGSN, if any. 
+Not applicable for Nudr and Nudm_UECM GET operation. 
+(NOTE 2) 
+This IE shall be included by the AMF and set to true if the UE performs an emergency Registration. Not applicable for Nudr and Nudm_UECM GET operation. 
+This IE shall be included if the NF service consumer is an AMF and the AMF supports the 
+AMF management without UDSF. 
+The UDM uses this attribute to do an NRF query in 
+order to invoke later services in a backup AMF, e.g. Namf_EventExposure. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+drFlag 
+DualRegistration 
+O 
+0..1 
+Flag 
+urrpIndicator 
+boolean 
+O 0..1 
+amfEeSubscriptionld 
+Uri 
+C 0..1 
+EpsInterworkingl C 0..1 
+epsInterworkingInfo 
+nfo 
+ueSrvccCapability 
+boolean 
+O 
+0..1 
+registration Time 
+DateTime 
+C 0..1 
+vgmlcAddress contextInfo 
+VgmlcAddress ContextInfo 
+о 0..1 
+C 0..1 
+noEeSubscriptionInd boolean 
+O 0..1 
+supi 
+Supi 
+C 0..1 
+263 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Dual Registration flag. When present and true, this flag indicates that the UDM+HSS is requested not to send S6a-CLR to the registered MME/SGSN (if any). Otherwise, the registered MME (if any) shall be cancelled. 
+Not applicable for Nudr and Nudm_UECM GET operation. 
+This IE indicates whether 
+"UE_REACHABILITY_FOR_SMS" event or 
+"UE_REACHABILITY_FOR_DATA" event for One- Time UE Activity notification (i.e. Max Number Of reports =1) with configuration 
+"INDIRECT_REPORT" for this user has been subscribed or not: 
+- true: the event has been subscribed 
+- false, or absence of this attribute: the event for this user is currently not subscribed 
+(NOTE 1) 
+Shall be present if urrplndicator is true and the UDM has subscribed (e.g. on behalf of NEF) to ReachabilityReport event for "UE Reachability for DL Traffic" at the AMF to receive One-Time UE Activity notification. It contains the subscription Id URI allocated by the AMF as received by the UDM in the HTTP "Location" header of the Namf_EventExposure_Subscribe response. The UDM shall make use of the 
+Nudr_DataRepository Update service operation (see 3GPP TS 29.504 [9]) to store the amfEeSubscription Id in the UDR. 
+This IE shall be included if the AMF has determined per APN/DNN which PGW-C+SMF is selected for EPS interworking with N26 and the AMF supports EPS interworking of non-3GPP access. For each APN/DNN, only one PGW-C+SMF shall be selected by the AMF for EPS interworking. This IE indicates whether the UE supports 5G SRVCC: 
+- true: 5G SRVCC is supported by the UE and AMF; 
+- false, or absence of this attribute: 5G SRVCC is not supported. 
+Time of Amf3GppAccessRegistration. 
+Shall be present when used on Nudr. 
+Address of the VGMLC 
+This IE if present may contain e.g. the headers received by the UDM along with the Amf3GppAccessRegistration. 
+Shall be absent on Nudm and may be present on Nudr 
+This IE shall be absent on Nudr and may be present on Nudm. This indication is used by UDM to restore any possible ongoing subscription lost, as specified in clause 5.3.2.2.2. 
+When present, this IE shall indicate whether AMF does not have event exposure subscriptions in UE Context: 
+- true: No Event Exposure subscription existing in UE Context in AMF. 
+- false: Event Exposure subscription(s) exist in UE Context in AMF. 
+This IE may be included by the AMF in registration requests and should be included by UDM in GET responses when the corresponding GET request provided a GPSI UE identity. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+ueReachableInd 
+UeReachablelnd C 0..1 
+reRegistration Required boolean 
+C 0..1 
+adminDeregSubWithdra boolean 
+C 0..1 
+wn 
+dataRestorationCallback Uri 
+O 0..1 
+Uri 
+resetlds 
+array(string) 
+О 1..N 
+disasterRoamingInd boolean 
+O 0..1 
+ueMINTCapability 
+boolean 
+O 0..1 
+264 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+This IE shall be present if the UE is currently not reachable (e.g. in not allowed areas) or the UE reachability is unknown (e.g. service restriction area of the UE is not received at the AMF during initial registration). 
+When the UE is not reachable (and based on operator policy when the UE reachability is unknown), the UDM shall keep the urrplndicator and amfEeSubscriptionId attributes and not generate Reachability Report for the UE. 
+Absence of this IE shall be interpreted as "REACHABLE". 
+This IE is only applicable to Nudr interface and shall not be included over the Nudm interface. 
+This attribute may be included in notifications sent by the UDR to the UDM if purgeFlag is also set to true in the same notification. 
+When Nudr Data Change Notification is received including this attribute and the purge Flag, both set to true, the UDM uses 
+"REREGISTRATION REQUIRED" as Deregistration Reason towards AMF. 
+This attribute shall not be included and set to true if the adminDeregSubWithdrawn attribute is present and set to true. 
+Absence of this IE shall be interpreted as false. This IE is only applicable to Nudr interface and shall not be included over the Nudm interface. 
+This attribute may be included in notifications sent by the UDR to the UDM if the purgeFlag is also set to true in the same notification. 
+When Nudr Data Change Notification is recevied including this attribute and the purge Flag, both set to true, the UDM uses 
+"SUBSCRIPTION_WITHDRAWN" as Deregistration Reason towards AMF. 
+This attribute shall not be included and set to true if the reRegistration Required attribute is present and set to true. 
+Absence of this IE shall be interpreted as false. If present, it contains the URI where notifications about UDR-initiated data restoration shall be sent by UDM. 
+May be present in registration response messages. The AMF may decide to re-register at the UDM when receiving a data restoration notification containing a matching resetld. 
+Disaster Roaming Indicator (see 
+3GPP TS 23.502 [3]). 
+When present, this IE shall be set as follows: 
+true: Disaster Roaming service is applied; false (default): Disaster Roaming service is not applied. 
+This IE indicates whether the UE supports MINT: - true: MINT is supported by the UE; 
+- false, or absence of this attribute: MINT is not supported. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+sorSnpnSiSupported 
+boolean 
+0..1 
+JudrRestartInd 
+boolean 
+O 0..1 
+lastSynchronization Tim DateTime 
+le 
+O 
+0..1 
+265 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+This IE may be included by the AMF in registration requests; if present, it shall contain the capability of the UE or ME to support "Steering of Roaming SNPN Selection Information" (SOR-SNPN-SI). - true: SOR-SNPN-SI is supported 
+|- false or absent: SOR-SNPN-SI is not supported 
+May be present in request messages from the AMF to the UDM. 
+If present: 
+- true: indicates that the registration message sent by the AMF is due to a re-synchronization event, motivated by a previous reception at the AMF of a Data Restoration Notification from the UDM 
+- false (or absent): indicates that this is a normal registration message (i.e., not motivated by a data restoration notification event) 
+This IE is only applicable to the Nudm API and shall not be used on the Nudr API. 
+It may only be included when "udrRestartInd" attribute is present and set to true. 
+When present, it contains the timestamp 
+(previously stored by AMF locally, after successful registration at UDM) when profiles in the AMF and in UDM/UDR were synchronized. 
+NOTE 1: The urrpIndicator attribute shall only be exposed over the Nudr SBI, and it shall not be included by the AMF. NOTE 2: Regardless of the Dual Registration Flag, the SGSN, if any, is required to be cancelled (see 
+3GPP TS 23.502 [3] clause 4.11.5.2) 
+3GPP TS 29.503 version 17.12.0 Release 17 
+266 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.2.6.2.3 
+Type: AmfNon3GppAccessRegistration 
+Table 6.2.6.2.3-1: Definition of type AmfNon3GppAccessRegistration 
+3GPP TS 29.503 version 17.12.0 Release 17 
+267 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Attribute name 
+amflnstanceld 
+deregCallbackUri 
+guami 
+ratType 
+supportedFeatures 
+purgeFlag 
+pei 
+Data type NfInstanceld 
+P Cardinality M 1 
+Uri 
+M 1 
+Guami 
+M 1 
+RatType 
+M 1 
+O 0..1 
+SupportedFeat O 
+ures 
+PurgeFlag 
+O 0..1 
+Pei 
+O 0..1 
+limsVoPs 
+ImsVoPs 
+M 1 
+amfServiceNameDereg ServiceName O 0..1 
+pcscfRestorationCallbackU Uri 
+O 0..1 
+Iri 
+amfServiceNamePcscfRest ServiceName 
+O 0..1 
+backupAmfInfo 
+array(BackupA C C 1..N mfinfo) 
+urrpIndicator 
+boolean 
+O 0..1 
+Description 
+The identity the AMF uses to register in the NRF. 
+A URI provided by the AMF to receive (implicitly subscribed) notifications on deregistration. 
+The deregistration callback URI shall have unique information within AMF set to identify the UE to be deregistered. 
+This IE shall contain the serving AMF's 
+GUAMI. 
+This IE shall indicate the current RAT type of the UE. 
+See clause 6.2.8 
+These are the features supported by the AMF. 
+This flag indicates whether or not the AMF has deregistered. It shall not be included in the Registration service operation. Permanent Equipment Identifier 
+Absence of PEI indicates that the PEI is not available at the AMF. In this case the UDM/UDR shall not delete the PEI value stored from a previous registration. 
+If the UDR supports the PeiResource feature and the received PEI is of type IMEI(SV), the UDM shall also use the Peilnfo resource of the UDR to store the received PEI if it is different from the previously stored PEI or if the Peilnfo resource does not exist. Indicates per UE if "IMS Voice over PS Sessions" is supported, or not supported. The value 
+NON_HOMOGENEOUS_OR_UNKNOWN is 
+not applicable. 
+When present, this IE shall contain the name of the AMF service to which the Deregistration Notification is to be sent (see clause 6.5.2.2 of 3GPP TS 29.500 [4]). A URI provided by the AMF to receive (implicitly subscribed) notifications on the need for P-CSCF Restoration. 
+When present, this IE shall contain the name of the AMF service to which P-CSCF Restoration Notifications are to be sent (see clause 6.5.2.2 of 3GPP TS 29.500 [4]). This IE may be included if 
+pcscfRestorationCallbackUri is present. This IE shall be included if the NF service consumer is an AMF and the AMF supports the AMF management without UDSF. The UDM uses this attribute to do an NRF query in order to invoke later services in a backup AMF, e.g. Namf_EventExposure. This IE indicates whether "UE_REACHABILITY_FOR_SMS" event or "UE REACHABILITY FOR DATA" event for One-Time UE Activity notification (i.e. Max Number Of reports =1) with configuration "INDIRECT REPORT" for this user has been subscribed or not: 
+- true: the event has been subscribed 
+false, or absence of this attribute: the event 
+for this user is currently not subscribed 
+3GPP TS 29.503 version 17.12.0 Release 17 
+amfEeSubscriptionld 
+Uri 
+C 0..1 
+registration Time 
+DateTime 
+C 0..1 
+vgmlcAddress contextInfo 
+VgmlcAddress O 0..1 ContextInfo C 0..1 
+noEeSubscriptionInd 
+boolean 
+O 0..1 
+supi 
+Supi 
+C 0..1 
+reRegistrationRequired 
+boolean 
+C 0..1 
+268 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Shall be present if urrplndicator is true and the UDM has subscribed (e.g. on behalf of NEF) to Reachability-Report event for "UE Reachable for DL Traffic" at the AMFto receive One-Time UE Activity notification. It contains the subscription Id URI allocated by the AMF as received by the UDM in the HTTP "Location" header of the Namf_EventExposure_Subscribe response. The UDM shall make use of the Nudr_DataRepository Update service operation (see 3GPP TS 29.504 [9]) to store the amfEeSubscription Id in the UDR. Time of AmfNon3GppAccessRegistration. Shall be present when used on Nudr. 
+Address of the VGMLC 
+This IE if present may contain e.g. the headers received by the UDM along with AmfNon3GppAccessRegistration. 
+Shall be absent on Nudm and may be 
+present on Nudr. 
+This IE shall be absent on Nudr and may be present on Nudm. This indication is used by UDM to restore any possible ongoing subscription lost, as specified in clause 5.3.2.2.3. 
+When present, this IE shall indicate whether AMF does not have event exposure subscriptions in UE Context: 
+- true: No Event Exposure subscription 
+existing in UE Context in AMF. 
+- false: Event Exposure subscription(s) exist in UE Context in AMF. 
+This IE may be included by the AMF in registration requests and should be included by UDM in GET responses when the corresponding GET request provided a GPSI UE identity. 
+This IE is only applicable to Nudr interface and shall not be included over the Nudm interface. 
+This attribute may be included in notifications sent by the UDR to the UDM if the purgeFlag is also set to true in the same notification. 
+When Nudr Data Change Notification is received including this attribute and the purgeFlag, both set to true, the UDM uses "REREGISTRATION_REQUIRED" as Deregistration Reason towards AMF. 
+This attribute shall not be included and set to 
+true if the admin DeregSubWithdrawn 
+attribute is present and set to true. 
+Absence of this IE shall be interpreted as false. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+269 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+adminDeregSubWithdrawn boolean 
+C 0..1 
+dataRestorationCallbackUri Uri 
+O 0..1 
+resetlds 
+array(string) O 1..N 
+disasterRoamingInd 
+boolean 
+O 0..1 
+sorSnpnSiSupported 
+boolean 
+O 0..1 
+JudrRestartInd 
+boolean 
+O 0..1 
+lastSynchronization Time DateTime 
+O 0..1 
+NOTE: 
+This IE is only applicable to Nudr interface and shall not be included over the Nudm interface. 
+This attribute may be included in notifications sent by the UDR to the UDM if the purgeFlag is also set to true in the same notification. 
+When Nudr Data Change Notification is recevied including this attribute and the purgeFlag, both set to true, the UDM uses "SUBSCRIPTION_WITHDRAWN" as Deregistration Reason towards AMF. 
+This attribute shall not be included and set to 
+true if the reRegistration Required attribute is present and set to true. 
+Absence of this IE shall be interpreted as false. 
+If present, it contains the URI where notifications about UDR-initiated data restoration shall be sent by UDM. May be present in registration response messages. 
+The AMF may decide to re-register at the UDM when receiving a data restoration notification containing a matching resetld. Disaster Roaming Indicator (see 3GPP TS 23.502 [3]). 
+When present, this IE shall be set as follows: 
+true: Disaster Roaming service is applied; 
+false (default): Disaster Roaming service is not applied. 
+This IE may be included by the AMF in registration requests; if present, it shall contain the capability of the UE or ME to support "Steering of Roaming SNPN Selection Information" (SOR-SNPN-SI). 
+- true: SOR-SNPN-SI is supported 
+- false or absent: SOR-SNPN-SI is not supported 
+May be present in request messages from the AMF to the UDM. 
+If present: 
+- true: indicates that the registration message sent by the AMF is due to a re- synchronization event, motivated by a previous reception at the AMF of a Data Restoration Notification from the UDM 
+- false (or absent): indicates that this is a normal registration message (i.e., not motivated by a data restoration notification event) 
+This IE is only applicable to the Nudm API and shall not be used on the Nudr API. 
+It may only be included when "udrRestartInd" attribute is present and set to true. 
+When present, it contains the timestamp (previously stored by AMF locally, after 
+successful registration at UDM) when profiles in the AMF and in UDM/UDR were synchronized. 
+The urrplndicator attribute shall only be exposed over the Nudr SBI, and it shall not be included by the AMF. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+270 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.2.6.2.4 
+Type: SmfRegistration 
+Table 6.2.6.2.4-1: Definition of type SmfRegistration 
+3GPP TS 29.503 version 17.12.0 Release 17 
+Attribute name 
+smflnstanceld smfSetld 
+Data type NfInstanceld NfSetld 
+supportedFeatures 
+pduSessionId singleNssai 
+dnn 
+271 
+P Cardinality M 1 
+C 0..1 
+Supported FeaO 0..1 tures 
+PduSessionld M 1 Snssai 
+M 1 
+Dnn 
+C 0..1 
+emergencyServices 
+boolean 
+C 0..1 
+pcscfRestorationCallbackUri 
+Uri 
+O 0..1 
+plmnld 
+Plmnld 
+M 1 
+pgwFqdn 
+Fqdn 
+C 0..1 
+pgwlpAddr 
+IpAddress 
+O 0..1 
+epdgInd 
+boolean 
+O 0..1 
+deregCallbackUri 
+Uri 
+O 0..1 
+registrationReason 
+registration Time 
+contextInfo 
+pcfld 
+RegistrationR O 0..1 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Description 
+NF Instance Id of the SMF 
+This IE shall be present if the SMF belongs to a SMF SET. 
+If present, it indicates the NF Set ID of SMF Set. See clause 6.2.8 
+These are the features supported by the SMF. PDU Session ID 
+A single Network Slice Selection Assistance Information. 
+It shall contain the HPLMN S-NSSAI of the LBO or HR roaming PDU session, or the S-NSSAI in the |serving PLMN of the non roaming PDU session. 
+Data Network Name; shall be present if emergencyServices is false or absent. When present, this IE shall contain the Network Identifier only. 
+Indication of Emergency Services; absence indicates false. 
+a URI provided by the SMF to receive (implicitly subscribed) notifications on the need for P-CSCF Restoration 
+Serving node PLMN identity. 
+For a HR PDU session, this IE shall include the PLMN ID of the home network of the UE. For a LBO PDU session, this IE shall include the PLMN ID of the serving network where the UE is registered from. 
+FQDN of the PGW in the "PGW-C+SMF", to be included for interworking with EPS. 
+IP Address of the PGW in the "PGW-C+SMF", to be included for interworking with EPS. Indicate whether access is from ePDG. true: access from ePDG. 
+false or absent: not access from ePDG 
+A URI provided by the SMF to receive (implicitly subscribed) notifications on deregistration. The deregistration callback URI shall have unique information within SMF set to identify the UE to be deregistered. 
+Indicates registration reason. 
+eason DateTime 
+C 0..1 
+Time of SmfRegistration. 
+ContextInfo C 0..1 
+NfInstanceld C 0..1 
+dataRestorationCallbackUri 
+Uri 
+O 0..1 
+resetlds 
+array(string) O 1..N 
+Shall be present when used on Nudr. 
+This IE if present may contain e.g. the headers received by the UDM along with the SmfRegistration. 
+Shall be absent on Nudm and may be present on Nudr. 
+This IE shall be present if the SMF is indicated to select the same PCF instance for SM Policy Control. 
+When present, it indicates the PCF Identifier that serving the PDU Session/PDN Connection. 
+If present, it contains the URI where notifications about UDR-initiated data restoration shall be sent by UDM. 
+May be present in registration response messages. The SMF may decide to re-register at the UDM when receiving a data restoration notification containing a matching resetld. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+JudrRestartInd 
+boolean 
+O 0..1 
+lastSynchronization Time 
+DateTime 
+O 0..1 
+272 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+May be present in request messages from the SMF to the UDM. 
+If present: 
+- true: indicates that the registration message sent by the SMF is due to a re-synchronization event, motivated by a previous reception at the SMF of a Data Restoration Notification from the UDM. 
+- false (or absent): indicates that this is a normal registration message (i.e., not motivated by a data restoration notification event) 
+This IE is only applicable to the Nudm API and shall not be used on the Nudr API. 
+It may only be included when "udrRestartInd" attribute is present and set to true. 
+When present, it contains the timestamp 
+(previously stored by SMF locally, after successful registration at UDM) when profiles in the SMF and in UDM/UDR were synchronized. 
+6.2.6.2.5 
+Type: DeregistrationData 
+Table 6.2.6.2.5-1: Definition of type Deregistration Data 
+Data type Deregistration 
+Reason 
+P 
+M 1 
+Cardinality 
+Attribute name 
+deregReason 
+accessType 
+pduSessionId 
+PduSessionld C 0..1 
+AccessType C 0..1 
+newSmfInstanceld 
+NfInstanceld 
+O 0..1 
+Description String; see clause 6.2.6.3.3 
+Access type where the UE 
+is deregistered. Shall be present in Deregistration Notifications sent to the AMF. 
+It shall be present if the deregistration of SMF happens. 
+If present, indicates PDU Session ID for which old SMF is deregistered. 
+NF Instance Id of the new SMF to which the SMF context is transferred. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+273 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.2.6.2.6 
+Type: SmsfRegistration 
+Table 6.2.6.2.6-1: Definition of type SmsfRegistration 
+3GPP TS 29.503 version 17.12.0 Release 17 
+274 
+Attribute name 
+smsfInstanceld 
+Data type NfInstanceld 
+P 
+Cardinality 
+M 
+1 
+smsfSetld 
+NfSetld 
+C 
+0..1 
+supportedFeatures 
+plmnld 
+SupportedFeatures 
+O 0..1 
+Plmnld 
+M 1 
+smsfMAPAddress 
+E164Number 
+C 0..1 
+smsfDiameterAddress 
+NetworkNode Diamet 
+C 0..1 
+erAddress 
+registration Time 
+DateTime 
+C 0..1 
+contextInfo 
+ContextInfo 
+C 0..1 
+smsfSbiSuplnd 
+boolean 
+C 0..1 
+dataRestorationCallbac Uri 
+kUri 
+resetlds 
+O 0..1 
+array(string) 
+O 1..N 
+udrRestartInd 
+boolean 
+O 0..1 
+lastSynchronization Tim DateTime 
+O 0..1 
+e 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Description 
+NF Instance Id of the SMSF 
+This IE shall be present if the SMSF belongs to an SMSF SET. 
+If present, it indicates the NF Set ID of SMSF Set. 
+See clause 6.2.8 
+These are the features supported by the SMSF. 
+Serving PLMN identity 
+This IE shall include the PLMN ID of the serving network where the UE is registered from. 
+International E.164 number of the SMSF; shall be present if the SMSF supports MAP (see 3GPP TS 29.002 [21]) 
+shall be present if the SMSF supports Diameter (see 3GPP TS_29.338 [22]) 
+Time of SmsfRegistration. 
+Shall be present when used on Nudr. 
+This IE if present may contain e.g. the headers received by the UDM along with the SmsfRegistration. 
+Shall be absent on Nudm and may be present on Nudr.. 
+SBI Support Indication of the SMSF. it shall be present if the SMSF support SBI-based MT SM transmit (see clauses 5.3.2.2.5 and 5.3.2.2.6). Contains the indication on whether or not the SMSF is expecting to support SBI-based MT SM transmit. 
+- true: the SMSF supports SBI for MT SM transmit. 
+- false, or absence of this attribute: the SMSF 
+|do not support SBI for MT SM transmit. 
+If present, it contains the URI where notifications about UDR-initiated data restoration shall be sent by UDM. May be present in registration response messages. 
+The SMSF may decide to re-register at the UDM when receiving a data restoration notification containing a matching resetld. May be present in request messages from the SMSF to the UDM. 
+If present: 
+- true: indicates that the registration message sent by the SMSF is due to a re- 
+synchronization event, motivated by a previous reception at the SMSF of a Data Restoration Notification from the UDM 
+- false (or absent): indicates that this is a 
+normal registration message (i.e., not motivated by a data restoration notification event) 
+This IE is only applicable to the Nudm API and shall not be used on the Nudr API. 
+It may only be included when "udrRestartInd" 
+attribute is present and set to true. 
+When present, it contains the timestamp (previously stored by SMSF locally, after 
+successful registration at UDM) when profiles in the SMSF and in UDM/UDR were synchronized. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+ueMemoryAvailableInd 
+boolean 
+C 0..1 
+275 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+When the SMSF detects that the UE has memory available for SMS, the SMSF shall send the registration message with ueMemoryAvailableInd set to true. Otherwise shall be absent. 
+When present and true, the UDM shall trigger Alert for SMS. Storing the 
+ueMemoryAvailableInd in the UDR is not 
+applicable. 
+6.2.6.2.7 
+Type: Amf3GppAccess Registration Modification 
+This type is derived from the type Amf3GppAccessRegistration by deleting all attributes that are not subject to modification by means of the HTTP PATCH method. 
+Table 6.2.6.2.7-1: Definition of type Amf3GppAccessRegistration Modification 
+Attribute name 
+Data type 
+P 
+Cardinality 
+guami 
+Guami 
+M 
+1 
+purgeFlag 
+PurgeFlag 
+O 0..1 
+pei 
+Pei 
+O 0..1 
+imsVoPs 
+ImsVoPs 
+O 0..1 
+backupAmfInfo 
+array(BackupAmf C 0..N 
+Info) 
+epsInterworkingInfo 
+EpsInterworkingl C 
+0..1 
+nfo 
+ueSrvccCapability 
+boolean 
+O 
+0..1 
+Description 
+Guami of the AMF requesting the modification. If the MCC, MNC, AMF Region ID and AMF Set ID within the guami do not match the stored value, the modification request shall be rejected. 
+This flag indicates whether or not the AMF has deregistered. It shall be included in the Deregistration service operation with a value of "TRUE". 
+Permanent Equipment Identifier. 
+If the UDR supports the PeiResource feature and the received PEI is of type IMEI(SV), the UDM shall in addition to updating the Amf3GppAccessRegistration resource also update the Peilnfo resource of the UDR to store the received PEI if it is different from the previously stored PEI. 
+Indicates per UE if "IMS Voice over PS Sessions" is homogeneously supported in all TAs in the serving AMF for the current PLMN and access type, or homogeneously not supported, or if support is non- homogeneous/unknown 
+This IE shall be included if the NF service consumer is an AMF and the AMF supports the AMF management without UDSF for the Modification of the BackupAmfInfo. 
+The UDM uses this attribute to do an NRF query in order to invoke later services in a backup AMF, e.g. Namf_EventExposure. 
+An empty array indicates that the complete backupAmfInfo shall be deleted. 
+This IE shall be included if the AMF has determined per APN/DNN which PGW-C+SMF is selected for EPS interworking with N26 and the AMF supports EPS interworking of non-3GPP access. This IE shall also be included to update the PGW-C+SMF information if the AMF selects another PGW-C+SMF for EPS interworking with N26 for the same DNN. For each APN/DNN, only one PGW-C+SMF shall be selected by the AMF for EPS interworking. 
+This IE indicates whether the UE supports 5G SRVCC: 
+- true: 5G SRVCC is supported by the UE and AMF; 
+- false: 5G SRVCC is not supported. 
+ueMINTCapability 
+NOTE: 
+boolean 
+0..1 
+This IE indicates whether the UE supports MINT: - true: MINT is supported by the UE; 
+- false: MINT is not supported. 
+Absence of optional attributes indicates: no modification. Attributes of this type are not marked "nullable: true" in the OpenAPI file as deletion of these attributes is not applicable. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+6.2.6.2.8 
+276 
+Type: AmfNon3GppAccessRegistration Modification 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+This type is derived from the type AmfNon3GppAccessRegistration by deleting all attributes that are not subject to modification by means of the HTTP PATCH method. 
+Table 6.2.6.2.8-1: Definition of type AmfNon3GppAccessRegistration Modification 
+Attribute name 
+Data type 
+P 
+Cardinality 
+guami 
+Guami 
+M 1 
+purgeFlag 
+PurgeFlag 
+O 0..1 
+pei 
+Pei 
+O 0..1 
+imsVoPs 
+ImsVoPs 
+O 0..1 
+array(BackupAmf C 0..N 
+backupAmfInfo 
+Info) 
+NOTE: 
+Description 
+Guami of the AMF requesting the modification. If the |MCC, MNC, AMF Region ID and AMF Set ID within the guami do not match the stored value, the modification request shall be rejected. This flag indicates whether or not the AMF has deregistered. It shall be included in the Deregistration service operation with a value of "TRUE". 
+Permanent Equipment Identifier. 
+If the UDR supports the PeiResource feature and the PEI is of type IMEI(SV), the UDM shall in addition to updating the AmfNon3GppAccessRegistration resource also update the Peilnfo resource of the UDR to store the received PEI if it is different from the previously stored PEI. 
+If present indicates per UE that support of "IMS Voice over PS Sessions" has been modified to supported or not supported". 
+The value NON_HOMOGENEOUS_OR_UNKNOWN is not applicable. 
+This IE shall be included if the NF service consumer is an AMF and the AMF supports the AMF management without UDSF for the Modification of the BackupAmfinfo. 
+The UDM uses this attribute to do an NRF query in order to invoke later services in a backup AMF, Namf_EventExposure. 
+An empty array indicates that the complete |backupAmfInfo shall be deleted. 
+e.g. 
+Absence of optional attributes indicates: no modification. Attributes of this type are not marked "nullable: true" in the OpenAPI file as deletion of these attributes is not applicable. 
+6.2.6.2.9 
+Attribute name 
+supi failedPcscf 
+6.2.6.2.10 
+Type: PcscfRestoration Notification 
+Table 6.2.6.2.9-1: Definition of type PcscfRestorationNotification 
+Data type 
+P M 1 C 0..1 
+Cardinality 
+Supi PcscfAddress 
+Description 
+|A SUPI that is served by the failed P-CSCF 
+Information about the failed P-CSCF 
+Type: Network Node DiameterAddress 
+Table 6.2.6.2.10-1: Definition of type NetworkNode DiameterAddress 
+Attribute name 
+name realm 
+Data type DiameterIdentity 
+P Cardinality 
+M 1 
+DiameterIdentity 
+M 
+1 
+Description 
+3GPP TS 29.503 version 17.12.0 Release 17 
+277 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.2.6.2.11 
+Type: EpslwkPgw 
+Table 6.2.6.2.11-1: Definition of type EpslwkPgw 
+Attribute name 
+Data type 
+pgwFqdn 
+Fqdn 
+P M 1 
+Cardinality 
+smflnstanceld 
+plmnld 
+NfInstanceld Plmnld 
+M 1 
+О 0..1 
+6.2.6.2.12 
+Description 
+The PGW FQDN of the "PGW-C+SMF" The SMF Instance Id of the "PGW-C+SMF" PLMN where the PGW-C+SMF is located 
+Type: TriggerRequest 
+Table 6.2.6.2.12-1: Definition of type TriggerRequest 
+Attribute name 
+Data type 
+P Cardinality 
+supi 
+failedPcscf 
+Supi PcscfAddress 
+M 
+1 
+C 
+0..1 
+6.2.6.2.13 
+Description 
+Information about the failed P-CSCF 
+Type: AmfDeregInfo 
+Table 6.2.6.2.13-1: Definition of type AmfDeregInfo 
+Attribute name deregReason 
+Data type P 
+Cardinality 
+Description 
+Deregistration 
+M 1 
+String; see clause 6.2.6.3.3 
+Reason 
+6.2.6.2.14 
+Attribute name epslwkPgws 
+Type: EpsInterworkingInfo 
+Table 6.2.6.2.14-1: Definition of type EpsInterworkingInfo 
+Data type map(EpslwkPgw) 
+P Cardinality O 0..N 
+Description 
+A map (list of key-value pairs where dnn serves 
+as key) of EpslwkPgws. 
+An empty map is used in 
+Amf3GppAccess Registration Modification to delete the epsInterworkingInfo. 
+6.2.6.2.15 
+Type: LocationInfo 
+Table 6.2.6.2.15-1: Definition of type LocationInfo 
+Attribute name 
+Data type 
+supi 
+Supi 
+P Cardinality O 0..1 
+gpsi 
+Gpsi 
+О 0..1 
+registrationLocationInfo 
+List 
+cationInfo) 
+supportedFeatures 
+Supported Features 
+array(RegistrationLo M 1..2 
+O 0..1 
+NOTE 1: One of both shall be included to identify the target UE. 
+Description 
+Subscription Permanent Identifier (NOTE 1) Generic Public Subscription Identifier (NOTE 1) Serving AMF, optional VGMLC and access type related informations used by (H)GMLC to send Location Request (NOTE 2) supported-features of the UDM 
+NOTE 2: At least, one of 3GPP and Non-3GPP access types shall be included to describe the location related information of the target UE for the access type. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+6.2.6.2.16 
+Attribute name 
+amfInstanceld 
+guami 
+plmnld 
+vgmlcAddress 
+accessTypeList 
+Type: Registration LocationInfo 
+278 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Table 6.2.6.2.16-1: Definition of type Registration LocationInfo 
+Data type 
+P 
+Cardinality 
+NfInstanceld 
+M 
+1 
+Guami Plmnld 
+O 
+0..1 
+C 
+0..1 
+VgmlcAddress array(AccessType) 
+C 
+0..1 
+M 1..2 
+Description The NF instance identity of the serving. The GUAMI served by the serving AMF. Serving node PLMN identity is included if the target UE is in roaming case for the serving AMF. (NOTE) 
+The address(es) of VGMLC. (NOTE) |Access type(s) where the UE is registered 
+NOTE: The two IEs are only be included if the target UE is registered in VPLMN via the serving AMF. 
+6.2.6.2.17 
+Type: VgmlcAddress 
+Table 6.2.6.2.17-1: Definition of type VgmlcAddress 
+Attribute name 
+Data type 
+P 
+vgmlcAddresslpv4 
+Ipv4Addr 
+O 
+0..1 
+vgmlcAddresslpv6 
+vgmlcFqdn 
+Ipv6Addr Fqdn 
+O 
+0..1 
+O 0..1 
+NOTE: At least, one of VGMLC addresses should be included. 
+Description 
+When present, indicates VGMLC IPv4 address. When present, indicates VGMLC IPv6 address. When present, indicates FQDN of the VGMLC IPv6 address. 
+Cardinality 
+6.2.6.2.18 
+Type: PeiUpdateInfo 
+Table 6.2.6.2.18-1: Definition of type PeiUpdateInfo 
+Attribute name 
+Data type P 
+Cardinality 
+pei 
+Pei 
+M 1 
+Description 
+6.2.6.2.19 
+Type: RegistrationDataSets 
+Table 6.2.6.2.19-1: Definition of type RegistrationDataSets 
+Data type 
+P 
+O 
+Cardinality 0..1 
+Amf3GppAccessReg 
+istration 
+AmfNon3GppAccess О 0..1 Registration 
+Description AMF 3GPP Access Registration 
+AMF Non 3GPP Access Registration 
+Attribute name 
+amf3Gpp 
+amfNon3Gpp 
+smfRegistration 
+|SMF Registration Information 
+smsf3Gpp 
+smsfNon3Gpp 
+ipSmGw 
+nwdafRegistration 
+|SmsfRegistration SmsfRegistration IpSmGwRegistration O 0..1 NwdafRegistrationInf O 0..1 
+о 0..1 O 0..1 
+O 
+SmfRegistrationInfo O 0..1 
+SMSF 3GPP Access Registration SMSF Non 3GPP Access Registration IP-SM-GW Registration 
+NWDAF Registration Information 
+3GPP TS 29.503 version 17.12.0 Release 17 
+279 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.2.6.2.20 
+Type: IpSmGwRegistration 
+Attribute name ipSmGwMapAddress 
+Table 6.2.6.2.20-1: Definition of type IpSmGwRegistration 
+Data type E164Number 
+P Cardinality 
+C 
+0..1 
+ipSmGwDiameterAddre NetworkNodeDiamet C 0..1 
+SS 
+ipsmgwlpv4 
+erAddress 
+Ipv4Addr 
+C 0..1 
+ipsmgwlpv6 
+Ipv6Addr 
+C 0..1 
+ipsmgwFqdn 
+Fqdn 
+C 
+0..1 
+ipSmGwSbiSupInd 
+boolean 
+C 
+0..1 
+InfInstanceld 
+unriIndicator 
+resetlds 
+NfInstanceld boolean 
+C 
+0..1 O 0..1 
+array(string) 
+O 
+1..N 
+Description 
+International E. 164 number of the IP-SM-GW; it shall be present if the IP-SM-GW supports MAP (see 3GPP TS 29.002 [21]) (NOTE 1) 
+Diameter Identity of the IP-SM-GW; it shall be present if the IP-SM-GW supports Diameter (see 3GPP TS 29.328 [52]) 
+|(NOTE 1) 
+This IE shall be present if available. 
+When present, this IE indicates the IPv4 address of the IP-SM-GW. 
+(NOTE 1) 
+This IE shall be present if available. 
+When present, this IE indicates the IPv6 address of the IP-SM-GW. 
+(NOTE 1) 
+This IE shall be present if available. 
+When present, this IE indicates the FQDN of the IP-SM-GW. 
+(NOTE 1) 
+SBI Support Indication of the IP-SM-GW. it shall be present if provided in IP-SM-GW registration procedure (see clauses 5.3.2.2.7) Contains the indication on whether or not the IP-SM-GW is expecting to support SBI-based MT SM transmit. 
+- true: the IP-SM-GW supports SBI for MT SM transmit. 
+- false, or absence of this attribute: the IP-SM- GW do not support SBI for MT SM transmit. NF Instance ID of the SBI-capable IP-SM-GW UE-Not-Reachable-for-IP (UNRI) flag as defined in 3GPP TS 23.040 [53]. This IE indicates whether the address list of MWD contains one or more entries because an attempt to deliver a short message to a UE via an IP-SM-GW has failed with a cause of Absent Subscriber: 
+- true: the MWD contains one or more list 
+elements due to an SMS delivery failure 
+- false, or absence of this attribute: the MWD 
+does not contain any list element 
+May be present in registration response messages. 
+The IP-SM-GW may decide to re-register at the UDM when receiving a data restoration |notification containing a matching resetld. 
+NOTE 1: At least one of the properties, ipSmGwMapAddress or ipSmGwDiameterAddress or ipsmgwlpv4 or 
+ipsmgwlpv6 or ipsmgwFqdn, shall be present. If the IP-SM-GW supports SBI, the nflnstanceld property shall be present. 
+NOTE 2: The unriIndicator attribute shall only be exposed over the Nudr SBI. 
+6.2.6.2.20A Type: SmfRegistrationInfo 
+Attribute name smfRegistrationList 
+Table 6.2.6.2.20A-1: Definition of type SmfRegistrationInfo 
+Data type P Cardinality array(SmfReg M 1..N istration) 
+Description 
+List of SmfRegistration. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+280 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.2.6.2.21 
+Type: NwdafRegistration 
+Table 6.2.6.2.21-1: Definition of type NwdafRegistration 
+Attribute name 
+nwdafInstanceld 
+Data type NfInstanceld 
+P 
+Cardinality 
+M 
+1 
+analyticslds 
+InwdafSetld 
+array(Eventld) 
+M 1..N 
+NfSetld 
+C 
+0..1 
+registration Time 
+DateTime 
+C 
+0..1 
+contextInfo 
+ContextInfo 
+C 0..1 
+supportedFeatures 
+Supported Features 
+О 0..1 
+resetlds 
+array(string) 
+O 1..N 
+Description NF Instance Id of the NWDAF. 
+List of analytics Id(s) provided by the 
+consumers of NWDAF. 
+This IE shall be present if the NWDAF belongs to an NWDAF SET. 
+If present, it indicates the NF Set ID of NWDAF Set. 
+Time of NwdafRegistration. Shall be present when used on Nudr. 
+This IE if present may contain e.g. the headers received by the UDM along with the NwdafRegistration. 
+Shall be absent on Nudm and may be present on Nudr. 
+See clause 6.2.8 
+These are the features supported by the NWDAF. 
+May be present in registration response messages. 
+The NWDAF may decide to re-register at the UDM when receiving a data restoration notification containing a matching resetld. 
+6.2.6.2.22 
+Type: NwdafRegistration Modification 
+Table 6.2.6.2.22-1: Definition of type NwdafRegistrationModification 
+Attribute name 
+Data type 
+P Cardinality 
+NfInstanceld 
+M 
+1 
+NfSetld 
+C 
+0..1 
+Description 
+nwdafInstanceld 
+nwdafSetld 
+analyticslds 
+supportedFeatures 
+NOTE: 
+array(Eventld) SupportedFeatures 
+О 0..N 
+О 
+0..1 
+NF Instance Id of the NWDAF 
+This IE shall be present if the NWDAF belongs 
+to an NWDAF SET. 
+If present, it indicates the NF Set ID of NWDAF Set. 
+List of analytics Id(s) supplied by NWDAF. See clause 6.2.8 
+These are the features supported by the NWDAF. 
+Absence of optional attributes indicates: no modification. Attributes of this type are not marked "nullable: true" in the OpenAPI file as deletion of these attributes is not applicable. 
+6.2.6.2.23 
+Type: SmfRegistration Modification 
+This type is derived from the type SmfRegistration by deleting all attributes that are not subject to modification by means of the HTTP PATCH method. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+281 
+Attribute name smflnstanceld 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Table 6.2.6.2.23-1: Definition of type SmfRegistrationModification 
+Data type NfInstanceld 
+P 
+Cardinality 
+M 1 
+smfSetld 
+NfSetld 
+O 0..1 
+pgwFqdn 
+NOTE: 
+FqdnRm 
+C 0..1 
+Description 
+NF Instance Id of the SMF requesting the modification. If the NF Set Id is absent and the NF Instance Id does not match the stored NF Instance Id value, the modification request shall be rejected. NF Set Id of the SMF requesting the modification. If the NF Set Id is present and does not match the stored NF Set Id value, the modification request shall be rejected. 
+FQDN of the PGW in the "PGW-C+SMF", to be included for interworking with EPS. For deletion of the PGW FQDN, the value of the pgwFqdn shall be set to null. 
+Absence of optional attributes indicates: no modification. Attributes of this type are not marked "nullable: true" in the OpenAPI file as deletion of these attributes is not applicable. 
+6.2.6.2.24 
+Type: RoamingInfoUpdate 
+Table 6.2.6.2.24-1: Definition of type RoamingInfo 
+Attribute name 
+servingPlmn 
+roaming 
+Data type Plmnld boolean 
+P 
+Cardinality 
+M 1 
+C 
+0..1 
+Description 
+the new Serving PLMN 
+This IE shall be included if the roaming status changes (from roaming to non-roaming or vice versa). 
+True: The new serving PLMN is different from the HPLMN; 
+False: The new serving PLMN is the HPLMN 
+3GPP TS 29.503 version 17.12.0 Release 17 
+282 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.2.6.2.25 
+Attribute name lastReplicationTime 
+Type: DataRestoration Notification 
+Table 6.2.6.2.25-1: Definition of type DataRestorationNotification 
+Data type 
+DateTime 
+P Cardinality O 0..1 
+recoveryTime 
+DateTime 
+O 0..1 
+plmnld 
+Plmnld 
+C 0..1 
+array(IdentityRange) O 1..N 
+O 1..N 
+supiRanges 
+array(SupiRange) O 1..N 
+gpsiRanges 
+resetlds 
+array(string) 
+sNssaiList 
+array(Snssai) 
+O 1..N 
+dnnList 
+array(Dnn) 
+O 1..N 
+udmGroupld 
+NfGroupld 
+O 1..N 
+Description 
+If present, it contains the timestamp of the most recent instant when the data was assumed to be consistent at UDR (i.e. the potential data loss event at UDR did not occur before this instant). 
+If present, it contains the timestamp of the instant when the potential data loss event was recovered at UDR (i.e. all data records stored by UDR after this time are assumed to be consistent). 
+If present, it shall contain the PLMN-ID of the UDM/UDR that originated the Data Restoration Notification. 
+It shall be included in notifications sent by UDM to its NF consumers located in other PLMNs. If present, it contains the list of SUPIS potentially subject to a data-loss event at the UDR. 
+If present, it contains the list of GPSIS potentially subject to a data-loss event at the UDR. 
+If present, it contains the list of Reset-IDs of those UEs potentially subject to a data-loss event at the UDR. 
+If present, it contains the list of slices (S- NSSAIS) potentially subject to a data-loss event at the UDR. 
+If present, it contains the list of DNNs potentially subject to a data-loss event at the UDR. 
+If present, it contains the ID of the UDM Group whose UEs have been potentially subject to a data loss event at the UDR. 
+6.2.6.2.26 
+Type: PcscfAddress 
+Table 6.2.6.2.26-1: Definition of type PcscfAddress 
+Attribute name 
+ipv4Addrs 
+Data type array(Ipv4Addr) 
+P Cardinality О 1..N 
+Description 
+If present, it contains IPv4 address(es) of the P-CSCF (NOTE 2). 
+ipv6Addrs 
+array(Ipv6Addr) 
+O 1..N 
+If present, it contains IPv6 address(es) of the P-CSCF (NOTE 2). 
+fqdn 
+Fqdn 
+O 
+0..1 
+If present, it contains the FQDN of the P-CSCF. 
+NOTE 1: At least, one of these P-CSCF addressing attributes shall be included. NOTE 2: Several addresses may be included (in ipv4Addrs or ipv6Addrs) to convey multiple redundant IP endpoints 
+on the Mw interface of the P-CSCF. 
+6.2.6.2.27 
+Type: NwdafRegistration Info 
+Attribute name nwdafRegistrationList 
+Table 6.2.6.2.27-1: Definition of type NwdafRegistrationInfo 
+Data type P Cardinality 
+array(NwdafR M 1..N 
+egistration) 
+Description 
+List of NwdafRegistration. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+283 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.2.6.2.28 
+Type: RoutingInfoSmRequest 
+Table 6.2.6.2.28-1: Definition of type RoutingInfoSmRequest 
+Attribute name ipSmGwind 
+Data type 
+boolean 
+P Cardinality C 0..1 
+supportedFeatures SupportedFeatures 
+O 0..1 
+Description 
+This IE indicates whether the SMS-GMSC is prepared to receive IP-SM-GW guidance information in the response: 
+- true: receiving IP-SM-GW guidance in the 
+response is supported; 
+- false, or absence: receiving IP-SM-GW guidance in the response is not supported. Features of the Nudm_UECM API supported by the NF Service Consumer. 
+6.2.6.2.29 
+Type: RoutingInfoSmResponse 
+Table 6.2.6.2.29-1: Definition of type RoutingInfoSmResponse 
+Attribute name 
+Data type 
+P 
+Cardinality 
+Description 
+supi 
+Supi 
+O 
+0..1 
+smsf3Gpp 
+|SmsfRegistration 
+O 
+0..1 
+smsfNon3Gpp 
+SmsfRegistration 
+O 0..1 
+ipSmGw 
+IpSmGwInfo 
+О 0..1 
+smsRouter 
+Sms RouterInfo 
+O 0..1 
+Contains the SUPI of the UE SMSF 3GPP Access Registration SMSF Non 3GPP Access Registration IP-SM-GW Registration 
+SMS Router address 
+6.2.6.2.30 
+Type: IpSmGwInfo 
+Table 6.2.6.2.30-1: Definition of type IpSmGwInfo 
+Attribute name 
+Data type 
+P 
+Cardinality 
+ipSmGwRegistration ipSmGwGuidance 
+IpSmGwRegistration 
+M 
+1 
+IpSmGwGuidance 
+C 
+0..1 
+Description 
+IP-SM-GW routing information 
+Contains the recommended and the minimum timer values for supervision of MT SMS 
+response. It shall be present if the ipSmGwInd |attribute in the request is set to true. 
+6.2.6.2.31 
+Type: IpSmGwGuidance 
+Attribute name 
+minDeliveryTime 
+recommDeliveryTime 
+Table 6.2.6.2.31-1: Definition of type IpSmGwGuidance 
+Data type P Cardinality 
+integer 
+M 1 
+integer 
+M 1 
+Description 
+The minimum timer value in units of seconds. Minimum 30. Maximum = 600. 
+The recommended timer value in units of seconds. Minimum 30. Maximum = 600. 
+= 
+3GPP TS 29.503 version 17.12.0 Release 17 
+6.2.6.2.32 
+Type: SmsRouterInfo 
+284 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Data type 
+NfInstanceld 
+NetworkNode Diamet О 0..1 
+Attribute name 
+InfInstanceld 
+diameterAddress 
+Table 6.2.6.2.32-1: Definition of type Sms RouterInfo 
+P 
+Cardinality 
+Description 
+O 
+0..1 
+NF Instance ID of the SMS Router Diameter address of the SMS Router 
+erAddress 
+mapAddress 
+E164Number 
+O 0..1 
+routerlpv4 
+Ipv4Addr 
+О 0..1 
+routerlpv6 
+Ipv6Addr 
+O 0..1 
+routerFqdn 
+Fqdn 
+O 
+0..1 
+MAP address of the SMS Router This IE shall be present if available. 
+When present, this IE indicates the IPv4 address of the SMS Router. 
+This IE shall be present if available. 
+When present, this IE indicates the IPv6 address of the SMS Router. 
+This IE shall be present if available. When present, this IE indicates the FQDN of the SMS Router. 
+6.2.6.3 
+6.2.6.3.1 
+Simple data types and enumerations 
+Introduction 
+This clause defines simple data types and enumerations that can be referenced from data structures defined in the previous clauses. 
+6.2.6.3.2 
+Simple data types 
+The simple data types defined in table 6.2.6.3.2-1 shall be supported. 
+Table 6.2.6.3.2-1: Simple data types 
+Type Name PurgeFlag 
+E164Number 
+Type Definition boolean string 
+Description 
+This flag indicates whether or not the NF has deregistered. 
+see ITU-T Recommendation E.164 [23] 
+pattern: ^[0-9]{1,15}$ 
+DualRegistrationFla boolean 
+Dual Registration Flag 
+g 
+6.2.6.3.3 
+Enumeration: DeregistrationReason 
+The enumeration DeregistrationReason represents the reason for the Deregistration Notification. It shall comply with the provisions defined in table 6.2.6.3.3-1. 
+3GPP TS 29.503 version 17.12.0 Release 17 
+285 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+Table 6.2.6.3.3-1: Enumeration Deregistration Reason 
+Enumeration value 
+"UE_INITIAL_REGISTRATION" 
+"UE REGISTRATION AREA CHANGE" 
+"SUBSCRIPTION WITHDRAWN" 
+"5GS_TO_EPS_MOBILITY" 
+"5GS_TO_EPS_MOBILITY_UE_INITIAL_REGISTRATION" 
+"REREGISTRATION REQUIRED" 
+"SMF CONTEXT TRANSFERRED" "DUPLICATE_PDU_SESSION" 
+Description 
+When sent by the HSS; indicates that the deregistration towards the UDM is due to an initial attach in EPS. 
+When sent by the UDM; indicates that the deregistration in the old AMF is due to a new AMF serving the UE during an initial 
+registration 
+See 3GPP TS 23.502 [3] and 
+3GPP TS 23.632 [32]. 
+see 3GPP TS 23.502 [3] 
+see 3GPP TS 23.502 [3] 
+see 3GPP TS 23.502 [3] and 
+3GPP TS 23.632 [32]. 
+This value shall only be sent by the UDM. It 
+indicates that the deregistration in AMF is due to an initial attach in EPS, See 3GPP TS 23.502 [3] and 3GPP TS 23.632 [32]. 
+see 3GPP TS 23.502 [3] see 3GPP TS 23.502 [3] 
+This value shall only be sent by the UDM to an SMF. It indicates that the deregistration in the SMF is due to a new PDU session with the same PDU session ID has been established in another SMF. 
+6.2.6.3.4 
+Enumeration: ImsVoPs 
+The enumeration ImsVoPs represents information indicating homogeneity of IMS Voice over PS Sessions support for the UE. It shall comply with the provisions defined in table 6.2.6.3.4-1. 
+Enumeration value "HOMOGENEOUS_SUPPORT" 
+Table 6.2.6.3.4-1: Enumeration ImsVoPs 
+"HOMOGENEOUS_NON_SUPPORT" 
+Description 
+"IMS Voice over PS Sessions" is homogeneously supported in 
+all TAs in the serving AMF. 
+"IMS Voice over PS Sessions" is homogeneously not supported in all TAs in the serving AMF. 
+"NON_HOMOGENEOUS_OR_UNKNOWN" "IMS Voice over PS Sessions" is not homogeneously 
+supported in all TAs in the serving AMF, or its support is unknown. 
+6.2.6.3.5 
+Enumeration: RegistrationReason 
+The enumeration RegistrationCause represents the reason for the NF Registration. It shall comply with the provisions defined in table 6.2.6.3.5-1. 
+Table 6.2.6.3.5-1: Enumeration RegistrationReason 
+Enumeration value 
+"SMF CONTEXT TRANSFERRED" 
+Description 
+SMF transferred 
+3GPP TS 29.503 version 17.12.0 Release 17 
+286 
+ETSI TS 129 503 V17.12.0 (2023-09) 
+6.2.6.3.6 
+Enumeration: Registration DataSetName 
+Table 6.2.6.3.6-1: Enumeration Registration DataSetName 
+Enumeration value 
+"AMF 3GPP" 
+"AMF NON 3GPP" 
+"SMF PDU SESSIONS" 
+"SMSF 3GPP" 
+"SMSF NON 3GPP" 
+"IP SM GW" 
+"NWDAF" 
+Description 
+AMF 3GPP Access Registration 
+AMF Non 3GPP Access Registration 
+SMF PDU Session Registration 
+SMSF 3GPP Access Registration 
+SMSF Non 3GPP Access Registration IP-SM-GW Registration 
+NWDAF Registration 
+NOTE: The current naming conventions for Enumerations (uppercase with underscore), when their intended 
+usage is for query parameters is not consistent with the naming conventions for URI components (lowercase with hyphen). 
+6.2.6.3.7 
+Enumeration: UeReachableInd 
+Enumeration value 
+"REACHABLE" 
+"NOT_REACHABLE" 
+"UNKNOWN" 
+Table 6.2.6.3.7-1: Enumeration UeReachableInd 
+Description 
+Indicates the UE is currently reachable for services, i.e. the UE is in allowed areas. 
+Indicates the UE is currently not reachable for services, i.e. the UE is in not allowed areas. 
+Indicates whether UE is in not allowed area is unknown, e.g. the AMF does not have the UE subscription data including the Service Area Restriction Configuration for the UE when performing UECM Registration. 
+6.2.7 
+Error Handling 
+6.2.7.1 
+General 
+HTTP error handling shall be supported as specified in clause 5.2.4 of 3GPP TS 29.500 [4]. 
+The Cause codes mapping performed by AMF between the following HTTP responses returned by the UDM services to the AMF and the 5GMM related values is specified in clause 4.4.2 of 3GPP TS 29.524 [44]. 
+6.2.7.2 
+Protocol Errors 
+Protocol errors handling shall be supported as specified in clause 5.2.7 of 3GPP TS 29.500 [4]. 
+6.2.7.3 
+Application Errors 
+The common application errors defined in the Table 5.2.7.2-1 in 3GPP TS 29.500 [4] may also be used for the Nudm_UEContextManagement service. The following application errors listed in Table 6.2.7.3-1 are specific for the Nudm_UEContextManagement service. 

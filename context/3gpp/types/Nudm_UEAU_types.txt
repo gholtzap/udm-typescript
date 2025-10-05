@@ -1,0 +1,445 @@
+6.3.6 Data Model
+6.3.6.1 General
+This clause specifies the application data model supported by the API.
+Table 6.3.6.1-1 specifies the data types defined for the Nudm_UEAU service API.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 303 ETSI TS 129 503 V17.12.0 (2023-09)
+Table 6.3.6.1-1: Nudm_UEAU specific Data Types
+Data type Clause defined Description
+AuthenticationInfoRequest 6.3.6.2.2 Contains Serving Network Name and Resynchronization
+Information
+AuthenticationInfoResult 6.3.6.2.3 Contains an Authentication Vector (AV)
+AvEapAkaPrime 6.3.6.2.4 Contains RAND, XRES, AUTN, CK', and IK'
+Av5GHeAka 6.3.6.2.5 Contains RAND, XRES*, AUTN, KAUSF
+ResynchronizationInfo 6.3.6.2.6 Contains RAND and AUTS
+AuthEvent 6.3.6.2.7 Authentication Event
+AuthenticationVector 6.3.6.2.8
+RgAuthCtx 6.3.6.2.9 Contains the UE id (i.e. SUPI) and the authentication
+indication.
+HssAuthenticationInfoRequest 6.3.6.2.10 Contains authentication method, serving network id, number
+of requested vectors and resynchronization information
+HssAuthenticationInfoResult 6.3.6.2.11 Contains the authentication vectors for EPS/IMS domain
+HssAuthenticationVectors 6.3.6.2.12
+AvEpsAka 6.3.6.2.13 Contains RAND, XRES, AUTN, KASME
+AvImsGbaEapAka 6.3.6.2.14 Contains RAND, XRES, AUTN, CK, and IK
+GbaAuthenticationInfoRequest 6.3.6.2.15 Contains authentication method and resynchronization
+information
+GbaAuthenticationInfoResult 6.3.6.2.16 Contains the authentication vectors for GBA's BSF domain
+ProSeAuthenticationInfoRequest 6.3.6.2.17 Contains RSC and resynchronization information
+ProSeAuthenticationInfoResult 6.3.6.2.18 Contains the authentication vectors for ProSe
+ProSeAuthenticationVectors 6.3.6.2.19 Contains the authentication vectors for ProSe
+Autn 6.3.6.3.2
+Auts 6.3.6.3.2
+CkPrime 6.3.6.3.2
+IkPrime 6.3.6.3.2
+Kausf 6.3.6.3.2
+Rand 6.3.6.3.2
+ServingNetworkName 6.3.6.3.2
+Success 6.3.6.3.2
+Xres 6.3.6.3.2
+XresStar 6.3.6.3.2
+AuthenticatedInd 6.3.6.3.2
+ConfidentialityKey 6.3.6.3.2
+IntegrityKey 6.3.6.3.2
+Kasme 6.3.6.3.2
+NumOfRequestedVectors 6.3.6.3.2
+Autn 6.3.6.3.2
+AuthType 6.3.6.3.3
+AvType 6.3.6.3.4
+HssAuthType 6.3.6.3.5
+HssAvType 6.3.6.3.6
+HssAuthTypeInUri 6.3.6.3.7
+AccessNetworkId 6.3.6.3.8
+GbaAuthType 6.3.6.3.10
+Table 6.3.6.1-2 specifies data types re-used by the Nudm_UEAU service API from other specifications, including a
+reference to their respective specifications and when needed, a short description of their use within the Nudm_UEAU
+service API.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 304 ETSI TS 129 503 V17.12.0 (2023-09)
+Table 6.3.6.1-2: Nudm_UEAU re-used Data Types
+Data type Reference Comments
+ProblemDetails 3GPP TS 29.571 [7] Common data type used in response bodies
+NfInstanceId 3GPP TS 29.571 [7] Network Function Instance Identifier
+NfSetId 3GPP TS 29.571 [7] Network Function Set Identifier
+DateTime 3GPP TS 29.571 [7]
+SupportedFeatures 3GPP TS 29.571 [7] see 3GPP TS 29.500 [4] clause 6.6
+Supi 3GPP TS 29.571 [7]
+CagId 3GPP TS 29.571 [7]
+ServerAddressingInfo 3GPP TS 29.571 [7] Server address info, which in this specification contains
+information of a Provisioning Server (PVS)
+3GAkaAv 3GPP TS 29.562 [65] See clause 6.3.6.2.5 of 3GPP TS 29.562
+ResynchronizationInfo 3GPP TS 29.562 [65] See clause 6.3.6.2.4 of 3GPP TS 29.562
+RelayServiceCode 3GPP TS 29.571 [7]
+DataRestorationNotification 6.2.6.2.25 Contains identities representing those UEs potentially
+affected by a data-loss event at the UDR
+6.3.6.2 Structured data types
+6.3.6.2.1 Introduction
+This clause defines the structures to be used in POST request / response bodies.
+6.3.6.2.2 Type: AuthenticationInfoRequest
+Table 6.3.6.2.2-1: Definition of type AuthenticationInfoRequest
+Attribute name Data type P Cardinality Description
+servingNetworkName ServingNetworkName M 1 See 3GPP TS 33.501 [6] clause 6.1.1.4
+resynchronizationInfo ResynchronizationInfo O 0..1 Contains RAND and AUTS; see
+3GPP TS 33.501 [6] clause 6.1.3.3.2
+supportedFeatures SupportedFeatures O 0..1 See clause 6.3.8
+ausfInstanceId NfInstanceId M 1 NF Instance Id of the AUSF
+cellCagInfo array(CagId) O 1..N CAG List of the CAG cell.
+If the cellCagInfo is absent, the UDM shall
+not assume the UE is accessing from the
+PLMN.
+n5gcInd boolean O 0..1 N5GC device Indicator indicates whether
+the user uses a N5GC device:
+See 3GPP TS 33.501 [6]
+true: N5GC device
+false (default): used device is 5G capable
+See NOTE
+nswoInd boolean O 0..1 NSWO Indicator (see
+3GPP TS 33.501 [6])
+disasterRoamingInd boolean O 0..1 Disaster Roaming Indicator (see
+3GPP TS 23.502 [3]).
+When present, this IE shall be set as
+follows:
+- true: Disaster Roaming service is
+applied;
+- false (default): Disaster Roaming
+service is not applied.
+NOTE: The attribute n5gcInd is used for EAP-TLS, which is described in the informative annex O of
+3GPP TS 33.501 [6] and is not mandatory to support.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 305 ETSI TS 129 503 V17.12.0 (2023-09)
+6.3.6.2.3 Type: AuthenticationInfoResult
+Table 6.3.6.2.3-1: Definition of type AuthenticationInfoResult
+Attribute name Data type P Cardinality Description
+authType AuthType M 1 Indicates the authentication method
+authenticationVector AuthenticationVector C 0..1 contains an authentication vector if 5G
+AKA or EAP-AKA's is selected
+supi Supi C 0..1 SUPI shall be present if the request
+contained the SUCI within the request
+URI
+SUPI or anonymous SUPI shall be
+present if the request contained the
+anonymous SUCI within the request URI
+akmaInd boolean C 0..1 When present, this IE shall be set as
+follows:
+- true: AKMA keys need to be
+generated for the UE;
+- false (default): AKMA keys are not
+needed.
+authAaa Boolean C 0..1 When present, this IE shall be set as
+follows:
+- true: Primary authentication with
+AAA Server that acts as the EAP
+server is required, i.e. the AUSF is
+required to act as EAP proxy towards
+the AAA Server, or if the UDM
+receives an anonymous SUCI, the
+AUSF is indicated to run primary
+authentication with an external
+Credentials holder;
+- false (default): Primary
+authentication with AAA Server that
+acts as the EAP server is not required,
+i.e. the AUSF is required to act as
+EAP server according to the EAP
+method defined in authType attribute.
+See clause 6.3.6.3.3.
+routingId string C 0..1 This IE shall be present if the akmaInd is
+set to "true".
+When present, this IE shall include the
+Routing Indicator contained in the SUCI
+(see 3GPP TS 23.003 [8], clause 2.2B).
+pvsInfo array(ServerAddressingInf
+o)
+C 1..N When present, this IE shall contain the
+remote Provisioning Server(s) information
+(PVS FQDN(s) and/or IP address(es)).
+This is used for the case of SNPN
+onboarding with DCS hosting AUSF and
+UDM.
+supportedFeatures SupportedFeatures O 0..1 See clause 6.3.8
+6.3.6.2.4 Type: AvEapAkaPrime
+Table 6.3.6.2.4-1: Definition of type AvEapAkaPrime
+Attribute name Data type P Cardinality Description
+avType AvType M 1 Type of authentication vector
+rand Rand M 1
+xres Xres M 1
+autn Autn M 1
+ckPrime CkPrime M 1
+ikPrime IkPrime M 1
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 306 ETSI TS 129 503 V17.12.0 (2023-09)
+6.3.6.2.5 Type: Av5GHeAka
+Table 6.3.6.2.5-1: Definition of type Av5GHeAka
+Attribute name Data type P Cardinality Description
+avType AvType M 1 Type of authentication vector
+rand Rand M 1
+xresStar XresStar M 1
+autn Autn M 1
+kausf Kausf M 1
+6.3.6.2.6 Type: ResynchronizationInfo
+Table 6.3.6.2.6-1: Definition of type ResynchronizationInfo
+Attribute name Data type P Cardinality Description
+rand Rand M 1
+auts Auts M 1
+6.3.6.2.7 Type: AuthEvent
+Table 6.3.6.2.7-1: Definition of type AuthEvent
+Attribute name Data type P Cardinality Description
+nfInstanceId NfInstanceId M 1 Identifier of the NF instance where the authentication
+occurred (e.g. AUSF)
+success Success M 1 true indicates success; false indicates no success.
+Set to false in case of authentication result removal.
+timeStamp DateTime M 1 time stamp of the authentication
+authType AuthType M 1 string
+Authentication Type
+servingNetworkName ServingNetworkN
+ame
+M 1 See 3GPP TS 33.501 [6] clause 6.1.1.4
+authRemovalInd Boolean O 0..1 When present, it shall indicate the authentication
+result in the UDM shall be removed.
+This IE shall be set as follows:
+- true: authentication result in the UDM shall be
+removed;
+- false (default): authentication result in the UDM
+shall not be removed.
+nfSetId NfSetId O 0..1 If present, it indicates the NF Set ID where the
+authentication occurred (e.g. AUSF Set)
+resetIds array(string) O 1..N May be present in Authentication Confirmation
+response messages.
+The AUSF may decide to re-confirm the
+authentication at the UDM when receiving a data
+restoration notification containing a matching resetId.
+dataRestorationCallbac
+kUri
+Uri O 0..1 If present, it contains the URI where notifications
+about UDR-initiated data restoration shall be sent by
+UDM.
+udrRestartInd boolean O 0..1 May be present in request messages from the AUSF
+to the UDM.
+If present:
+- true: indicates that the registration message sent
+by the AUSF is due to a re-synchronization event,
+motivated by a previous reception at the AUSF of a
+Data Restoration Notification from the UDM
+- false (or absent): indicates that this is a normal
+request message (i.e., not motivated by a data
+restoration notification event)
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 307 ETSI TS 129 503 V17.12.0 (2023-09)
+6.3.6.2.8 Type: AuthenticationVector
+Table 6.3.6.2.8-1: Definition of type AuthenticationVector as a list of alternatives
+Data type Cardinality Description
+AvEapAkaPrime 1
+Av5GHeAka 1
+6.3.6.2.9 Type: RgAuthCtx
+Table 6.3.6.2.9-1: Definition of type RgAuthCtx
+Attribute name Data type P Cardinality Description
+authInd boolean M 1 This IE shall be set as follows:
+- true: authentication is not required;
+- false (default): authentication is
+required.
+supi Supi C 0..1 SUPI shall be present if the request
+contained the SUCI within the request
+URI
+supportedFeatures SupportedFeatures O 0..1 See clause 6.3.8
+6.3.6.2.10 Type: HssAuthenticationInfoRequest
+Table 6.3.6.2.10-1: Definition of type HssAuthenticationInfoRequest
+Attribute name Data type P Cardinality Description
+hssAuthType HssAuthType M 1 Indicates the authentication method.
+numOfRequestedVectors NumOfRequestedVectors M 1 Maximum 5 vectors are allowed per
+service request.
+requestingNodeType NodeType C 0..1 Indicates the requesting node type.
+Should be included when known by the
+HSS.
+servingNetworkId PlmnId C 0..1 Shall be present if the authentication
+method is EPS_AKA.
+resynchronizationInfo ResynchronizationInfo O 0..1 Contains RAND and AUTS.
+anId AccessNetworkId O 0..1 Contains the Access Network ID used in
+the derivation of authentication vectors in
+EAP-AKA'.
+supportedFeatures SupportedFeatures O 0..1 See clause 6.3.8
+NOTE: For GBA authentication type, the number of requested vectors shall be set to 1; for other authentication
+types, the number of generated vectors by UDM, may be less than the number of requested vectors.
+6.3.6.2.11 Type: HssAuthenticationInfoResult
+Table 6.3.6.2.11-1: Definition of type HssAuthenticationInfoResult
+Attribute name Data type P Cardinality Description
+hssAuthenticationVectors HssAuthenticationVectors M 1
+supportedFeatures SupportedFeatures O 0..1 See clause 6.3.8
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 308 ETSI TS 129 503 V17.12.0 (2023-09)
+6.3.6.2.12 Type: HssAuthenticationVectors
+Table 6.3.6.2.12-1: Definition of type HssAuthenticationVectors as a list of alternatives
+Data type Cardinality Description
+array(AvEpsAka) 1..5
+array(AvImsGbaEapAka) 1..5 This data type is also used for UMTS
+AKA.
+array(AvEapAkaPrime) 1..5
+6.3.6.2.13 Type: AvEpsAka
+Table 6.3.6.2.13-1: Definition of type AvEpsAka
+Attribute name Data type P Cardinality Description
+avType HssAvType M 1
+rand Rand M 1
+xres Xres M 1
+autn Autn M 1
+kasme Kasme M 1
+6.3.6.2.14 Type: AvImsGbaEapAka
+Table 6.3.6.2.14-1: Definition of type AvImsGbaEapAka
+Attribute name Data type P Cardinality Description
+avType HssAvType M 1
+rand Rand M 1
+xres Xres M 1
+autn Autn M 1
+ck ConfidentialityKey M 1
+ik IntegrityKey M 1
+6.3.6.2.15 Type: GbaAuthenticationInfoRequest
+Table 6.3.6.2.15-1: Definition of type GbaAuthenticationInfoRequest
+Attribute name Data type P Cardinality Description
+authType GbaAuthType M 1 Indicates the authentication method.
+resynchronizationInfo ResynchronizationInfo O 0..1 Contains RAND and AUTS.
+supportedFeatures SupportedFeatures O 0..1 See clause 6.3.8
+6.3.6.2.16 Type: GbaAuthenticationInfoResult
+Table 6.3.6.2.16-1: Definition of type GbaAuthenticationInfoResult
+Attribute name Data type P Cardinality Description
+3gAkaAv 3GAkaAv O 0..1 Contains an AV when the requested
+authentication type is "DIGEST_AKAV1_MD5"
+supportedFeatures SupportedFeatures O 0..1 See clause 6.3.8
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 309 ETSI TS 129 503 V17.12.0 (2023-09)
+6.3.6.2.17 Type: ProSeAuthenticationInfoRequest
+Table 6.3.6.2.17-1: Definition of type ProSeAuthenticationInfoRequest
+Attribute name Data type P Cardinality Description
+servingNetworkName ServingNetworkName M 1 See 3GPP TS 33.501 [6] clause 6.1.1.4
+relayServiceCode RelayServiceCode M 1 Indicates Relay Service Code. See
+3GPP TS 29.571 [7] clause 5.4.2
+resynchronizationInfo ResynchronizationInfo O 0..1 Contains RAND and AUTS.
+supportedFeatures SupportedFeatures O 0..1 See clause 6.3.8
+6.3.6.2.18 Type: ProSeAuthenticationInfoResult
+Table 6.3.6.2.18-1: Definition of type ProSeAuthenticationInfoResult
+Attribute name Data type P Cardinality Description
+authType AuthType M 1 Indicates the authentication method.
+proseAuthenticationVec
+tors
+ProSeAuthenticationVect
+ors
+O 0..1 This IE shall be present if the AUSF of the 5G
+ProSe Remote UE retrieves the Authentication
+Vectors from the UDM. When present, this IE
+shall contain Authentication Vector for Prose.
+See 3GPP TS 33.503 [64] clause 7.4.2.1
+supi Supi C 0..1 SUPI shall be present if the request contained
+the SUCI within the request URI
+supportedFeatures SupportedFeatures O 0..1 See clause 6.3.8
+6.3.6.2.19 Type: ProSeAuthenticationVectors
+Table 6.3.6.2.19-1: Definition of type ProSeAuthenticationVectors as a list of alternatives
+Data type Cardinality Description
+array(AvEapAkaPrime) 1..5
+6.3.6.3 Simple data types and enumerations
+6.3.6.3.1 Introduction
+This clause defines simple data types and enumerations that can be referenced from data structures defined in the
+previous clauses.
+6.3.6.3.2 Simple data types
+The simple data types defined in table 6.3.6.3.2-1 shall be supported.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 310 ETSI TS 129 503 V17.12.0 (2023-09)
+Table 6.3.6.3.2-1: Simple data types
+Type Name Type Definition Description
+Autn string pattern: "^[A-Fa-f0-9]{32}$"
+Auts string pattern: "^[A-Fa-f0-9]{28}$"
+CkPrime string pattern: "^[A-Fa-f0-9]{32}$"
+IkPrime string pattern: "^[A-Fa-f0-9]{32}$"
+Kausf string pattern: "^[A-Fa-f0-9]{64}$"
+Rand string pattern: "^[A-Fa-f0-9]{32}$"
+ServingNetworkNa
+me
+string See 3GPP TS 33.501 [6] clause 6.1.1.4
+pattern: "^(5G:mnc[0-9]{3}[.]mcc[0-9]{3}[.]3gppnetwork[.]org(:[AF0-9]{11})?)|5G:NSWO$"
+Success boolean true indicates success, false indicates no success
+Xres string pattern: "^[A-Fa-f0-9]{8,32}$"
+XresStar string pattern: "^[A-Fa-f0-9]{32}$"
+AuthenticatedInd boolean Indicates whether authenticated by the W-AGF or not:
+- true: authenticated by the W-AGF;
+- false: unauthenticated by the W-AGF.
+ConfidentialityKey string pattern: "^[A-Fa-f0-9]{32}$"
+IntegrityKey string pattern: "^[A-Fa-f0-9]{32}$"
+Kasme string pattern: "^[A-Fa-f0-9]{64}$"
+NumOfRequestedV
+ectors
+integer minimum: 1
+maximum: 5
+6.3.6.3.3 Enumeration: AuthType
+Table 6.3.6.3.3-1: Enumeration AuthType
+Enumeration value Description
+"EAP_AKA_PRIME" EAP-AKA'
+"5G_AKA" 5G AKA
+"EAP_TLS" EAP-TLS. See NOTE 1
+"NONE" No specific EAP method type is signalled. See NOTE 2
+"EAP_TTLS" EAP-TTLS. See NOTE 3.
+NOTE 1: EAP-TLS is described in the Informative Annex B and Annex O of 3GPP TS 33.501 [6] and is not
+mandatory to support.
+NOTE 2: NONE indicates that EAP method type is not signalled, because of the following scenario.
+Primary authentication with AAA Server that acts as the EAP server is required for the UEs that
+use credentials from an AAA Server in a Credentials Holder, as described in clause 5.30.2.9.2 of
+3GPP TS 23.501 [2]. This value is necessary when authAaa attribute is included in the
+AuthenticationInfoResult type and because authType is a mandatory attribute.
+NOTE 3: EAP-TTLS is described in the Informative Annex U of 3GPP TS 33.501 [6] and is optional to
+support.
+6.3.6.3.4 Enumeration: AvType
+Table 6.3.6.3.4-1: Enumeration AvType
+Enumeration value Description
+"5G_HE_AKA"
+"EAP_AKA_PRIME"
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 311 ETSI TS 129 503 V17.12.0 (2023-09)
+6.3.6.3.5 Enumeration: HssAuthType
+Table 6.3.6.3.5-1: Enumeration HssAuthType
+Enumeration value Description
+"EPS_AKA"
+"EAP_AKA"
+"EAP_AKA_PRIME" EAP-AKA'
+"IMS_AKA"
+"GBA_AKA"
+"UMTS_AKA"
+6.3.6.3.6 Enumeration: HssAvType
+Table 6.3.6.3.6-1: Enumeration HssAvType
+Enumeration value Description
+"EPS_AKA"
+"EAP_AKA"
+"IMS_AKA"
+"GBA_AKA"
+"UMTS_AKA"
+6.3.6.3.7 Enumeration: HssAuthTypeInUri
+Table 6.3.6.3.7-1: Enumeration HssAuthTypeInUri
+Enumeration value Description
+"eps-aka" EPS-AKA authentication method
+"eap-aka" EAP-AKA authentication method
+"eap-aka-prime" EAP-AKA' authentication method
+"ims-aka" IMS-AKA authentication method
+"gba-aka" GBA-AKA authentication method
+NOTE: This enumeration is used as a variable part of resource URIs, and therefore it follows the naming
+convention used in URIs (lower case with hyphens); see 3GPP TS 29.501 [5], clause 5.1.
+6.3.6.3.8 Enumeration: AccessNetworkId
+This data type contains the values for the Access Network Identities defined by 3GPP in the context of non-3GPP
+access to EPC, used in the generation of EAP-AKA' authentication vectors. The possible values are originally defined in
+3GPP TS 24.302 [49].
+Table 6.3.6.3.8-1: Enumeration AccessNetworkId
+Enumeration value Description
+"HRPD" Access Network: HRPD
+"WIMAX" Access Network: WiMAX
+"WLAN" Access Network: Wireless LAN
+"ETHERNET" Access Network: Ethernet
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 312 ETSI TS 129 503 V17.12.0 (2023-09)
+6.3.6.3.9 Enumeration: NodeType
+Table 6.3.6.3.9-1: Enumeration NodeType
+Enumeration value Description
+"AUSF" This value is not applicable to the HSS.
+"VLR"
+"SGSN"
+"S_CSCF"
+"BSF"
+"GAN_AAA_SERVER"
+"WLAN_AAA_SERVER"
+"MME"
+6.3.6.3.10 Enumeration: GbaAuthType
+Table 6.3.6.3.10-1: Enumeration GbaAuthType
+Enumeration value Description
+"DIGEST_AKAV1_MD5" IMS-AKA authentication scheme

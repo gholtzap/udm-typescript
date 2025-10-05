@@ -1,0 +1,591 @@
+6.5.6 Data Model
+6.5.6.1 General
+This clause specifies the application data model supported by the API.
+Table 6.5.6.1-1 specifies the data types defined for the Nudm_PP service API.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 360 ETSI TS 129 503 V17.12.0 (2023-09)
+Table 6.5.6.1-1: Nudm_PP specific Data Types
+Data type Clause defined Description
+PpData 6.5.6.2.2 Parameter Provision Data
+CommunicationCharacteristics 6.5.6.2.3 Communication Characteristics
+PpSubsRegTimer 6.5.6.2.4
+PpActiveTime 6.5.6.2.5
+5GVnGroupConfiguration 6.5.6.2.6
+5GVnGroupData 6.5.6.2.7
+ExpectedUeBehaviour 6.5.6.2.8 Expected UE Behaviour Parameters
+LocationArea 6.5.6.2.10 Location Area
+NetworkAreaInfo 6.5.6.2.11 Network Area Information
+EcRestriction 6.5.6.2.12
+PlmnEcInfo 6.5.6.2.13
+PpDlPacketCountExt 6.5.6.2.14
+PpMaximumResponseTime 6.5.6.2.15
+PpMaximumLatency 6.5.6.2.16
+LcsPrivacy 6.5.6.2.17
+UmtTime 6.5.6.2.18
+PpDataEntry 6.5.6.2.19 Provisioning Parameter Data Entry
+CommunicationCharacteristicsAF 6.5.6.2.20 Communication Characteristics per AF
+EcsAddrConfigInfo 6.5.6.2.21 ECS Address Configuration Information
+5MbsAuthorizationInfo 6.5.6.2.22 5MBS Session Authorization Information
+MulticastMbsGroupMemb 6.5.6.2.23 Multicast MBS group membership management
+ReferenceId 6.5.6.3.2
+PpDlPacketCount 6.5.6.3.2
+Table 6.5.6.1-2 specifies data types re-used by the Nudm_PP service API from other APIs, including a reference and
+when needed, a short description of their use within the Nudm_PP service API.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 361 ETSI TS 129 503 V17.12.0 (2023-09)
+Table 6.5.6.1-2: Nudm_PP re-used Data Types
+Data type Reference Comments
+DurationSec 3GPP TS 29.571 [7] Time value in seconds
+DurationSecRm 3GPP TS 29.571 [7] Time value in seconds; nullable
+SupportedFeatures 3GPP TS 29.571 [7]
+NfInstanceId 3GPP TS 29.571 [7]
+ProblemDetails 3GPP TS 29.571 [7]
+Gpsi 3GPP TS 29.571 [7]
+PatchResult 3GPP TS 29.571 [7]
+DateTime 3GPP TS 29.571 [7]
+Ecgi 3GPP TS 29.571 [7] an EUTRA cell identifier
+Ncgi 3GPP TS 29.571 [7] an NR cell identifier
+GlobalRanNodeId 3GPP TS 29.571 [7] an identity of the NG-RAN node
+Tai 3GPP TS 29.571 [7] a tracking area identity
+GeographicArea 3GPP TS 29.572 [34] Identifies the geographical information of the user(s).
+CivicAddress 3GPP TS 29.572 [34] Identifies the civic address information of the user(s).
+PduSessionType 3GPP TS 29.571 [7]
+AppDescriptor 6.1.6.2.40
+AcsInfoRm 3GPP TS 29.571 [7]
+StnSrRm 3GPP TS 29.571 [7] Session Transfer Number for SRVCC
+Supi 3GPP TS 29.571 [7]
+Lpi 6.1.6.2.43
+MtcProviderInformation 3GPP TS 29.571 [7] MTC Provider Information
+StationaryIndicationRm 3GPP TS 29.571 [7]
+ScheduledCommunicationTimeRm 3GPP TS 29.571 [7]
+ScheduledCommunicationTypeRm 3GPP TS 29.571 [7]
+TrafficProfileRm 3GPP TS 29.571 [7]
+BatteryIndicationRm 3GPP TS 29.571 [7]
+EcsServerAddr 3GPP TS 29.571 [7]
+Fqdn 3GPP TS 29.571 [7] Fully Qualified Domain Name
+SpatialValidityCond 3GPP TS 29.571 [7]
+MbsSessionId 3GPP TS 29.571 [7] 5MBS Session Identifier
+GroupId 3GPP TS 29.571 [7]
+6.5.6.2 Structured data types
+6.5.6.2.1 Introduction
+This clause defines the structures to be used in resource representations.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 362 ETSI TS 129 503 V17.12.0 (2023-09)
+6.5.6.2.2 Type: PpData
+Table 6.5.6.2.2-1: Definition of type PpData
+Attribute name Data type P Cardinality Description
+supportedFeatures SupportedFeatures O 0..1
+communicationCharacteristics CommunicationCharacteri
+stics
+O 0..1 communication characteristics
+expectedUeBehaviour ExpectedUeBehaviour O 0..1 Expected UE Behaviour Parameters
+ecRestriction EcRestriction O 0..1 Enhanced Coverage Restriction
+Parameters
+acsInfo AcsInfoRm O 0..1 Identifies the ACS Information (see
+TS 23.316 [37] clause 9.6.3); nullable.
+stnSr StnSrRm O 0..1 Session Transfer Number for SRVCC
+lcsPrivacy LcsPrivacy O 0..1 LCS Privacy Parameters (see clause
+5.4.3 of 3GPP TS 23.273 [38])
+sorInfo SorInfo O 0..1 Steering of Roaming information to be
+conveyed to a UE
+See NOTE°1 and NOTE°2.
+5mbsAuthorizationInfo 5MbsAuthorizationInfo O 0..1 When present, this IE shall include the
+5MBS Session Authorization
+Information as specified in 3GPP TS
+23.247 [59]
+NOTE°1: If the UDM is not able to immediately (after conducting integrity protection with the AUSF) convey the
+received Steering of Roaming information to the concerned UE for any reason (e.g. no AMF registered for
+the UE), it shall discard it.
+NOTE°2: The behaviour of the UDM at reception of Steering of Roaming information within PpData is specified in
+Annex C.3 of 3GPP°TS°23.122°[20].
+6.5.6.2.3 Type: CommunicationCharacteristics
+Table 6.5.6.2.3-1: Definition of type CommunicationCharacteristics
+Attribute name Data type P Cardinality Description
+ppSubsRegTimer PpSubsRegTimer O 0..1 AF provisionedSubscribed periodic registration timer;
+nullable (NOTE 2)
+ppActiveTime PpActiveTime O 0..1 AF provisioned active time; nullable (NOTE 2)
+ppDlPacketCount PpDlPacketCount O 0..1 AF provisioned DL Buffering Suggested Packet
+Count; nullable
+ppDlPacketCountExt PpDlPacketCount
+Ext
+C 0..1 AF provisioned DL Buffering Suggested Packet
+Count Extension; nullable.
+Shall be absent if ppDlPacketCount is absent, and
+shall be null if ppDlPacketCount is null.
+ppMaximumResponseTi
+me
+PpMaximumResp
+onseTime
+O 0..1 AF provisioned Maximum Response Time; nullable
+ppMaximumLatency PpMaximumLate
+ncy
+O 0..1 AF provisioned Maximum Latency; nullable
+NOTE 1: If ppDlPacketCountExt is absent and ppDlPacketCount (whether the value is null or not) is present in a
+modification request, it shall result in deletion of ppDlPacketCountExt.
+NOTE 2: These IEs are deprecated. An NF service consumer (i.e. AF) supporting this release shall use
+ppMaximumResponseTime IE to influence the Subscribed Active Time of the UE; use ppMaximumLatency
+IE to influence the Subscribed Periodic Registration Timer of the UE.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 363 ETSI TS 129 503 V17.12.0 (2023-09)
+6.5.6.2.4 Type: PpSubsRegTimer
+Table 6.5.6.2.4-1: Definition of type PpSubsRegTimer
+Attribute name Data type P Cardinality Description
+subsRegTimer DurationSec M 1 value in seconds
+afInstanceId string M 1 The string identifying the originating AF (NOTE)
+referenceId ReferenceId M 1 Transaction Reference ID
+validityTime DateTime O 0..1 Identifies the point of time up to which the
+subsRegTimer parameter expires and it shall be
+deleted. If absent, it indicates that there is no
+expiration time for these expected UE parameters.
+If this IE is in request body, it indicates the expected
+validity time by consumer.
+If this IE is in response body, it indicates the
+confirmed validity time by UDM.
+mtcProviderInformation MtcProviderInfor
+mation
+O 0..1 Indicates MTC provider information for Parameter
+Provisioning authorization.
+NOTE: When the service operation is originated by external AF via T8/N33 interface, information carried in {scsAsId}
+URI variable in resource URIs on T8/N33 interface (see clause 5 of 3GPP TS 29.122 [45]) or in {afId} URI
+variable in resource URIs on N33 interface (see clause 5 of 3GPP TS 29.522 [54]) can be used as the value
+for this IE.
+6.5.6.2.5 Type: PpActiveTime
+Table 6.5.6.2.5-1: Definition of type PpActiveTime
+Attribute name Data type P Cardinality Description
+activeTime DurationSec M 1 value in seconds
+afInstanceId string M 1 The string identifying the originating AF (NOTE).
+referenceId ReferenceId M 1 Transaction Reference ID
+validityTime DateTime O 0..1 Identifies the point of time up to which the
+activeTime parameter expires and it shall be deleted.
+If absent, it indicates that there is no expiration time
+for these expected UE parameters.
+If this IE is in request body, it indicates the expected
+validity time by consumer.
+If this IE is in response body, it indicates the
+confirmed validity time by UDM.
+mtcProviderInformation MtcProviderInfor
+mation
+O 0..1 Indicates MTC provider information for Parameter
+Provisioning authorization.
+NOTE: When the service operation is originated by external AF via T8/N33 interface, information carried in {scsAsId}
+URI variable in resource URIs on T8/N33 interface (see clause 5 of 3GPP TS 29.122 [45]) or in {afId} URI
+variable in resource URIs on N33 interface (see clause 5 of 3GPP TS 29.522 [54]) can be used as the value
+for this IE.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 364 ETSI TS 129 503 V17.12.0 (2023-09)
+6.5.6.2.6 Type: 5GVnGroupConfiguration
+Table 6.5.6.2.6-1: Definition of type 5GVnGroupConfiguration
+Attribute name Data type P Cardinality Description
+5gVnGroupData 5GVnGroupData C 0..1 Data of the 5G VN Group; may be absent in
+modification requests; shall be present otherwise
+members array(Gpsi) C 1..N List of group members; may be absent in
+modification requests; shall be present in creation
+requests
+referenceId ReferenceId C 1 Transaction Reference ID; shall be absent in
+modification requests; shall be present otherwise.
+afInstanceId string C 1 The string identifying the originating AF (NOTE)
+internalGroupIdentifier GroupId C 0..1 Allocated by the UDR; shall be present in successful
+PUT and GET responses on Nudr; otherwise shall
+be absent.
+mtcProviderInformation MtcProviderInfor
+mation
+O 0..1 Indicates MTC provider information for 5G VN Group
+Configuration authorization.
+NOTE: When the service operation is originated by external AF via T8/N33 interface, information carried in {scsAsId}
+URI variable in resource URIs on T8/N33 interface (see clause 5 of 3GPP TS 29.122 [45]) or in {afId} URI
+variable in resource URIs on N33 interface (see clause 5 of 3GPP TS 29.522 [54]) can be used as the value
+for this IE.
+6.5.6.2.7 Type: 5GVnGroupData
+Table 6.5.6.2.7-1: Definition of type 5GVnGroupData
+Attribute name Data type P Cardinality Description
+dnn Dnn M 1 DNN of the 5G VN group, shall contain the Network
+Identifier only.
+sNssai Snssai M 1 S-NSSAI of the 5G VN group's communication
+session
+pduSessionTypes array(PduSessio
+nType)
+O 1..N List of PDU Session Types allowed for 5G VN
+group's communication session
+appDescriptors array(AppDescrip
+tor)
+O 1..N List of Application Descriptors allowed for 5G VN
+group's communication session
+secondaryAuth boolean O 0..1 Indicates whether secondary authentication and
+authorization is needed.
+true: secondary authentication and authorization is
+needed.
+false: secondary authentication and authorization is
+not needed.
+If absent, it indicates that secondary authentication is
+not required by the NEF, but it still may be required
+by local policies at the SMF.
+dnAaaIpAddressAllocati
+on
+boolean O 0..1 Indicates whether the SMF is required to request the
+UE IP address from the DN-AAA server for PDU
+Session Establishment.
+true: required
+false: not required
+If absent, it indicates that the request by SMF of the
+UE IP address from the DN-AAA server is not
+required, but it still may be required by local policies
+at the SMF.
+dnAaaAddress IpAddress O 0..1 The IP address of the DN-AAA server, used for
+secondary authentication and authorization.
+additionalDnAaaAddres
+ses
+array(IpAddress) O 1..N Additional IP addresses of the DN-AAA server used
+for secondary authentication and authorization.
+dnAaaFqdn Fqdn O 0..1 The FQDN of the DN-AAA server used for
+secondary authentication and authorization.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 365 ETSI TS 129 503 V17.12.0 (2023-09)
+6.5.6.2.8 Type: ExpectedUeBehaviour
+Table 6.5.6.2.8-1: Definition of type ExpectedUeBehaviour
+Attribute name Data type P Cardinality Description
+afInstanceId string M 1 The string identifying the originating AF (NOTE 5)
+referenceId ReferenceId M 1 Identifies transaction reference ID genetrated by
+NEF.
+stationaryIndication StationaryIndicati
+onRm
+O 0..1 Identifies whether the UE is stationary or mobile(see
+TS 23.502 [3] clause 4.15.6.3); nullable.
+communicationDuration
+Time
+DurationSecRm O 0..1 Indicates for how long the UE will normally stay in
+CM-Connected for data transmission(see
+TS 23.502 [3] clause 4.15.6.3); nullable.
+periodicTime DurationSecRm O 0..1 Identifies interval time of periodic communication
+(see TS 23.502 [3] clause 4.15.6.3); nullable.
+scheduledCommunicati
+onTime
+ScheduledComm
+unicationTimeRm
+O 0..1 Identifies time and day of the week when the UE is
+available for communication(see TS 23.502 [3]
+clause 4.15.6.3); nullable.
+scheduledCommunicati
+onType
+ScheduledComm
+unicationTypeRm
+O 0..1 Indicates that the Scheduled Communication Type
+(see TS 23.502 [3] clause 4.15.6.3); nullable.
+(NOTE 4)
+expectedUmts array(LocationAr
+ea)
+O 1..N Identifies the UE's expected geographical
+movement. The attribute is only applicable in 5G(see
+TS 23.502 [3] clause 4.15.6.3); nullable.
+(NOTE 3)
+trafficProfile TrafficProfileRm O 0..1 Identifies the type of data transmission: single packet
+transmission (UL or DL), dual packet transmission
+(UL with subsequent DL or DL with subsequent UL),
+multiple packets transmission; nullable
+batteryIndication BatteryIndication
+Rm
+O 0..1 Indicates the power consumption type(s) of the UE
+(see TS 23.502 [3] clause 4.15.6.3); nullable.
+validityTime DateTime O 0..1 If present, identifies when the expected UE
+behaviour parameters expire and shall be deleted
+locally if it expire(see TS 23.502 [3] clause 4.15.6.3).
+If this IE is in request body, it indicates the expected
+validity time by consumer.
+If this IE is in response body, it indicates the
+confirmed validity time by UDM.
+(NOTE 2)
+mtcProviderInformation MtcProviderInfor
+mation
+O 0..1 Indicates MTC provider information for UE
+Parameter Configuration authorization.
+NOTE 1: At least one of optional parameters (expect for validityTime) above shall be present.
+NOTE 2: If this attribute is omitted, no expiry for the expected UE behaviour parameters applies.
+NOTE 3: The first instance of the attribute represents the start of the location, and the last one represents the stop of
+the location.
+NOTE 4: The parameter "scheduledCommunicationType" shall be used together with the parameter
+"scheduledCommunicationTime".
+NOTE 5: When the service operation is originated by external AF via T8/N33 interface, information carried in {scsAsId}
+URI variable in resource URIs on T8/N33 interface (see clause 5 of 3GPP TS 29.122 [45]) or in {afId} URI
+variable in resource URIs on N33 interface (see clause 5 of 3GPP TS 29.522 [54]) can be used as the
+value for this IE.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 366 ETSI TS 129 503 V17.12.0 (2023-09)
+6.5.6.2.9 Void
+6.5.6.2.10 Type: LocationArea
+Table 6.5.6.2.10-1: Definition of type LocationArea
+Attribute name Data type P Cardinality Description
+geographicAreas array(Geographic
+Area)
+O 0..N Identifies a list of geographic area of the user where
+the UE is located.
+civicAddresses array(CivicAddre
+ss)
+O 0..N Identifies a list of civic addresses of the user where
+the UE is located.
+nwAreaInfo NetworkAreaInfo O 0..1 This IE represents the network area information of
+the user where the UE is located.
+umtTime
+UmtTime O 0..1 This IE identifies the time when the UE is expected
+to arrive at the location.
+May be present when LocationArea is part of the
+UE's expected geographical movement.
+6.5.6.2.11 Type: NetworkAreaInfo
+Table 6.5.6.2.11-1: Definition of type NetworkAreaInfo
+Attribute name Data type P Cardinality Description
+ecgis array(Ecgi) O 0..N This IE contains a list of E-UTRA cell identities.
+ncgis array(Ncgi) O 0..N This IE contains a list of NR cell identities.
+gRanNodeIds array(GlobalRan
+NodeId)
+O 0..N This IE contains a list of the NG-RAN nodes.
+The "n3IwfId" attribute within the "GlobalRanNodeId"
+data type shall not be supplied.
+tais array(Tai) O 0..N This IE contains a list of tracking area identities.
+NOTE: The NetworkAreaInfo data type allows any combination of defined properties.
+6.5.6.2.12 Type: EcRestriction
+Table 6.5.6.2.12-1: Definition of type EcRestriction
+Attribute name Data type P Cardinality Description
+afInstanceId string M 1 The string identifying the originating AF (NOTE)
+referenceId ReferenceId M 1 Transaction Reference ID
+plmnEcInfos array(PlmnEcInfo
+)
+O 1..N It may indicate a complete list of serving PLMNs
+where Enhanced Coverage shall be allowed and the
+detailed enhanced coverage restriction configuration
+under per the PLMN.
+mtcProviderInformati
+on
+MtcProviderInfor
+mation
+O 0..1 Indicates MTC provider information for UE Parameter
+Configuration authorization.
+NOTE: When the service operation is originated by external AF via T8/N33 interface, information carried in scsAsId
+attribute in ECRControl structured data type (see clause 5.12.2.1.2 of 3GPP TS 29.122 [45]) can be used as
+the value for this IE. If the scsAsId value is not received in T8, the afInstanceId attribute shall contain an
+empty string value ("").
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 367 ETSI TS 129 503 V17.12.0 (2023-09)
+6.5.6.2.13 Type: PlmnEcInfo
+Table 6.5.6.2.13-1: Definition of type PlmnEcInfo
+Attribute name Data type P Cardinality Description
+plmnId PlmnId M 1 Indicates PLMN where Enhanced Coverage shall be
+restricted.
+ecRestrictionDataWb EcRestrictionDat
+aWb
+O 0..1 If present, it shall contain Enhanced Coverage
+Restriction Data for WB-N1 mode.
+If absent, it shall indicate that Enhanced Coverage is
+not restricted for WB-N1 mode.
+ecRestrictionDataNb boolean O 0..1 If present, this IE shall indicate whether Enhanced
+Coverage for NB-N1 mode is restricted or not.
+true: Enhanced Coverage for NB-N1 mode is
+restricted.
+false or absent: Enhanced Coverage for NB-N1
+mode is allowed.
+NOTE: At least one of the properties "ecRestrictionDataWb" and "ecRestrictionDataNb" shall be included.
+6.5.6.2.14 Type: PpDlPacketCountExt
+Table 6.5.6.2.14-1: Definition of type PpDlPacketCountExt
+Attribute name Data type P Cardinality Description
+afInstanceId string M 1 The string identifying the originating AF (NOTE)
+referenceId ReferenceId M 1 Transaction Reference ID
+dnn Dnn O 0..1 When present, it indicates the DNN for which the
+ppDlPacketCount is applicable.
+singleNssai Snssai O 0..1 When present, it indicates the slice for which the
+ppDlPacketCount is applicable.
+validityTime DateTime O 0..1 Identifies the point of time up to which the value of
+parameter ppDlPacketCount expires and it shall be
+deleted. If absent, it indicates that there is no
+expiration time for these expected UE parameters.
+If this IE is in request body, it indicates the expected
+validity time by consumer.
+If this IE is in response body, it indicates the
+confirmed validity time by UDM.
+mtcProviderInformation MtcProviderInfor
+mation
+O 0..1 Indicates MTC provider information for Parameter
+Provisioning authorization.
+NOTE: When the service operation is originated by external AF via T8/N33 interface, information carried in {scsAsId}
+URI variable in resource URIs on T8/N33 interface (see clause 5 of 3GPP TS 29.122 [45]) or in {afId} URI
+variable in resource URIs on N33 interface (see clause 5 of 3GPP TS 29.522 [54]) can be used as the value
+for this IE.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 368 ETSI TS 129 503 V17.12.0 (2023-09)
+6.5.6.2.15 Type: PpMaximumResponseTime
+Table 6.5.6.2.15-1: Definition of type PpMaximumResponseTime
+Attribute name Data type P Cardinality Description
+maximumResponseTim
+e
+DurationSec M 1 This IE shall contain value of Maximum Response
+Time in seconds.
+Maximum Response Time identifies the time for
+which the UE stays reachable to allow the AF to
+reliably deliver the required downlink data, see
+clause 4.15.6.3a of 3GPP TS 23.502 [3].
+afInstanceId string M 1 The string identifying the originating AF (NOTE)
+referenceId ReferenceId M 1 Transaction Reference ID
+validityTime DateTime O 0..1 Identifies the point of time up to which the value of
+maximumResponseTime expires and it shall be
+deleted. If absent, it indicates that there is no
+expiration time.
+If this IE is in request body, it indicates the expected
+validity time by consumer.
+If this IE is in response body, it indicates the
+confirmed validity time by UDM.
+mtcProviderInformation MtcProviderInfor
+mation
+O 0..1 Indicates MTC provider information for Parameter
+Provisioning authorization.
+NOTE: When the service operation is originated by external AF via T8/N33 interface, information carried in {scsAsId}
+URI variable in resource URIs on T8/N33 interface (see clause 5 of 3GPP TS 29.122 [45]) or in {afId} URI
+variable in resource URIs on N33 interface (see clause 5 of 3GPP TS 29.522 [54]) can be used as the value
+for this IE.
+6.5.6.2.16 Type: PpMaximumLatency
+Table 6.5.6.2.16-1: Definition of type PpMaximumLatency
+Attribute name Data type P Cardinality Description
+maximumLatency DurationSec M 1 This IE shall contain value of Maximum Latency in
+seconds.
+Maximum Latency identifies maximum delay
+acceptable for downlink data transfers, see clause
+4.15.6.3a of 3GPP TS 23.502 [3].
+afInstanceId string M 1 The string identifying the originating AF (NOTE).
+referenceId ReferenceId M 1 Transaction Reference ID
+validityTime DateTime O 0..1 Identifies the point of time up to which the value of
+maximumLatency expires and it shall be deleted. If
+absent, it indicates that there is no expiration time.
+If this IE is in request body, it indicates the expected
+validity time by consumer.
+If this IE is in response body, it indicates the
+confirmed validity time by UDM.
+mtcProviderInformation MtcProviderInfor
+mation
+O 0..1 Indicates MTC provider information for Parameter
+Provisioning authorization.
+NOTE: When the service operation is originated by external AF via T8/N33 interface, information carried in {scsAsId}
+URI variable in resource URIs on T8/N33 interface (see clause 5 of 3GPP TS 29.122 [45]) or in {afId} URI
+variable in resource URIs on N33 interface (see clause 5 of 3GPP TS 29.522 [54]) can be used as the value
+for this IE.
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 369 ETSI TS 129 503 V17.12.0 (2023-09)
+6.5.6.2.17 Type: LcsPrivacy
+Table 6.5.6.2.17-1: Definition of type LcsPrivacy
+Attribute name Data type P Cardinality Description
+afInstanceId string C 0..1 When present, indicates NF Instance
+Id of the originating AF/NF.
+(NOTE)
+referenceId ReferenceId C 0..1 This IE shall be present if LCS privacy
+parameters are provisioned by an AF.
+When present, indicates Transaction
+Reference ID
+(NOTE)
+lpi Lpi O 0..1 If present, indicates the Location
+Privacy Indication
+mtcProviderInformation MtcProviderInformation O 0..1 Indicates MTC provider information for
+LCS privacy parameter configuration
+authorization.
+NOTE: If LCS privacy parameters are provisioned by UE, parameters afInstanceId and referenceId shall be not
+included, and if LCS privacy parameters are provisioned by AF, parameters afInstanceId and referenceId
+shall be included. The string identifying the originating AF, which is carried in {scsAsId} URI variable in
+resource URIs on T8/N33 interface (see clause 5 of 3GPP TS 29.122 [45]) or in {afId} URI variable in
+resource URIs on N33 interface (see clause 5 of 3GPP TS 29.522 [54]).
+6.5.6.2.18 Type: UmtTime
+Table 6.5.6.2.18-1: Definition of type UmtTimey
+Attribute name Data type P Cardinality Description
+timeOfDay TimeOfDay M 1 see 3GPP TS 29.571 [7]
+dayOfWeek DayOfWeek M 1 see 3GPP TS 29.571 [7]
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 370 ETSI TS 129 503 V17.12.0 (2023-09)
+6.5.6.2.19 Type: PpDataEntry
+Table 6.5.6.2.19-1: Definition of type PpDataEntry
+Attribute name Data type P Cardinality Description
+communicationCharacteristics CommunicationCharacteri
+sticsAF
+O 0..1 Communication characteristics for the
+AF
+referenceId ReferenceId M 1 Transaction Reference ID
+validityTime DateTime O 0..1 When present, this IE shall identify the
+point of time up to which the
+provisioned parameters will be expire
+and shall be deleted. If absent, it
+indicates that there is no expiration
+time for the provisioned parameters.
+If this IE is in request body, it indicates
+the expected validity time by
+consumer.
+If this IE is in response body, it
+indicates the confirmed validity time by
+UDM.
+mtcProviderInformation MtcProviderInformation O 0..1 When present, this IE shall indicate the
+MTC provider information for
+Parameter Provisioning authorization.
+supportedFeatures SupportedFeatures O 0..1 Supported Features
+ecsAddrConfigInfo EcsAddrConfigInfo O 0..1 ECS Address ConfigurationInformation
+Parameters; see 3GPP TS 23.502 [3]
+additionalEcsAddrConfigInfos array(EcsAddrConfigInfo) O 1..N Additional ECS Address Configuration
+Information Parameters. See
+3GPP TS 23.548 [60]
+ecRestriction EcRestriction O 0..1 Enhanced Coverage Restriction
+Parameters
+6.5.6.2.20 Type: CommunicationCharacteristicsAF
+Table 6.5.6.2.20-1: Definition of type CommunicationCharacteristicsAF
+Attribute name Data type P Cardinality Description
+ppDlPacketCount PpDlPacketCount O 0..1 AF provisioned DL Buffering Suggested Packet
+Count; nullable
+maximumResponseTim
+e
+DurationSec O 0..1 When present, this IE shall contain value of
+Maximum Response Time in seconds.
+Maximum Response Time identifies the time for
+which the UE stays reachable to allow the AF to
+reliably deliver the required downlink data, see
+clause 4.15.6.3a of 3GPP TS 23.502 [3].
+maximumLatency DurationSec O 0..1 When present, this IE shall contain value of
+Maximum Latency in seconds.
+Maximum Latency identifies maximum delay
+acceptable for downlink data transfers, see clause
+4.15.6.3a of 3GPP TS 23.502 [3].
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 371 ETSI TS 129 503 V17.12.0 (2023-09)
+6.5.6.2.21 Type: EcsAddrConfigInfo
+Table 6.5.6.2.21-1: Definition of type EcsAddrConfigInfo
+Attribute name Data type P Cardinality Description
+ecsServerAddr EcsServerAddr O 0..1 This IE shall include address information of the Edge
+Configuration Server(s).
+spatialValidityCond SpatialValidityCo
+nd
+O 0..1 When present, this IE shall include the Spatial
+Validity Condition as defined in clause 4.15.6.3d of
+3GPP TS 23.502 [3]
+NOTE: When the UDR receives ECS Address Configuration Information from the UDM for a group of UEs (or
+anyUE), it may need to modify the shared ECS Address Configuration Information shared by members of
+the group (or by any UE).
+6.5.6.2.22 Type: 5MbsAuthorizationInfo
+Table 6.5.6.2.22-1: Definition of type 5MbsAuthorizationInfo
+Attribute name Data type P Cardinality Description
+5mbsSessionIds array(MbsSessio
+nId)
+M 1..N 5MBS Session Identifiers (TMGI or SSM)
+6.5.6.2.23 Type: MulticastMbsGroupMemb
+Table 6.5.6.2.23-1: Definition of type MulticastMbsGroupMemb
+Attribute name Data type P Cardinality Description
+multicastGroupMemb array(Gpsi) M 1..N When present, this IE shall indicate a list
+of multicast group members, each
+member is identified by GPSI.
+afInstanceId string C 1 The string identifying the originating AF
+internalGroupIdentifier GroupId C 0..1 Shall be present in successful PUT
+requests and GET responses on Nudr;
+otherwise shall be absent.
+6.5.6.3 Simple data types and enumerations
+6.5.6.3.1 Introduction
+This clause defines simple data types and enumerations that can be referenced from data structures defined in the
+previous clauses.
+6.5.6.3.2 Simple data types
+The simple data types defined in table 6.5.6.3.2-1 shall be supported.
+Table 6.5.6.3.2-1: Simple data types
+Type Name Type Definition Description
+ReferenceId integer The numeric value should not be higher than 2^64-1 (i.e. it should
+be possible to convey it in an unsigned 64 integer Information
+Element, used in other protocols), if interworking with the Event
+Exposure framework in EPC is required.
+PpDlPacketCount integer nullable
+ETSI
+3GPP TS 29.503 version 17.12.0 Release 17 372 ETSI TS 129 503 V17.12.0 (2023-09)
+6.5.6.3.3 Void
+6.5.6.3.4 Void
