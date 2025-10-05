@@ -2,16 +2,13 @@
 // Section 6.7.6
 // https://www.etsi.org/deliver/etsi_ts/129500_129599/129503/17.12.00_60/ts_129503v171200p.pdf
 
+import { PlmnId, RatType } from './common-types';
+
 export type UeContextInfo = {
   [key: string]: any;
 };
 
 export type NfInstanceId = string;
-
-export type PlmnId = {
-  mcc: string;
-  mnc: string;
-};
 
 export type Ecgi = {
   plmnId: PlmnId;
@@ -33,28 +30,6 @@ export type GeographicArea = {
 };
 
 export type AgeOfLocationEstimate = number;
-
-export enum RatType {
-  NR = "NR",
-  EUTRA = "EUTRA",
-  WLAN = "WLAN",
-  VIRTUAL = "VIRTUAL",
-  NBIOT = "NBIOT",
-  WIRELINE = "WIRELINE",
-  WIRELINE_CABLE = "WIRELINE_CABLE",
-  WIRELINE_BBF = "WIRELINE_BBF",
-  LTE_M = "LTE-M",
-  NR_U = "NR_U",
-  EUTRA_U = "EUTRA_U",
-  TRUSTED_N3GA = "TRUSTED_N3GA",
-  TRUSTED_WLAN = "TRUSTED_WLAN",
-  UTRA = "UTRA",
-  GERA = "GERA",
-  NR_LEO = "NR_LEO",
-  NR_MEO = "NR_MEO",
-  NR_GEO = "NR_GEO",
-  NR_OTHER_SAT = "NR_OTHER_SAT"
-}
 
 export type TimeZone = string;
 

@@ -2,6 +2,8 @@
 // Section 6.2.6
 // https://www.etsi.org/deliver/etsi_ts/129500_129599/129503/17.12.00_60/ts_129503v171200p.pdf
 
+import { PlmnId, Snssai, RatType, AccessType } from './common-types';
+
 export type PurgeFlag = boolean;
 
 export type E164Number = string;
@@ -346,16 +348,6 @@ export interface Guami {
   amfId: string;
 }
 
-export interface PlmnId {
-  mcc: string;
-  mnc: string;
-}
-
-export interface Snssai {
-  sst: number;
-  sd?: string;
-}
-
 export interface BackupAmfInfo {
   backupAmf: string;
   guamiList?: Guami[];
@@ -380,32 +372,4 @@ export interface SupiRange {
   start?: string;
   end?: string;
   pattern?: string;
-}
-
-export enum RatType {
-  NR = "NR",
-  EUTRA = "EUTRA",
-  WLAN = "WLAN",
-  VIRTUAL = "VIRTUAL",
-  NBIOT = "NBIOT",
-  WIRELINE = "WIRELINE",
-  WIRELINE_CABLE = "WIRELINE_CABLE",
-  WIRELINE_BBF = "WIRELINE_BBF",
-  LTE_M = "LTE-M",
-  NR_U = "NR_U",
-  EUTRA_U = "EUTRA_U",
-  TRUSTED_N3GA = "TRUSTED_N3GA",
-  TRUSTED_WLAN = "TRUSTED_WLAN",
-  UTRA = "UTRA",
-  GERA = "GERA",
-  NR_LEO = "NR_LEO",
-  NR_MEO = "NR_MEO",
-  NR_GEO = "NR_GEO",
-  NR_OTHER_SAT = "NR_OTHER_SAT"
-}
-
-export enum AccessType {
-  THREE_GPP_ACCESS = "3GPP_ACCESS",
-  NON_3GPP_ACCESS = "NON_3GPP_ACCESS",
-  THREE_GPP_AND_NON_3GPP = "3GPP_AND_NON_3GPP"
 }

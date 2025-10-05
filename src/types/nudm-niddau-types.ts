@@ -2,11 +2,7 @@
 // Section 6.6.6
 // https://www.etsi.org/deliver/etsi_ts/129500_129599/129503/17.12.00_60/ts_129503v171200p.pdf
 
-export type Supi = string;
-
-export type Gpsi = string;
-
-export type Dnn = string;
+import { Supi, Gpsi, Dnn, Snssai } from './common-types';
 
 export type DateTime = string;
 
@@ -51,11 +47,6 @@ export interface AuthorizationInfo {
 export enum NiddCause {
   SUBSCRIPTION_WITHDRAWAL = "SUBSCRIPTION_WITHDRAWAL",
   DNN_REMOVED = "DNN_REMOVED"
-}
-
-export interface Snssai {
-  sst: number;
-  sd?: string;
 }
 
 export type MtcProviderInformation = any;

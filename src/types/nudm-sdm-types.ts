@@ -2,6 +2,8 @@
 // Section 6.1.6
 // https://www.etsi.org/deliver/etsi_ts/129500_129599/129503/17.12.00_60/ts_129503v171200p.pdf
 
+import { PlmnId, Snssai, RatType, AccessType, PduSessionType } from './common-types';
+
 export type DefaultDnnIndicator = boolean;
 
 export type LboRoamingAllowed = boolean;
@@ -754,60 +756,14 @@ export interface SupiInfo {
   supiList: string[];
 }
 
-export interface Snssai {
-  sst: number;
-  sd?: string;
-}
-
-export interface PlmnId {
-  mcc: string;
-  mnc: string;
-}
-
 export interface Guami {
   plmnId: PlmnId;
   amfId: string;
 }
 
-export enum AccessType {
-  THREE_GPP_ACCESS = "3GPP_ACCESS",
-  NON_3GPP_ACCESS = "NON_3GPP_ACCESS",
-  THREE_GPP_AND_NON_3GPP = "3GPP_AND_NON_3GPP"
-}
-
-export enum RatType {
-  NR = "NR",
-  EUTRA = "EUTRA",
-  WLAN = "WLAN",
-  VIRTUAL = "VIRTUAL",
-  NBIOT = "NBIOT",
-  WIRELINE = "WIRELINE",
-  WIRELINE_CABLE = "WIRELINE_CABLE",
-  WIRELINE_BBF = "WIRELINE_BBF",
-  LTE_M = "LTE-M",
-  NR_U = "NR_U",
-  EUTRA_U = "EUTRA_U",
-  TRUSTED_N3GA = "TRUSTED_N3GA",
-  TRUSTED_WLAN = "TRUSTED_WLAN",
-  UTRA = "UTRA",
-  GERA = "GERA",
-  NR_LEO = "NR_LEO",
-  NR_MEO = "NR_MEO",
-  NR_GEO = "NR_GEO",
-  NR_OTHER_SAT = "NR_OTHER_SAT"
-}
-
 export enum CoreNetworkType {
   FIVE_GC = "5GC",
   EPC = "EPC"
-}
-
-export enum PduSessionType {
-  IPV4 = "IPV4",
-  IPV6 = "IPV6",
-  IPV4V6 = "IPV4V6",
-  UNSTRUCTURED = "UNSTRUCTURED",
-  ETHERNET = "ETHERNET"
 }
 
 export enum SscMode {

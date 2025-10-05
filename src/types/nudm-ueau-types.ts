@@ -2,6 +2,7 @@
 // Section 6.3.6
 // https://www.etsi.org/deliver/etsi_ts/129500_129599/129503/17.12.00_60/ts_129503v171200p.pdf
 
+import { PlmnId } from './common-types';
 
 export type Autn = string;
 
@@ -231,9 +232,4 @@ export interface ThreeGAkaAv {
   autn: Autn;
   ck: ConfidentialityKey;
   ik: IntegrityKey;
-}
-
-export interface PlmnId {
-  mcc: string;
-  mnc: string;
 }

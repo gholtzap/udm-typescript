@@ -2,7 +2,7 @@
 // Section 6.5.6
 // https://www.etsi.org/deliver/etsi_ts/129500_129599/129503/17.12.00_60/ts_129503v171200p.pdf
 
-export type ReferenceId = number;
+import { ReferenceId, PlmnId, Snssai, PduSessionType } from './common-types';
 
 export type PpDlPacketCount = number | null;
 
@@ -173,24 +173,6 @@ export interface MulticastMbsGroupMemb {
   multicastGroupMemb: string[];
   afInstanceId?: string;
   internalGroupIdentifier?: string;
-}
-
-export interface PlmnId {
-  mcc: string;
-  mnc: string;
-}
-
-export interface Snssai {
-  sst: number;
-  sd?: string;
-}
-
-export enum PduSessionType {
-  IPV4 = "IPV4",
-  IPV6 = "IPV6",
-  IPV4V6 = "IPV4V6",
-  UNSTRUCTURED = "UNSTRUCTURED",
-  ETHERNET = "ETHERNET"
 }
 
 export type MtcProviderInformation = any;

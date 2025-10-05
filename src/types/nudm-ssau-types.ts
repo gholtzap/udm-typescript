@@ -3,14 +3,7 @@
 // https://www.etsi.org/deliver/etsi_ts/129500_129599/129503/17.12.00_60/ts_129503v171200p.pdf
 
 
-import { Gpsi, Supi } from './common-types';
-
-export type Dnn = string;
-
-export type Snssai = {
-  sst: number;
-  sd?: string;
-};
+import { Gpsi, Supi, Dnn, Snssai } from './common-types';
 
 export type ExternalGroupId = string;
 

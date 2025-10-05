@@ -2,9 +2,9 @@
 // Section 6.4.6
 // https://www.etsi.org/deliver/etsi_ts/129500_129599/129503/17.12.00_60/ts_129503v171200p.pdf
 
-export type MaxNumOfReports = number;
+import { ReferenceId, PlmnId, Snssai, AccessType, PduSessionType } from './common-types';
 
-export type ReferenceId = number;
+export type MaxNumOfReports = number;
 
 export enum EventType {
   LOSS_OF_CONNECTIVITY = "LOSS_OF_CONNECTIVITY",
@@ -256,16 +256,6 @@ export interface FailedMonitoringConfiguration {
   failedCause: FailedCause;
 }
 
-export interface PlmnId {
-  mcc: string;
-  mnc: string;
-}
-
-export interface Snssai {
-  sst: number;
-  sd?: string;
-}
-
 export interface ContextInfo {
   [key: string]: any;
 }
@@ -284,20 +274,6 @@ export interface MtcProviderInformation {
 
 export interface UserLocation {
   [key: string]: any;
-}
-
-export enum AccessType {
-  THREE_GPP_ACCESS = "3GPP_ACCESS",
-  NON_3GPP_ACCESS = "NON_3GPP_ACCESS",
-  THREE_GPP_AND_NON_3GPP = "3GPP_AND_NON_3GPP"
-}
-
-export enum PduSessionType {
-  IPV4 = "IPV4",
-  IPV6 = "IPV6",
-  IPV4V6 = "IPV4V6",
-  UNSTRUCTURED = "UNSTRUCTURED",
-  ETHERNET = "ETHERNET"
 }
 
 export enum NotificationFlag {
