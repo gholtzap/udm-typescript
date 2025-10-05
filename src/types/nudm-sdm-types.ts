@@ -118,13 +118,16 @@ export enum MdtUserConsent {
 }
 
 export enum SharedDataTreatmentInstruction {
+  USE_IF_NO_CLASH = "USE_IF_NO_CLASH",
   OVERWRITE = "OVERWRITE",
-  MERGE_ADD = "MERGE_ADD"
+  MAX = "MAX",
+  MIN = "MIN"
 }
 
 export enum GpsiType {
   MSISDN = "MSISDN",
-  EXTERNAL_ID = "EXTERNAL_ID"
+  EXT_ID = "EXT_ID",
+  EXT_GROUP_ID = "EXT_GROUP_ID"
 }
 
 export enum AerialUeIndication {
@@ -142,19 +145,20 @@ export enum ProseDirectAllowed {
   BROADCAST = "BROADCAST",
   GROUPCAST = "GROUPCAST",
   UNICAST = "UNICAST",
-  L2_RELAY = "L2_RELAY",
-  L3_RELAY = "L3_RELAY",
-  L2_REMOTE = "L2_REMOTE",
-  L3_REMOTE = "L3_REMOTE"
+  LAYER2_RELAY = "LAYER2_RELAY",
+  LAYER3_RELAY = "LAYER3_RELAY"
 }
 
 export enum UcPurpose {
-  LOCATION_PRIVACY = "LOCATION_PRIVACY"
+  ANALYTICS = "ANALYTICS",
+  MODEL_TRAINING = "MODEL_TRAINING",
+  NW_CAP_EXPOSURE = "NW_CAP_EXPOSURE",
+  EDGEAPP_UE_LOCATION = "EDGEAPP_UE_LOCATION"
 }
 
 export enum UserConsent {
-  CONSENT_GIVEN = "CONSENT_GIVEN",
-  CONSENT_NOT_GIVEN = "CONSENT_NOT_GIVEN"
+  CONSENT_NOT_GIVEN = "CONSENT_NOT_GIVEN",
+  CONSENT_GIVEN = "CONSENT_GIVEN"
 }
 
 export interface Nssai {
@@ -195,18 +199,18 @@ export interface AccessAndMobilitySubscriptionData {
   internalGroupIds?: string[];
   sharedVnGroupDataIds?: Record<string, SharedDataId>;
   hssGroupId?: string;
-  subscribedUeAmbr?: Ambr;
+  subscribedUeAmbr?: AmbrRm;
   nssai?: Nssai;
   ratRestrictions?: RatType[];
   forbiddenAreas?: Area[];
   serviceAreaRestriction?: ServiceAreaRestriction;
   coreNetworkTypeRestrictions?: CoreNetworkType[];
-  rfspIndex?: number;
-  subsRegTimer?: number;
+  rfspIndex?: number | null;
+  subsRegTimer?: number | null;
   ueUsageType?: UeUsageType;
   mpsPriority?: MpsPriorityIndicator;
   mcsPriority?: McsPriorityIndicator;
-  activeTime?: number;
+  activeTime?: number | null;
   sorInfo?: SorInfo;
   sorInfoExpectInd?: boolean;
   sorafRetrieval?: boolean;
@@ -215,12 +219,12 @@ export interface AccessAndMobilitySubscriptionData {
   routingIndicator?: string;
   micoAllowed?: MicoAllowed;
   sharedAmDataIds?: SharedDataId[];
-  odbPacketServices?: OdbPacketServices;
+  odbPacketServices?: string;
   subscribedDnnList?: string[];
   serviceGapTime?: number;
   mdtUserConsent?: MdtUserConsent;
   mdtConfiguration?: MdtConfiguration;
-  traceData?: TraceData;
+  traceData?: TraceData | null;
   cagData?: CagData;
   stnSr?: string;
   cMsisdn?: string;
@@ -275,7 +279,7 @@ export interface SessionManagementSubscriptionData {
   traceData?: TraceData;
   sharedDnnConfigurationsId?: SharedDataId;
   sharedTraceDataId?: SharedDataId;
-  odbPacketServices?: OdbPacketServices;
+  odbPacketServices?: string;
   expectedUeBehavioursList?: Record<string, ExpectedUeBehaviourData>;
   suggestedPacketNumDlList?: Record<string, SuggestedPacketNumDl>;
   threeGppChargingCharacteristics?: ThreeGppChargingCharacteristics;
@@ -354,10 +358,10 @@ export interface SubscriptionDataSets {
   uecSmsfData?: UeContextInSmsfData;
   smsSubsData?: SmsSubscriptionData;
   smData?: SmSubsData;
-  traceData?: TraceData;
+  traceData?: TraceData | null;
   smsMngData?: SmsManagementSubscriptionData;
   lcsPrivacyData?: LcsPrivacyData;
-  lcsM oData?: LcsMoData;
+  lcsMoData?: LcsMoData;
   v2xData?: V2xSubscriptionData;
   lcsBroadcastAssistanceTypesData?: LcsBroadcastAssistanceTypesData;
   proseData?: ProseSubscriptionData;
@@ -417,18 +421,19 @@ export interface AcknowledgeInfo {
 }
 
 export interface SorInfo {
-  steeringContainer?: SteeringContainer;
   ackInd: boolean;
   sorMacIausf?: string;
   countersor?: string;
+  steeringContainer?: SteeringContainer;
   provisioningTime: string;
-  sorTransparentInfo?: string;
-  steeringInfoList?: SteeringInfo[];
+  sorTransparentContainer?: SorTransparentContainer;
   sorCmci?: SorCmci;
+  storeSorCmciInMe?: boolean;
+  usimSupportOfSorCmci?: boolean;
 }
 
 export interface SharedData {
-  sharedDataId: string;
+  sharedDataId: SharedDataId;
   sharedAmData?: AccessAndMobilitySubscriptionData;
   sharedSmsSubsData?: SmsSubscriptionData;
   sharedSmsMngSubsData?: SmsManagementSubscriptionData;
@@ -437,12 +442,18 @@ export interface SharedData {
   sharedSnssaiInfos?: Record<string, SnssaiInfo>;
   sharedVnGroupDatas?: Record<string, VnGroupData>;
   treatmentInstructions?: Record<string, SharedDataTreatmentInstruction>;
+  sharedSmSubsData?: SessionManagementSubscriptionData;
+  sharedEcsAddrConfigInfo?: EcsAddrConfigInfo;
 }
 
 export interface PgwInfo {
   dnn: string;
   pgwFqdn: string;
+  pgwIpAddr?: IpAddress;
   plmnId?: PlmnId;
+  epdgInd?: boolean;
+  pcfId?: string;
+  registrationTime?: string;
 }
 
 export interface TraceDataResponse {
@@ -450,9 +461,7 @@ export interface TraceDataResponse {
   sharedTraceDataId?: SharedDataId;
 }
 
-export interface SteeringContainer {
-  [key: string]: any;
-}
+export type SteeringContainer = SteeringInfo[] | SecuredPacket;
 
 export interface SdmSubsModification {
   expires?: string;
@@ -463,30 +472,30 @@ export interface EmergencyInfo {
   pgwFqdn?: string;
   pgwIpAddress?: IpAddress;
   smfInstanceId?: string;
-  smfSetId?: string;
+  epdgInd?: boolean;
   plmnId?: PlmnId;
 }
 
 export interface UpuInfo {
-  upuData: UpuData;
+  upuDataList?: UpuData[];
   upuRegInd?: UpuRegInd;
   upuAckInd?: boolean;
   upuMacIausf?: string;
   counterUpu?: string;
   provisioningTime: string;
-  upuTransparentInfo?: string;
-  upuHeader?: string;
+  upuTransparentContainer?: UpuTransparentContainer;
 }
 
 export interface GroupIdentifiers {
-  extGroupIds?: ExtGroupId[];
-  intGroupIds?: string[];
+  extGroupId?: ExtGroupId;
+  intGroupId?: string;
+  ueIdList?: UeId[];
 }
 
 export interface NiddInformation {
-  afId?: AfId;
+  afId: string;
   gpsi?: string;
-  extGroupId?: ExtGroupId;
+  extGroupId?: string;
 }
 
 export interface CagData {
@@ -501,19 +510,20 @@ export interface CagInfo {
 
 export interface AdditionalSnssaiData {
   requiredAuthnAuthz?: boolean;
-  nssrgs?: string[];
+  subscribedUeSliceMbr?: SliceMbrRm;
+  subscribedNsSrgList?: string[];
 }
 
 export interface VnGroupData {
-  dnn: string;
-  sNssai: Snssai;
-  pduSessionTypes?: PduSessionTypes;
+  pduSessionTypes: PduSessionTypes;
+  dnn?: string;
+  singleNssai?: Snssai;
   appDescriptors?: AppDescriptor[];
 }
 
 export interface AppDescriptor {
   osId?: string;
-  appId: string;
+  appId?: string;
 }
 
 export interface AppPortId {
@@ -524,7 +534,7 @@ export interface AppPortId {
 export interface LcsPrivacyData {
   lpi?: Lpi;
   unrelatedClass?: UnrelatedClass;
-  plmnOperatorClasses?: Record<string, PlmnOperatorClass>;
+  plmnOperatorClasses?: PlmnOperatorClass[];
 }
 
 export interface Lpi {
@@ -533,19 +543,14 @@ export interface Lpi {
 }
 
 export interface UnrelatedClass {
-  lcsClientType: LcsClientClass;
-  lcsClientIds?: LcsClientId[];
-  allowedGeographicArea?: GeographicArea[];
-  privacyCheckRelatedAction?: PrivacyCheckRelatedAction;
-  codeWordInd?: CodeWordInd;
-  validTimePeriod?: ValidTimePeriod;
+  defaultUnrelatedClass: DefaultUnrelatedClass;
+  externalUnrelatedClass?: ExternalUnrelatedClass;
+  serviceTypeUnrelatedClasses?: ServiceTypeUnrelatedClass[];
 }
 
 export interface PlmnOperatorClass {
-  lcsClientIds?: LcsClientId[];
-  allowedGeographicArea?: GeographicArea[];
-  privacyCheckRelatedAction?: PrivacyCheckRelatedAction;
-  validTimePeriod?: ValidTimePeriod;
+  lcsClientClass: LcsClientClass;
+  lcsClientIds: LcsClientId[];
 }
 
 export interface ValidTimePeriod {
@@ -554,11 +559,11 @@ export interface ValidTimePeriod {
 }
 
 export interface LcsMoData {
-  lcsServiceTypeList?: LcsServiceType[];
+  allowedServiceClasses: LcsMoServiceClass[];
+  moAssistanceDataTypes?: LcsBroadcastAssistanceTypesData;
 }
 
 export interface EcRestrictionDataWb {
-  ecRestricted?: boolean;
   ecModeARestricted?: boolean;
   ecModeBRestricted?: boolean;
 }
@@ -567,16 +572,16 @@ export interface ExpectedUeBehaviourData {
   stationaryIndication?: StationaryIndication;
   communicationDurationTime?: number;
   periodicTime?: number;
-  scheduledCommunicationType?: ScheduledCommunicationType;
   scheduledCommunicationTime?: ScheduledCommunicationTime;
-  expectedUmts?: GeographicArea[];
+  scheduledCommunicationType?: ScheduledCommunicationType;
+  expectedUmts?: LocationArea[];
   trafficProfile?: TrafficProfile;
   batteryIndication?: BatteryIndication;
   validityTime?: string;
 }
 
 export interface SuggestedPacketNumDl {
-  suggestedPacketNumDl?: number;
+  suggestedPacketNumDl: number;
   validityTime?: string;
 }
 
@@ -586,12 +591,12 @@ export interface FrameRouteInfo {
 }
 
 export interface SorUpdateInfo {
-  vplmnId?: PlmnId;
-  macSor?: string;
+  vplmnId: PlmnId;
+  supportedFeatures?: string;
 }
 
 export interface EnhancedCoverageRestrictionData {
-  plmnEcInfos?: Record<string, PlmnEcInfo>;
+  plmnEcInfoList?: PlmnEcInfo[];
 }
 
 export interface EdrxParameters {
@@ -600,77 +605,79 @@ export interface EdrxParameters {
 }
 
 export interface PtwParameters {
-  ratType: RatType;
+  operationMode: OperationMode;
   ptwValue: string;
+  extendedPtwValue?: string;
 }
 
 export interface ExternalUnrelatedClass {
-  lcsClientExternal?: LcsClientExternal;
-  afExternal?: AfExternal;
-  lcsClientType: LcsClientClass;
-  allowedGeographicArea?: GeographicArea[];
-  privacyCheckRelatedAction?: PrivacyCheckRelatedAction;
-  codeWordInd?: CodeWordInd;
-  validTimePeriod?: ValidTimePeriod;
+  lcsClientExternals?: LcsClientExternal[];
+  afExternals?: AfExternal[];
+  lcsClientGroupExternals?: LcsClientGroupExternal[];
 }
 
 export interface AfExternal {
-  afId: AfId;
-  afEventsIds?: string[];
-  applicationPort?: AppPortId;
-  allowedGpsis?: string[];
+  afId?: AfId;
+  allowedGeographicArea?: GeographicArea[];
+  privacyCheckRelatedAction?: PrivacyCheckRelatedAction;
+  validTimePeriod?: ValidTimePeriod;
 }
 
 export interface LcsClientExternal {
-  lcsClientExtId?: LcsClientId;
-  lcsClientExtType?: LcsClientClass;
-  lcsClientGroupExtIds?: string[];
+  lcsClientId?: LcsClientId;
+  allowedGeographicArea?: GeographicArea[];
+  privacyCheckRelatedAction?: PrivacyCheckRelatedAction;
+  validTimePeriod?: ValidTimePeriod;
 }
 
 export interface LcsClientGroupExternal {
-  lcsClientGroupId?: string;
+  lcsClientGroupId?: ExtGroupId;
   allowedGeographicArea?: GeographicArea[];
   privacyCheckRelatedAction?: PrivacyCheckRelatedAction;
   validTimePeriod?: ValidTimePeriod;
 }
 
 export interface ServiceTypeUnrelatedClass {
-  lcsServiceType: LcsServiceType;
+  serviceType: LcsServiceType;
   allowedGeographicArea?: GeographicArea[];
   privacyCheckRelatedAction?: PrivacyCheckRelatedAction;
   codeWordInd?: CodeWordInd;
-  codeWord?: CodeWord;
   validTimePeriod?: ValidTimePeriod;
+  codeWordList?: CodeWord[];
 }
 
 export interface UeId {
-  supi?: string;
-  gpsi?: string[];
+  supi: string;
+  gpsiList?: string[];
 }
 
 export interface DefaultUnrelatedClass {
   allowedGeographicArea?: GeographicArea[];
   privacyCheckRelatedAction?: PrivacyCheckRelatedAction;
+  codeWordInd?: CodeWordInd;
   validTimePeriod?: ValidTimePeriod;
+  codeWordList?: CodeWord[];
 }
 
 export interface ContextInfo {
-  [key: string]: any;
+  origHeaders?: string[];
+  requestHeaders?: string[];
 }
 
 export interface UeContextInAmfData {
-  amfInfo?: AmfInfo;
+  epsInterworkingInfo?: EpsInterworkingInfo;
+  amfInfo?: AmfInfo[];
 }
 
 export interface V2xSubscriptionData {
   nrV2xServicesAuth?: NrV2xAuth;
   lteV2xServicesAuth?: LteV2xAuth;
-  nrUeSidelinkAggregateMaxBitrate?: string;
-  lteUeSidelinkAggregateMaxBitrate?: string;
+  nrUePc5Ambr?: string;
+  ltePc5Ambr?: string;
 }
 
 export interface LcsBroadcastAssistanceTypesData {
-  locationAssistanceTypes: number[];
+  locationAssistanceType: string;
 }
 
 export interface DatasetNames {
@@ -697,9 +704,7 @@ export interface ProseSubscriptionData {
   proseAllowedPlmn?: ProSeAllowedPlmn[];
 }
 
-export interface IpIndex {
-  indexValue?: number | string;
-}
+export type IpIndex = number | string;
 
 export interface AerialUeSubscriptionInfo {
   aerialUeInd: AerialUeIndication;
@@ -749,14 +754,14 @@ export interface SupiInfo {
   supiList: string[];
 }
 
-export interface PlmnId {
-  mcc: string;
-  mnc: string;
-}
-
 export interface Snssai {
   sst: number;
   sd?: string;
+}
+
+export interface PlmnId {
+  mcc: string;
+  mnc: string;
 }
 
 export interface Guami {
@@ -816,6 +821,16 @@ export interface Ambr {
   downlink: string;
 }
 
+export interface AmbrRm {
+  uplink: string;
+  downlink: string;
+}
+
+export interface SliceMbrRm {
+  uplink: string;
+  downlink: string;
+}
+
 export interface SubscribedDefaultQos {
   fiveQi: number;
   arp?: Arp;
@@ -839,58 +854,221 @@ export enum PreemptionVulnerability {
 }
 
 export interface Area {
-  [key: string]: any;
+  tacs?: string[];
+  areaCodes?: string;
 }
 
 export interface ServiceAreaRestriction {
-  [key: string]: any;
+  restrictionType?: RestrictionType;
+  areas?: Area[];
+  maxNumOfTAs?: number;
+  maxNumOfTAsForNotAllowedAreas?: number;
 }
 
-export interface WirelineArea {
-  [key: string]: any;
-}
-
-export interface WirelineServiceAreaRestriction {
-  [key: string]: any;
-}
-
-export interface OdbPacketServices {
-  [key: string]: any;
+export enum RestrictionType {
+  ALLOWED_AREAS = "ALLOWED_AREAS",
+  NOT_ALLOWED_AREAS = "NOT_ALLOWED_AREAS"
 }
 
 export interface MdtConfiguration {
-  [key: string]: any;
+  jobType: JobType;
+  reportType?: ReportType;
+  areaScope?: AreaScope;
+  measurementLteList?: string[];
+  measurementNrList?: string[];
+  sensorNameList?: string[];
+  reportingTriggerList?: string[];
+  reportInterval?: ReportInterval;
+  reportAmount?: ReportAmount;
+  eventThresholdRsrp?: number;
+  eventThresholdRsrq?: number;
+  logginDuration?: LoggingDuration;
+  loggingInterval?: LoggingInterval;
+  positioningMethod?: PositioningMethod;
+  addPositioningMethodList?: PositioningMethod[];
+  collectionPeriodRmmLte?: CollectionPeriodRmmLte;
+  collectionPeriodRmmNr?: CollectionPeriodRmmNr;
+  measurementPeriodLte?: MeasurementPeriodLte;
+  mdtAllowedPlmnIdList?: PlmnId[];
+  mbsfnAreaList?: MbsfnArea[];
+  interFreqTargetList?: string[];
+  areaConfigurationList?: AreaConfiguration[];
+}
+
+export enum JobType {
+  IMMEDIATE_MDT_ONLY = "IMMEDIATE_MDT_ONLY",
+  LOGGED_MDT_ONLY = "LOGGED_MDT_ONLY",
+  TRACE_ONLY = "TRACE_ONLY",
+  IMMEDIATE_MDT_AND_TRACE = "IMMEDIATE_MDT_AND_TRACE",
+  RLF_REPORT_ONLY = "RLF_REPORT_ONLY",
+  RCEF_REPORT_ONLY = "RCEF_REPORT_ONLY",
+  LOGGED_MBSFN_MDT = "LOGGED_MBSFN_MDT"
 }
 
 export interface TraceData {
-  [key: string]: any;
+  traceRef: string;
+  traceDepth: TraceDepth;
+  neTypeList: string;
+  eventList: string;
+  collectionEntityIpv4Addr?: string;
+  collectionEntityIpv6Addr?: string;
+  interfaceList?: string;
 }
 
-export interface UpSecurity {
-  [key: string]: any;
+export enum TraceDepth {
+  MINIMUM = "MINIMUM",
+  MEDIUM = "MEDIUM",
+  MAXIMUM = "MAXIMUM",
+  MINIMUM_WO_VENDOR_EXT = "MINIMUM_WO_VENDOR_EXT",
+  MEDIUM_WO_VENDOR_EXT = "MEDIUM_WO_VENDOR_EXT",
+  MAXIMUM_WO_VENDOR_EXT = "MAXIMUM_WO_VENDOR_EXT"
 }
 
-export interface AcsInfo {
-  [key: string]: any;
+export interface EpsInterworkingInfo {
+  epsIwkPgws?: Record<string, EpsIwkPgw>;
 }
 
-export interface EcsAddrConfigInfo {
-  [key: string]: any;
-}
-
-export interface NotifyItem {
-  [key: string]: any;
-}
-
-export interface UpuData {
-  [key: string]: any;
+export interface EpsIwkPgw {
+  pgwFqdn: string;
+  smfInstanceId: string;
+  plmnId?: PlmnId;
 }
 
 export interface SteeringInfo {
-  [key: string]: any;
+  plmnId: PlmnId;
+  accessTechList?: AccessTech[];
+}
+
+export enum AccessTech {
+  NR = "NR",
+  EUTRAN_IN_WBS1_MODE_AND_NBS1_MODE = "EUTRAN_IN_WBS1_MODE_AND_NBS1_MODE",
+  EUTRAN_IN_WBS1_MODE = "EUTRAN_IN_WBS1_MODE",
+  EUTRAN_IN_NBS1_MODE = "EUTRAN_IN_NBS1_MODE",
+  UTRAN = "UTRAN",
+  GSM_AND_ECGSM_IoT = "GSM_AND_ECGSM_IoT",
+  GSM_WITHOUT_ECGSM_IoT = "GSM_WITHOUT_ECGSM_IoT",
+  ECGSM_IoT_ONLY = "ECGSM_IoT_ONLY",
+  CDMA_1xRTT = "CDMA_1xRTT",
+  CDMA_HRPD = "CDMA_HRPD",
+  CDMA_EHRPD = "CDMA_EHRPD"
+}
+
+export interface UpuData {
+  secPacket?: string;
+  defaultConfNssai?: Snssai[];
+  routingId?: string;
+  disasterRoamingEnabled?: boolean;
+  useOfPduSessInd?: boolean;
+}
+
+export interface NotifyItem {
+  resourceId: string;
+  changes?: ChangeItem[];
+}
+
+export interface ChangeItem {
+  op: ChangeType;
+  path: string;
+  from?: string;
+  origValue?: any;
+  newValue?: any;
+}
+
+export enum ChangeType {
+  ADD = "add",
+  REMOVE = "remove",
+  REPLACE = "replace",
+  MOVE = "move",
+  COPY = "copy"
+}
+
+export interface UpSecurity {
+  upIntegr: UpIntegrity;
+  upConfid: UpConfidentiality;
+}
+
+export enum UpIntegrity {
+  REQUIRED = "REQUIRED",
+  PREFERRED = "PREFERRED",
+  NOT_NEEDED = "NOT_NEEDED"
+}
+
+export enum UpConfidentiality {
+  REQUIRED = "REQUIRED",
+  PREFERRED = "PREFERRED",
+  NOT_NEEDED = "NOT_NEEDED"
+}
+
+export interface AcsInfo {
+  acsUrl?: string;
+  acsIpv4Addr?: string;
+  acsIpv6Addr?: string;
+}
+
+export interface EcsAddrConfigInfo {
+  ecsServerAddr: EcsServerAddr;
+  spatialValidityCond?: SpatialValidityCond;
+}
+
+export interface EcsServerAddr {
+  ecsServerAddrString?: string;
+  ecsServerAddrFqdn?: string;
+}
+
+export interface SpatialValidityCond {
+  countries?: string[];
+  trackingAreaList?: Tai[];
+}
+
+export interface Tai {
+  plmnId: PlmnId;
+  tac: string;
+}
+
+export interface NrV2xAuth {
+  vehicleUe?: boolean;
+  pedestrianUe?: boolean;
+  v2xPermission?: V2xPermission;
+}
+
+export interface LteV2xAuth {
+  vehicleUe?: boolean;
+  pedestrianUe?: boolean;
+  v2xPermission?: V2xPermission;
+}
+
+export interface V2xPermission {
+  v2xCommunicationPermission?: boolean;
+  v2xMessagingPermission?: boolean;
+}
+
+export interface ProseServiceAuth {
+  proseDirectDiscoveryAuth?: boolean;
+  proseDirectCommunicationAuth?: boolean;
+  proseL2RelayAuth?: boolean;
+  proseL3RelayAuth?: boolean;
+  proseL2RemoteAuth?: boolean;
+}
+
+export interface RoamingRestrictions {
+  supportedFeatures?: string;
+}
+
+export interface WirelineArea {
+  globalLineIds?: string[];
+  hfcNIds?: string[];
+}
+
+export interface WirelineServiceAreaRestriction {
+  restrictionType?: RestrictionType;
+  areas?: WirelineArea[];
 }
 
 export interface GeographicArea {
+  [key: string]: any;
+}
+
+export interface LocationArea {
   [key: string]: any;
 }
 
@@ -898,7 +1076,7 @@ export interface LcsServiceType {
   [key: string]: any;
 }
 
-export interface StationaryIndication {
+export interface ScheduledCommunicationTime {
   [key: string]: any;
 }
 
@@ -906,7 +1084,7 @@ export interface ScheduledCommunicationType {
   [key: string]: any;
 }
 
-export interface ScheduledCommunicationTime {
+export interface StationaryIndication {
   [key: string]: any;
 }
 
@@ -922,18 +1100,140 @@ export interface PlmnEcInfo {
   [key: string]: any;
 }
 
-export interface NrV2xAuth {
+export interface AreaScope {
   [key: string]: any;
 }
 
-export interface LteV2xAuth {
-  [key: string]: any;
+export enum ReportType {
+  PERIODICAL = "PERIODICAL",
+  EVENT_TRIGGERED = "EVENT_TRIGGERED"
 }
 
-export interface ProseServiceAuth {
-  [key: string]: any;
+export enum ReportInterval {
+  UMTS_250_MS = "UMTS_250_MS",
+  UMTS_500_MS = "UMTS_500_MS",
+  UMTS_1000_MS = "UMTS_1000_MS",
+  UMTS_2000_MS = "UMTS_2000_MS",
+  UMTS_3000_MS = "UMTS_3000_MS",
+  UMTS_4000_MS = "UMTS_4000_MS",
+  UMTS_6000_MS = "UMTS_6000_MS",
+  UMTS_8000_MS = "UMTS_8000_MS",
+  UMTS_12000_MS = "UMTS_12000_MS",
+  UMTS_16000_MS = "UMTS_16000_MS",
+  UMTS_20000_MS = "UMTS_20000_MS",
+  UMTS_24000_MS = "UMTS_24000_MS",
+  UMTS_28000_MS = "UMTS_28000_MS",
+  UMTS_32000_MS = "UMTS_32000_MS",
+  UMTS_64000_MS = "UMTS_64000_MS",
+  LTE_120_MS = "LTE_120_MS",
+  LTE_240_MS = "LTE_240_MS",
+  LTE_480_MS = "LTE_480_MS",
+  LTE_640_MS = "LTE_640_MS",
+  LTE_1024_MS = "LTE_1024_MS",
+  LTE_2048_MS = "LTE_2048_MS",
+  LTE_5120_MS = "LTE_5120_MS",
+  LTE_10240_MS = "LTE_10240_MS",
+  LTE_60000_MS = "LTE_60000_MS",
+  LTE_360000_MS = "LTE_360000_MS",
+  LTE_720000_MS = "LTE_720000_MS",
+  LTE_1800000_MS = "LTE_1800000_MS",
+  LTE_3600000_MS = "LTE_3600000_MS",
+  NR_120_MS = "NR_120_MS",
+  NR_240_MS = "NR_240_MS",
+  NR_480_MS = "NR_480_MS",
+  NR_640_MS = "NR_640_MS",
+  NR_1024_MS = "NR_1024_MS",
+  NR_2048_MS = "NR_2048_MS",
+  NR_5120_MS = "NR_5120_MS",
+  NR_10240_MS = "NR_10240_MS",
+  NR_20480_MS = "NR_20480_MS",
+  NR_40960_MS = "NR_40960_MS",
+  NR_60000_MS = "NR_60000_MS",
+  NR_360000_MS = "NR_360000_MS",
+  NR_720000_MS = "NR_720000_MS",
+  NR_1800000_MS = "NR_1800000_MS",
+  NR_3600000_MS = "NR_3600000_MS"
 }
 
-export interface RoamingRestrictions {
+export enum ReportAmount {
+  R1 = "1",
+  R2 = "2",
+  R4 = "4",
+  R8 = "8",
+  R16 = "16",
+  R32 = "32",
+  R64 = "64",
+  INFINITY = "infinity"
+}
+
+export enum LoggingDuration {
+  D600_SEC = "600_SEC",
+  D1200_SEC = "1200_SEC",
+  D2400_SEC = "2400_SEC",
+  D3600_SEC = "3600_SEC",
+  D5400_SEC = "5400_SEC",
+  D7200_SEC = "7200_SEC"
+}
+
+export enum LoggingInterval {
+  I1280_MS = "1280_MS",
+  I2560_MS = "2560_MS",
+  I5120_MS = "5120_MS",
+  I10240_MS = "10240_MS",
+  I20480_MS = "20480_MS",
+  I30720_MS = "30720_MS",
+  I40960_MS = "40960_MS",
+  I61440_MS = "61440_MS"
+}
+
+export enum PositioningMethod {
+  CELLID = "CELLID",
+  ECID = "ECID",
+  OTDOA = "OTDOA",
+  BAROMETRIC_PRESSURE = "BAROMETRIC_PRESSURE",
+  WLAN = "WLAN",
+  BLUETOOTH = "BLUETOOTH",
+  MBS = "MBS",
+  MOTION_SENSOR = "MOTION_SENSOR",
+  DL_TDOA = "DL_TDOA",
+  DL_AOD = "DL_AOD",
+  MULTI_RTT = "MULTI_RTT",
+  NR_ECID = "NR_ECID",
+  UL_TDOA = "UL_TDOA",
+  UL_AOA = "UL_AOA",
+  NETWORK_SPECIFIC = "NETWORK_SPECIFIC"
+}
+
+export enum CollectionPeriodRmmLte {
+  M1024_MS = "1024_MS",
+  M2048_MS = "2048_MS",
+  M5120_MS = "5120_MS",
+  M10240_MS = "10240_MS",
+  M60000_MS = "60000_MS"
+}
+
+export enum CollectionPeriodRmmNr {
+  M1024_MS = "1024_MS",
+  M2048_MS = "2048_MS",
+  M5120_MS = "5120_MS",
+  M10240_MS = "10240_MS",
+  M20480_MS = "20480_MS",
+  M60000_MS = "60000_MS"
+}
+
+export enum MeasurementPeriodLte {
+  M1024_MS = "1024_MS",
+  M2048_MS = "2048_MS",
+  M5120_MS = "5120_MS",
+  M10240_MS = "10240_MS",
+  M60000_MS = "60000_MS"
+}
+
+export interface MbsfnArea {
+  mbsfnAreaId?: number;
+  carrierFreq?: number;
+}
+
+export interface AreaConfiguration {
   [key: string]: any;
 }
