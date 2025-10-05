@@ -1,22 +1,62 @@
-import { Supi, Gpsi } from './common-types';
+export type PurgeFlag = boolean;
+
+export type E164Number = string;
+
+export type DualRegistrationFlag = boolean;
+
+export enum DeregistrationReason {
+  UE_INITIAL_REGISTRATION = "UE_INITIAL_REGISTRATION",
+  UE_REGISTRATION_AREA_CHANGE = "UE_REGISTRATION_AREA_CHANGE",
+  SUBSCRIPTION_WITHDRAWN = "SUBSCRIPTION_WITHDRAWN",
+  FIVE_GS_TO_EPS_MOBILITY = "5GS_TO_EPS_MOBILITY",
+  FIVE_GS_TO_EPS_MOBILITY_UE_INITIAL_REGISTRATION = "5GS_TO_EPS_MOBILITY_UE_INITIAL_REGISTRATION",
+  REREGISTRATION_REQUIRED = "REREGISTRATION_REQUIRED",
+  SMF_CONTEXT_TRANSFERRED = "SMF_CONTEXT_TRANSFERRED",
+  DUPLICATE_PDU_SESSION = "DUPLICATE_PDU_SESSION"
+}
+
+export enum ImsVoPs {
+  HOMOGENEOUS_SUPPORT = "HOMOGENEOUS_SUPPORT",
+  HOMOGENEOUS_NON_SUPPORT = "HOMOGENEOUS_NON_SUPPORT",
+  NON_HOMOGENEOUS_OR_UNKNOWN = "NON_HOMOGENEOUS_OR_UNKNOWN"
+}
+
+export enum RegistrationReason {
+  SMF_CONTEXT_TRANSFERRED = "SMF_CONTEXT_TRANSFERRED"
+}
+
+export enum RegistrationDataSetName {
+  AMF_3GPP = "AMF_3GPP",
+  AMF_NON_3GPP = "AMF_NON_3GPP",
+  SMF_PDU_SESSIONS = "SMF_PDU_SESSIONS",
+  SMSF_3GPP = "SMSF_3GPP",
+  SMSF_NON_3GPP = "SMSF_NON_3GPP",
+  IP_SM_GW = "IP_SM_GW",
+  NWDAF = "NWDAF"
+}
+
+export enum UeReachableInd {
+  REACHABLE = "REACHABLE",
+  NOT_REACHABLE = "NOT_REACHABLE",
+  UNKNOWN = "UNKNOWN"
+}
 
 export interface Amf3GppAccessRegistration {
   amfInstanceId: string;
+  deregCallbackUri: string;
+  guami: Guami;
+  ratType: RatType;
   supportedFeatures?: string;
-  purgeFlag?: boolean;
+  purgeFlag?: PurgeFlag;
   pei?: string;
   imsVoPs?: ImsVoPs;
-  deregCallbackUri: string;
   amfServiceNameDereg?: string;
   pcscfRestorationCallbackUri?: string;
   amfServiceNamePcscfRest?: string;
   initialRegistrationInd?: boolean;
   emergencyRegistrationInd?: boolean;
-  guami: Guami;
   backupAmfInfo?: BackupAmfInfo[];
-  drFlag?: boolean;
-  eps5GsMobilityWoN26?: boolean;
-  ratType: RatType;
+  drFlag?: DualRegistrationFlag;
   urrpIndicator?: boolean;
   amfEeSubscriptionId?: string;
   epsInterworkingInfo?: EpsInterworkingInfo;
@@ -25,7 +65,7 @@ export interface Amf3GppAccessRegistration {
   vgmlcAddress?: VgmlcAddress;
   contextInfo?: ContextInfo;
   noEeSubscriptionInd?: boolean;
-  supi?: Supi;
+  supi?: string;
   ueReachableInd?: UeReachableInd;
   reRegistrationRequired?: boolean;
   adminDeregSubWithdrawn?: boolean;
@@ -36,51 +76,28 @@ export interface Amf3GppAccessRegistration {
   sorSnpnSiSupported?: boolean;
   udrRestartInd?: boolean;
   lastSynchronizationTime?: string;
-  ueSnpnSubscriptionInd?: boolean;
-}
-
-export interface Amf3GppAccessRegistrationModification {
-  guami: Guami;
-  purgeFlag?: boolean;
-  pei?: string;
-  imsVoPs?: ImsVoPs;
-  backupAmfInfo?: BackupAmfInfo[];
-  epsInterworkingInfo?: EpsInterworkingInfo;
-  ueSrvccCapability?: boolean | null;
-  ueMINTCapability?: boolean;
-}
-
-export interface EpsInterworkingInfo {
-  epsIwkPgws?: { [key: string]: EpsIwkPgw };
-  registrationTime?: string;
-}
-
-export interface EpsIwkPgw {
-  pgwFqdn: string;
-  smfInstanceId: string;
-  plmnId?: PlmnId;
 }
 
 export interface AmfNon3GppAccessRegistration {
   amfInstanceId: string;
+  deregCallbackUri: string;
+  guami: Guami;
+  ratType: RatType;
   supportedFeatures?: string;
-  purgeFlag?: boolean;
+  purgeFlag?: PurgeFlag;
   pei?: string;
   imsVoPs: ImsVoPs;
-  deregCallbackUri: string;
   amfServiceNameDereg?: string;
   pcscfRestorationCallbackUri?: string;
   amfServiceNamePcscfRest?: string;
-  guami: Guami;
   backupAmfInfo?: BackupAmfInfo[];
-  ratType: RatType;
   urrpIndicator?: boolean;
   amfEeSubscriptionId?: string;
   registrationTime?: string;
   vgmlcAddress?: VgmlcAddress;
   contextInfo?: ContextInfo;
   noEeSubscriptionInd?: boolean;
-  supi?: Supi;
+  supi?: string;
   reRegistrationRequired?: boolean;
   adminDeregSubWithdrawn?: boolean;
   dataRestorationCallbackUri?: string;
@@ -89,15 +106,6 @@ export interface AmfNon3GppAccessRegistration {
   sorSnpnSiSupported?: boolean;
   udrRestartInd?: boolean;
   lastSynchronizationTime?: string;
-  ueSnpnSubscriptionInd?: boolean;
-}
-
-export interface AmfNon3GppAccessRegistrationModification {
-  guami: Guami;
-  purgeFlag?: boolean;
-  pei?: string;
-  imsVoPs?: ImsVoPs;
-  backupAmfInfo?: BackupAmfInfo[];
 }
 
 export interface SmfRegistration {
@@ -122,14 +130,6 @@ export interface SmfRegistration {
   resetIds?: string[];
   udrRestartInd?: boolean;
   lastSynchronizationTime?: string;
-  pduSessionReActivationRequired?: boolean;
-  staleCheckCallbackUri?: string;
-  udmStaleCheckCallbackUri?: string;
-  wildcardInd?: boolean;
-}
-
-export interface PduSessionIds {
-  pduSessionIdList?: number[];
 }
 
 export interface SmsfRegistration {
@@ -137,16 +137,16 @@ export interface SmsfRegistration {
   smsfSetId?: string;
   supportedFeatures?: string;
   plmnId: PlmnId;
-  smsfMAPAddress?: string;
+  smsfMAPAddress?: E164Number;
   smsfDiameterAddress?: NetworkNodeDiameterAddress;
   registrationTime?: string;
   contextInfo?: ContextInfo;
+  smsfSbiSupInd?: boolean;
   dataRestorationCallbackUri?: string;
   resetIds?: string[];
-  smsfSbiSupInd?: boolean;
   udrRestartInd?: boolean;
   lastSynchronizationTime?: string;
-  ueMemoryAvailableInd?: true;
+  ueMemoryAvailableInd?: boolean;
 }
 
 export interface DeregistrationData {
@@ -154,13 +154,30 @@ export interface DeregistrationData {
   accessType?: AccessType;
   pduSessionId?: number;
   newSmfInstanceId?: string;
-  oldGuami?: Guami;
+}
+
+export interface Amf3GppAccessRegistrationModification {
+  guami: Guami;
+  purgeFlag?: PurgeFlag;
+  pei?: string;
+  imsVoPs?: ImsVoPs;
+  backupAmfInfo?: BackupAmfInfo[];
+  epsInterworkingInfo?: EpsInterworkingInfo;
+  ueSrvccCapability?: boolean;
+  ueMINTCapability?: boolean;
+}
+
+export interface AmfNon3GppAccessRegistrationModification {
+  guami: Guami;
+  purgeFlag?: PurgeFlag;
+  pei?: string;
+  imsVoPs?: ImsVoPs;
+  backupAmfInfo?: BackupAmfInfo[];
 }
 
 export interface PcscfRestorationNotification {
-  supi: Supi;
+  supi: string;
   failedPcscf?: PcscfAddress;
-  oldGuami?: Guami;
 }
 
 export interface NetworkNodeDiameterAddress {
@@ -168,35 +185,29 @@ export interface NetworkNodeDiameterAddress {
   realm: string;
 }
 
+export interface EpsIwkPgw {
+  pgwFqdn: string;
+  smfInstanceId: string;
+  plmnId?: PlmnId;
+}
+
 export interface TriggerRequest {
-  supi: Supi;
+  supi: string;
   failedPcscf?: PcscfAddress;
-}
-
-export interface SmfRegistrationInfo {
-  smfRegistrationList: SmfRegistration[];
-}
-
-export interface IpSmGwRegistration {
-  ipSmGwMapAddress?: string;
-  ipSmGwDiameterAddress?: NetworkNodeDiameterAddress;
-  ipsmgwIpv4?: string;
-  ipsmgwIpv6?: string;
-  ipsmgwFqdn?: string;
-  nfInstanceId?: string;
-  unriIndicator?: boolean;
-  resetIds?: string[];
-  ipSmGwSbiSupInd?: boolean;
 }
 
 export interface AmfDeregInfo {
   deregReason: DeregistrationReason;
 }
 
+export interface EpsInterworkingInfo {
+  epsIwkPgws?: Record<string, EpsIwkPgw>;
+}
+
 export interface LocationInfo {
-  supi?: Supi;
-  gpsi?: Gpsi;
-  registrationLocationInfoList: RegistrationLocationInfo[];
+  supi?: string;
+  gpsi?: string;
+  registrationLocationInfo: RegistrationLocationInfo[];
   supportedFeatures?: string;
 }
 
@@ -218,8 +229,6 @@ export interface PeiUpdateInfo {
   pei: string;
 }
 
-export type RegistrationDatasetNames = RegistrationDataSetName[];
-
 export interface RegistrationDataSets {
   amf3Gpp?: Amf3GppAccessRegistration;
   amfNon3Gpp?: AmfNon3GppAccessRegistration;
@@ -228,6 +237,22 @@ export interface RegistrationDataSets {
   smsfNon3Gpp?: SmsfRegistration;
   ipSmGw?: IpSmGwRegistration;
   nwdafRegistration?: NwdafRegistrationInfo;
+}
+
+export interface IpSmGwRegistration {
+  ipSmGwMapAddress?: E164Number;
+  ipSmGwDiameterAddress?: NetworkNodeDiameterAddress;
+  ipsmgwIpv4?: string;
+  ipsmgwIpv6?: string;
+  ipsmgwFqdn?: string;
+  ipSmGwSbiSupInd?: boolean;
+  nfInstanceId?: string;
+  unriIndicator?: boolean;
+  resetIds?: string[];
+}
+
+export interface SmfRegistrationInfo {
+  smfRegistrationList: SmfRegistration[];
 }
 
 export interface NwdafRegistration {
@@ -253,27 +278,21 @@ export interface SmfRegistrationModification {
   pgwFqdn?: string | null;
 }
 
+export interface RoamingInfoUpdate {
+  servingPlmn: PlmnId;
+  roaming?: boolean;
+}
+
 export interface DataRestorationNotification {
   lastReplicationTime?: string;
   recoveryTime?: string;
   plmnId?: PlmnId;
-  supiRanges?: SupiRange[];
-  gpsiRanges?: IdentityRange[];
+  supiRanges?: IdentityRange[];
+  gpsiRanges?: SupiRange[];
   resetIds?: string[];
   sNssaiList?: Snssai[];
   dnnList?: string[];
   udmGroupId?: string;
-  rediscoveryInd?: boolean;
-  noResynchronizationRequired?: boolean;
-  resynchronizationTime?: string;
-  dataToResync?: UdmDataToResynchronize[];
-  anyUeInd?: boolean;
-  ausfRediscoveryInd?: boolean;
-}
-
-export interface RoamingInfoUpdate {
-  roaming?: boolean;
-  servingPlmn: PlmnId;
 }
 
 export interface PcscfAddress {
@@ -288,21 +307,19 @@ export interface NwdafRegistrationInfo {
 
 export interface RoutingInfoSmRequest {
   ipSmGwInd?: boolean;
-  correlationId?: string;
   supportedFeatures?: string;
 }
 
 export interface RoutingInfoSmResponse {
-  supi?: Supi;
+  supi?: string;
   smsf3Gpp?: SmsfRegistration;
   smsfNon3Gpp?: SmsfRegistration;
   ipSmGw?: IpSmGwInfo;
   smsRouter?: SmsRouterInfo;
-  mpsMsgIndication?: boolean;
 }
 
 export interface IpSmGwInfo {
-  ipSmGwRegistration?: IpSmGwRegistration;
+  ipSmGwRegistration: IpSmGwRegistration;
   ipSmGwGuidance?: IpSmGwGuidance;
 }
 
@@ -314,30 +331,10 @@ export interface IpSmGwGuidance {
 export interface SmsRouterInfo {
   nfInstanceId?: string;
   diameterAddress?: NetworkNodeDiameterAddress;
-  mapAddress?: string;
+  mapAddress?: E164Number;
   routerIpv4?: string;
   routerIpv6?: string;
   routerFqdn?: string;
-}
-
-export interface SmsfRegistrationModification {
-  smsfInstanceId: string;
-  smsfSetId?: string;
-  ueMemoryAvailableInd?: true;
-}
-
-export interface ReauthNotificationInfo {
-  supi: Supi;
-  oldGuami?: Guami;
-  ausfRediscoveryInd?: boolean;
-}
-
-export interface AuthTriggerInfo {
-  supi?: Supi;
-}
-
-export interface DeregistrationRespData {
-  smfEventRemovedInd?: true;
 }
 
 export interface Guami {
@@ -350,76 +347,61 @@ export interface PlmnId {
   mnc: string;
 }
 
-export interface BackupAmfInfo {
-  backupAmf: string;
-  guamiList?: Guami[];
-}
-
 export interface Snssai {
   sst: number;
   sd?: string;
 }
 
-export interface ContextInfo {
-  originalAmfId?: string;
-  supportedFeatures?: string;
+export interface BackupAmfInfo {
+  backupAmf: string;
+  guamiList?: Guami[];
 }
 
 export interface IpAddress {
   ipv4Addr?: string;
   ipv6Addr?: string;
-  ipv6Prefix?: string;
 }
 
-export interface SupiRange {
-  pattern?: string;
-  start?: string;
-  end?: string;
+export interface ContextInfo {
+  [key: string]: any;
 }
 
 export interface IdentityRange {
-  pattern?: string;
   start?: string;
   end?: string;
+  pattern?: string;
 }
 
-export type RatType = 'NR' | 'EUTRA' | 'WLAN' | 'VIRTUAL' | 'NBIOT' | 'WIRELINE' | 'WIRELINE_CABLE' | 'WIRELINE_BBF' | string;
+export interface SupiRange {
+  start?: string;
+  end?: string;
+  pattern?: string;
+}
 
-export type AccessType = '3GPP_ACCESS' | 'NON_3GPP_ACCESS' | string;
+export enum RatType {
+  NR = "NR",
+  EUTRA = "EUTRA",
+  WLAN = "WLAN",
+  VIRTUAL = "VIRTUAL",
+  NBIOT = "NBIOT",
+  WIRELINE = "WIRELINE",
+  WIRELINE_CABLE = "WIRELINE_CABLE",
+  WIRELINE_BBF = "WIRELINE_BBF",
+  LTE_M = "LTE-M",
+  NR_U = "NR_U",
+  EUTRA_U = "EUTRA_U",
+  TRUSTED_N3GA = "TRUSTED_N3GA",
+  TRUSTED_WLAN = "TRUSTED_WLAN",
+  UTRA = "UTRA",
+  GERA = "GERA",
+  NR_LEO = "NR_LEO",
+  NR_MEO = "NR_MEO",
+  NR_GEO = "NR_GEO",
+  NR_OTHER_SAT = "NR_OTHER_SAT"
+}
 
-export type ImsVoPs = 'HOMOGENEOUS_SUPPORT' | 'HOMOGENEOUS_NON_SUPPORT' | 'NON_HOMOGENEOUS_OR_UNKNOWN' | string;
-
-export type DeregistrationReason = 
-  | 'UE_INITIAL_REGISTRATION'
-  | 'UE_REGISTRATION_AREA_CHANGE'
-  | 'SUBSCRIPTION_WITHDRAWN'
-  | '5GS_TO_EPS_MOBILITY'
-  | '5GS_TO_EPS_MOBILITY_UE_INITIAL_REGISTRATION'
-  | 'REREGISTRATION_REQUIRED'
-  | 'SMF_CONTEXT_TRANSFERRED'
-  | 'DUPLICATE_PDU_SESSION'
-  | 'PDU_SESSION_REACTIVATION_REQUIRED'
-  | 'DISASTER_CONDITION_TERMINATED'
-  | 'OPERATOR_DETERMINED_BARRING'
-  | 'DUPLICATE_PDU_SESSION_EPDG'
-  | string;
-
-export type RegistrationReason = 'SMF_CONTEXT_TRANSFERRED' | string;
-
-export type RegistrationDataSetName = 
-  | 'AMF_3GPP'
-  | 'AMF_NON_3GPP'
-  | 'SMF_PDU_SESSIONS'
-  | 'SMSF_3GPP'
-  | 'SMSF_NON_3GPP'
-  | 'IP_SM_GW'
-  | 'NWDAF'
-  | string;
-
-export type UeReachableInd = 'REACHABLE' | 'NOT_REACHABLE' | 'UNKNOWN' | string;
-
-export type UdmDataToResynchronize = 
-  | 'UDM_UECM_REGISTRATION'
-  | 'UDM_SDM_SUBSCRIBE'
-  | 'UDM_EE_SUBSCRIBE'
-  | string;
+export enum AccessType {
+  THREE_GPP_ACCESS = "3GPP_ACCESS",
+  NON_3GPP_ACCESS = "NON_3GPP_ACCESS",
+  THREE_GPP_AND_NON_3GPP = "3GPP_AND_NON_3GPP"
+}
