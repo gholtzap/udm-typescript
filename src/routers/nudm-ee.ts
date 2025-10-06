@@ -1,9 +1,26 @@
 import { Router, Request, Response } from 'express';
 import { randomUUID } from 'crypto';
+import { EeSubscription, CreatedEeSubscription } from '../types/nudm-ee-types';
+import { validateUeIdentity, createInvalidParameterError } from '../types/common-types';
+
+interface PatchOperation {
+  op: 'add' | 'remove' | 'replace' | 'move' | 'copy' | 'test';
+  path: string;
+  value?: any;
+  from?: string;
+}
+
+interface FailedPatchOperation extends PatchOperation {
+  originalError: {
+    title: string;
+    status: number;
+    detail: string;
+  };
+}
 
 const router = Router();
 
-const subscriptions = new Map<string, any>();
+const subscriptions = new Map<string, EeSubscription>();
 
 const notImplemented = (req: Request, res: Response) => {
   res.status(501).json({
@@ -15,17 +32,10 @@ const notImplemented = (req: Request, res: Response) => {
 
 router.post('/:ueIdentity/ee-subscriptions', (req: Request, res: Response) => {
   const { ueIdentity } = req.params;
-  const eeSubscription = req.body;
+  const eeSubscription: EeSubscription = req.body;
 
-  const ueIdentityPattern = /^(msisdn-[0-9]{5,15}|extid-[^@]+@[^@]+|imsi-[0-9]{5,15}|nai-.+|gci-.+|gli-.+|extgroupid-[^@]+@[^@]+|anyUE)$/;
-  if (!ueIdentityPattern.test(ueIdentity)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid ueIdentity format',
-      cause: 'INVALID_PARAMETER'
-    });
+  if (!validateUeIdentity(ueIdentity)) {
+    return res.status(400).json(createInvalidParameterError('Invalid ueIdentity format'));
   }
 
   if (!eeSubscription.callbackReference) {
@@ -58,7 +68,7 @@ router.post('/:ueIdentity/ee-subscriptions', (req: Request, res: Response) => {
 
   const location = `/nudm-ee/v1/${ueIdentity}/ee-subscriptions/${subscriptionId}`;
 
-  const response = {
+  const response: CreatedEeSubscription = {
     eeSubscription: eeSubscription
   };
 
@@ -70,15 +80,8 @@ router.post('/:ueIdentity/ee-subscriptions', (req: Request, res: Response) => {
 router.delete('/:ueIdentity/ee-subscriptions/:subscriptionId', (req: Request, res: Response) => {
   const { ueIdentity, subscriptionId } = req.params;
 
-  const ueIdentityPattern = /^(msisdn-[0-9]{5,15}|extid-[^@]+@[^@]+|imsi-[0-9]{5,15}|nai-.+|gci-.+|gli-.+|extgroupid-[^@]+@[^@]+|anyUE)$/;
-  if (!ueIdentityPattern.test(ueIdentity)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid ueIdentity format',
-      cause: 'INVALID_PARAMETER'
-    });
+  if (!validateUeIdentity(ueIdentity)) {
+    return res.status(400).json(createInvalidParameterError('Invalid ueIdentity format'));
   }
 
   const key = `${ueIdentity}:${subscriptionId}`;
@@ -99,17 +102,10 @@ router.delete('/:ueIdentity/ee-subscriptions/:subscriptionId', (req: Request, re
 
 router.patch('/:ueIdentity/ee-subscriptions/:subscriptionId', (req: Request, res: Response) => {
   const { ueIdentity, subscriptionId } = req.params;
-  const patchOperations = req.body;
+  const patchOperations: PatchOperation[] = req.body;
 
-  const ueIdentityPattern = /^(msisdn-[0-9]{5,15}|extid-[^@]+@[^@]+|imsi-[0-9]{5,15}|nai-.+|gci-.+|gli-.+|extgroupid-[^@]+@[^@]+|anyUE)$/;
-  if (!ueIdentityPattern.test(ueIdentity)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid ueIdentity format',
-      cause: 'INVALID_PARAMETER'
-    });
+  if (!validateUeIdentity(ueIdentity)) {
+    return res.status(400).json(createInvalidParameterError('Invalid ueIdentity format'));
   }
 
   const key = `${ueIdentity}:${subscriptionId}`;
@@ -134,7 +130,7 @@ router.patch('/:ueIdentity/ee-subscriptions/:subscriptionId', (req: Request, res
   }
 
   const subscription = subscriptions.get(key);
-  const failedOperations: any[] = [];
+  const failedOperations: FailedPatchOperation[] = [];
 
   for (let i = 0; i < patchOperations.length; i++) {
     const operation = patchOperations[i];
@@ -154,6 +150,9 @@ router.patch('/:ueIdentity/ee-subscriptions/:subscriptionId', (req: Request, res
     }
 
     try {
+      if (!subscription) {
+        throw new Error('Subscription not found');
+      }
       applyPatchOperation(subscription, operation);
     } catch (error: any) {
       failedOperations.push({
@@ -169,7 +168,7 @@ router.patch('/:ueIdentity/ee-subscriptions/:subscriptionId', (req: Request, res
     }
   }
 
-  subscriptions.set(key, subscription);
+  subscriptions.set(key, subscription!);
 
   if (failedOperations.length > 0) {
     return res.status(200).json({
@@ -185,7 +184,7 @@ router.patch('/:ueIdentity/ee-subscriptions/:subscriptionId', (req: Request, res
   res.status(204).send();
 });
 
-function applyPatchOperation(obj: any, operation: any): void {
+function applyPatchOperation(obj: any, operation: PatchOperation): void {
   const { op, path, value, from } = operation;
   const pathParts = path.split('/').filter((p: string) => p);
 
