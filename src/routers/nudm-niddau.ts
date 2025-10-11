@@ -1,80 +1,45 @@
 import { Router, Request, Response } from 'express';
+import { AuthorizationInfo, AuthorizationData } from '../types/nudm-niddau-types';
+import { validateUeIdentity, createInvalidParameterError, createMissingParameterError } from '../types/common-types';
 
 const router = Router();
 
 const authorizationStore = new Map<string, any>();
 
-router.post('/:ueIdentity/authorize', (req: Request, res: Response) => {
+router.post('/:ueIdentity/authorize', (req: Request<{ ueIdentity: string }, any, AuthorizationInfo>, res: Response) => {
   const { ueIdentity } = req.params;
   const body = req.body;
 
-  const ueIdentityPattern = /^(msisdn-[0-9]{5,15}|extid-[^@]+@[^@]+|extgroupid-[^@]+@[^@]+)$/;
-  if (!ueIdentityPattern.test(ueIdentity)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid ueIdentity format',
-      cause: 'INVALID_PARAMETER'
-    });
+  if (!validateUeIdentity(ueIdentity, ['msisdn', 'extid', 'extgroupid'])) {
+    return res.status(400).json(createInvalidParameterError('Invalid ueIdentity format') as any);
   }
 
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Request body must be a valid JSON object',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Request body must be a valid JSON object') as any);
   }
 
   const { snssai, dnn, mtcProviderInformation, authUpdateCallbackUri, afId, nefId, validityTime, contextInfo } = body;
 
   if (!snssai) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:missing-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Missing required field: snssai',
-      cause: 'MANDATORY_IE_MISSING'
-    });
+    return res.status(400).json(createMissingParameterError('Missing required field: snssai') as any);
   }
 
   if (!dnn) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:missing-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Missing required field: dnn',
-      cause: 'MANDATORY_IE_MISSING'
-    });
+    return res.status(400).json(createMissingParameterError('Missing required field: dnn') as any);
   }
 
   if (!mtcProviderInformation) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:missing-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Missing required field: mtcProviderInformation',
-      cause: 'MANDATORY_IE_MISSING'
-    });
+    return res.status(400).json(createMissingParameterError('Missing required field: mtcProviderInformation') as any);
   }
 
   if (!authUpdateCallbackUri) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:missing-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Missing required field: authUpdateCallbackUri',
-      cause: 'MANDATORY_IE_MISSING'
-    });
+    return res.status(400).json(createMissingParameterError('Missing required field: authUpdateCallbackUri') as any);
   }
 
   const supiMatch = ueIdentity.match(/^msisdn-([0-9]{5,15})$/);
   const supi = supiMatch ? `imsi-${supiMatch[1]}` : 'imsi-001010000000001';
 
-  const authData = {
+  const authData: AuthorizationData = {
     authorizationData: [
       {
         supi: supi,

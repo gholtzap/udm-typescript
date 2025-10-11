@@ -107,3 +107,13 @@ export function createInvalidParameterError(detail: string) {
     cause: 'INVALID_PARAMETER'
   };
 }
+
+export function createMissingParameterError(detail: string) {
+  return {
+    type: 'urn:3gpp:error:missing-parameter',
+    title: 'Bad Request',
+    status: 400,
+    detail,
+    cause: 'MANDATORY_IE_MISSING'
+  };
+}
