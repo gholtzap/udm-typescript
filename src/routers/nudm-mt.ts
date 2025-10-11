@@ -1,8 +1,29 @@
 import { Router, Request, Response } from 'express';
+import { 
+  UeContextInfo, 
+  FiveGSrvccInfo, 
+  LocationInfoRequest, 
+  LocationInfoResult,
+  Ncgi,
+  Tai,
+  ProblemDetails
+} from '../types/nudm-mt-types';
+import { PlmnId, RatType, createInvalidParameterError } from '../types/common-types';
 
 const router = Router();
 
-const ueInfoStore = new Map<string, any>();
+interface StoredUeInfo {
+  tadsInfo?: {
+    ueContextInfo?: UeContextInfo;
+  };
+  userState?: {
+    accessType: string;
+    registrationState: string;
+  };
+  '5gSrvccInfo'?: FiveGSrvccInfo;
+}
+
+const ueInfoStore = new Map<string, StoredUeInfo>();
 
 const notImplemented = (req: Request, res: Response) => {
   res.status(501).json({
@@ -19,13 +40,7 @@ router.get('/:supi', (req: Request, res: Response) => {
 
   const supiPattern = /^(imsi-[0-9]{5,15}|nai-.+)$/;
   if (!supiPattern.test(supi)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid supi format',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Invalid supi format'));
   }
 
   if (!fields) {
@@ -48,39 +63,37 @@ router.get('/:supi', (req: Request, res: Response) => {
   }
   
   if (fieldsArray.length === 0) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'fields parameter must contain at least one item',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('fields parameter must contain at least one item'));
   }
 
   let ueInfo = ueInfoStore.get(supi);
   
   if (!ueInfo) {
+    const contextInfo: UeContextInfo = {
+      supportVoPS: true,
+      lastActTime: new Date().toISOString()
+    };
+    
+    const srvccInfo: FiveGSrvccInfo = {
+      ue5GSrvccCapability: true,
+      stnSr: '1234567890',
+      cMsisdn: '0987654321'
+    };
+    
     ueInfo = {
       tadsInfo: {
-        ueContextInfo: {
-          supportVoPS: true,
-          lastActTime: new Date().toISOString()
-        }
+        ueContextInfo: contextInfo
       },
       userState: {
         accessType: '3GPP_ACCESS',
         registrationState: 'REGISTERED'
       },
-      '5gSrvccInfo': {
-        ue5GSrvccCapability: true,
-        stnSr: '1234567890',
-        cMsisdn: '0987654321'
-      }
+      '5gSrvccInfo': srvccInfo
     };
     ueInfoStore.set(supi, ueInfo);
   }
 
-  const response: any = {};
+  const response: Record<string, any> = {};
   
   for (const field of fieldsArray) {
     if (field === 'tadsInfo' && ueInfo.tadsInfo) {
@@ -101,27 +114,15 @@ router.get('/:supi', (req: Request, res: Response) => {
 
 router.post('/:supi/loc-info/provide-loc-info', (req: Request, res: Response) => {
   const { supi } = req.params;
-  const body = req.body;
+  const body = req.body as LocationInfoRequest;
 
   const supiPattern = /^(imsi-[0-9]{5,15}|nai-.+)$/;
   if (!supiPattern.test(supi)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid supi format',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Invalid supi format'));
   }
 
   if (!body || typeof body !== 'object') {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Request body must be a valid JSON object',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Request body must be a valid JSON object'));
   }
 
   const {
@@ -133,36 +134,36 @@ router.post('/:supi/loc-info/provide-loc-info', (req: Request, res: Response) =>
     supportedFeatures
   } = body;
 
-  const response: any = {};
+  const plmnId: PlmnId = {
+    mcc: '001',
+    mnc: '01'
+  };
+  
+  const response: Partial<LocationInfoResult> = {
+    vPlmnId: plmnId
+  };
 
   if (req5gsLoc || reqCurrentLoc) {
-    response.ncgi = {
-      plmnId: {
-        mcc: '001',
-        mnc: '01'
-      },
+    const ncgi: Ncgi = {
+      plmnId,
       nrCellId: '000000001'
     };
-    response.tai = {
-      plmnId: {
-        mcc: '001',
-        mnc: '01'
-      },
+    const tai: Tai = {
+      plmnId,
       tac: '000001'
     };
+    
+    response.ncgi = ncgi;
+    response.tai = tai;
     response.currentLoc = true;
   }
 
   if (reqServingNode) {
     response.amfInstanceId = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
-    response.vPlmnId = {
-      mcc: '001',
-      mnc: '01'
-    };
   }
 
   if (reqRatType) {
-    response.ratType = 'NR';
+    response.ratType = RatType.NR;
   }
 
   if (reqTimeZone) {
