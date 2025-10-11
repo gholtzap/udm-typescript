@@ -117,3 +117,35 @@ export function createMissingParameterError(detail: string) {
     cause: 'MANDATORY_IE_MISSING'
   };
 }
+
+export function createNotFoundError(detail: string) {
+  return {
+    type: 'urn:3gpp:error:not-found',
+    title: 'Not Found',
+    status: 404,
+    detail,
+    cause: 'DATA_NOT_FOUND'
+  };
+}
+
+export const extGroupIdPattern = /^[^@]+@[^@]+$/;
+
+export function deepMerge(target: any, source: any): any {
+  const result = { ...target };
+  
+  for (const key in source) {
+    if (source[key] === null) {
+      delete result[key];
+    } else if (typeof source[key] === 'object' && !Array.isArray(source[key]) && source[key] !== null) {
+      if (typeof result[key] === 'object' && !Array.isArray(result[key]) && result[key] !== null) {
+        result[key] = deepMerge(result[key], source[key]);
+      } else {
+        result[key] = source[key];
+      }
+    } else {
+      result[key] = source[key];
+    }
+  }
+  
+  return result;
+}

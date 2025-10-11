@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { PpData, FiveGVnGroupConfiguration, MulticastMbsGroupMemb, PpDataEntry } from '../types/nudm-pp-types';
-import { validateUeIdentity, createInvalidParameterError } from '../types/common-types';
+import { validateUeIdentity, createInvalidParameterError, createNotFoundError, extGroupIdPattern, deepMerge } from '../types/common-types';
 
 const router = Router();
 
@@ -131,26 +131,6 @@ router.patch('/:ueId/pp-data', (req: Request, res: Response) => {
     };
   }
 
-  const deepMerge = (target: any, source: any): any => {
-    const result = { ...target };
-    
-    for (const key in source) {
-      if (source[key] === null) {
-        delete result[key];
-      } else if (typeof source[key] === 'object' && !Array.isArray(source[key]) && source[key] !== null) {
-        if (typeof result[key] === 'object' && !Array.isArray(result[key]) && result[key] !== null) {
-          result[key] = deepMerge(result[key], source[key]);
-        } else {
-          result[key] = source[key];
-        }
-      } else {
-        result[key] = source[key];
-      }
-    }
-    
-    return result;
-  };
-
   ppData = deepMerge(ppData!, body) as PpData;
   ppDataStore.set(ueId, ppData);
 
@@ -161,7 +141,6 @@ router.put('/5g-vn-groups/:extGroupId', (req: Request, res: Response) => {
   const { extGroupId } = req.params;
   const body = req.body;
 
-  const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
     return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
@@ -180,19 +159,12 @@ router.delete('/5g-vn-groups/:extGroupId', (req: Request, res: Response) => {
   const mtcProviderInfo = req.query['mtc-provider-info'];
   const afId = req.query['af-id'];
 
-  const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
     return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
 
   if (!vnGroupStore.has(extGroupId)) {
-    return res.status(404).json({
-      type: 'urn:3gpp:error:not-found',
-      title: 'Not Found',
-      status: 404,
-      detail: '5G VN Group not found',
-      cause: 'DATA_NOT_FOUND'
-    });
+    return res.status(404).json(createNotFoundError('5G VN Group not found'));
   }
 
   vnGroupStore.delete(extGroupId);
@@ -205,19 +177,12 @@ router.patch('/5g-vn-groups/:extGroupId', (req: Request, res: Response) => {
   const supportedFeatures = req.query['supported-features'];
   const body = req.body;
 
-  const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
     return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
 
   if (!vnGroupStore.has(extGroupId)) {
-    return res.status(404).json({
-      type: 'urn:3gpp:error:not-found',
-      title: 'Not Found',
-      status: 404,
-      detail: '5G VN Group not found',
-      cause: 'DATA_NOT_FOUND'
-    });
+    return res.status(404).json(createNotFoundError('5G VN Group not found'));
   }
 
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
@@ -225,26 +190,6 @@ router.patch('/5g-vn-groups/:extGroupId', (req: Request, res: Response) => {
   }
 
   let vnGroupConfig = vnGroupStore.get(extGroupId);
-
-  const deepMerge = (target: any, source: any): any => {
-    const result = { ...target };
-    
-    for (const key in source) {
-      if (source[key] === null) {
-        delete result[key];
-      } else if (typeof source[key] === 'object' && !Array.isArray(source[key]) && source[key] !== null) {
-        if (typeof result[key] === 'object' && !Array.isArray(result[key]) && result[key] !== null) {
-          result[key] = deepMerge(result[key], source[key]);
-        } else {
-          result[key] = source[key];
-        }
-      } else {
-        result[key] = source[key];
-      }
-    }
-    
-    return result;
-  };
 
   vnGroupConfig = deepMerge(vnGroupConfig!, body) as FiveGVnGroupConfiguration;
   vnGroupStore.set(extGroupId, vnGroupConfig);
@@ -255,19 +200,12 @@ router.patch('/5g-vn-groups/:extGroupId', (req: Request, res: Response) => {
 router.get('/5g-vn-groups/:extGroupId', (req: Request, res: Response) => {
   const { extGroupId } = req.params;
 
-  const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
     return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
 
   if (!vnGroupStore.has(extGroupId)) {
-    return res.status(404).json({
-      type: 'urn:3gpp:error:not-found',
-      title: 'Not Found',
-      status: 404,
-      detail: '5G VN Group not found',
-      cause: 'DATA_NOT_FOUND'
-    });
+    return res.status(404).json(createNotFoundError('5G VN Group not found'));
   }
 
   const vnGroupConfig = vnGroupStore.get(extGroupId);
@@ -318,13 +256,7 @@ router.delete('/:ueId/pp-data-store/:afInstanceId', (req: Request, res: Response
   const storeKey = `${ueId}:${afInstanceId}`;
   
   if (!ppDataStore.has(storeKey)) {
-    return res.status(404).json({
-      type: 'urn:3gpp:error:not-found',
-      title: 'Not Found',
-      status: 404,
-      detail: 'PP Data Entry not found',
-      cause: 'DATA_NOT_FOUND'
-    });
+    return res.status(404).json(createNotFoundError('PP Data Entry not found'));
   }
 
   ppDataStore.delete(storeKey);
@@ -348,13 +280,7 @@ router.get('/:ueId/pp-data-store/:afInstanceId', (req: Request, res: Response) =
   const storeKey = `${ueId}:${afInstanceId}`;
   
   if (!ppDataStore.has(storeKey)) {
-    return res.status(404).json({
-      type: 'urn:3gpp:error:not-found',
-      title: 'Not Found',
-      status: 404,
-      detail: 'PP Data Entry not found',
-      cause: 'DATA_NOT_FOUND'
-    });
+    return res.status(404).json(createNotFoundError('PP Data Entry not found'));
   }
 
   const ppDataEntry = ppDataStore.get(storeKey);
@@ -371,7 +297,6 @@ router.put('/mbs-group-membership/:extGroupId', (req: Request, res: Response) =>
   const { extGroupId } = req.params;
   const body = req.body;
 
-  const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
     return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
@@ -392,19 +317,12 @@ router.put('/mbs-group-membership/:extGroupId', (req: Request, res: Response) =>
 router.delete('/mbs-group-membership/:extGroupId', (req: Request, res: Response) => {
   const { extGroupId } = req.params;
 
-  const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
     return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
 
   if (!mbsGroupStore.has(extGroupId)) {
-    return res.status(404).json({
-      type: 'urn:3gpp:error:not-found',
-      title: 'Not Found',
-      status: 404,
-      detail: '5G MBS Group not found',
-      cause: 'DATA_NOT_FOUND'
-    });
+    return res.status(404).json(createNotFoundError('5G MBS Group not found'));
   }
 
   mbsGroupStore.delete(extGroupId);
@@ -417,19 +335,12 @@ router.patch('/mbs-group-membership/:extGroupId', (req: Request, res: Response) 
   const supportedFeatures = req.query['supported-features'];
   const body = req.body;
 
-  const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
     return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
 
   if (!mbsGroupStore.has(extGroupId)) {
-    return res.status(404).json({
-      type: 'urn:3gpp:error:not-found',
-      title: 'Not Found',
-      status: 404,
-      detail: '5G MBS Group not found',
-      cause: 'DATA_NOT_FOUND'
-    });
+    return res.status(404).json(createNotFoundError('5G MBS Group not found'));
   }
 
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
@@ -437,26 +348,6 @@ router.patch('/mbs-group-membership/:extGroupId', (req: Request, res: Response) 
   }
 
   let mbsGroupConfig = mbsGroupStore.get(extGroupId);
-
-  const deepMerge = (target: any, source: any): any => {
-    const result = { ...target };
-    
-    for (const key in source) {
-      if (source[key] === null) {
-        delete result[key];
-      } else if (typeof source[key] === 'object' && !Array.isArray(source[key]) && source[key] !== null) {
-        if (typeof result[key] === 'object' && !Array.isArray(result[key]) && result[key] !== null) {
-          result[key] = deepMerge(result[key], source[key]);
-        } else {
-          result[key] = source[key];
-        }
-      } else {
-        result[key] = source[key];
-      }
-    }
-    
-    return result;
-  };
 
   mbsGroupConfig = deepMerge(mbsGroupConfig!, body) as MulticastMbsGroupMemb;
   mbsGroupStore.set(extGroupId, mbsGroupConfig);
@@ -467,19 +358,12 @@ router.patch('/mbs-group-membership/:extGroupId', (req: Request, res: Response) 
 router.get('/mbs-group-membership/:extGroupId', (req: Request, res: Response) => {
   const { extGroupId } = req.params;
 
-  const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
     return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
 
   if (!mbsGroupStore.has(extGroupId)) {
-    return res.status(404).json({
-      type: 'urn:3gpp:error:not-found',
-      title: 'Not Found',
-      status: 404,
-      detail: '5G MBS Group not found',
-      cause: 'DATA_NOT_FOUND'
-    });
+    return res.status(404).json(createNotFoundError('5G MBS Group not found'));
   }
 
   const mbsGroupConfig = mbsGroupStore.get(extGroupId);
