@@ -284,10 +284,10 @@ router.get('/:ueId/pp-data-store/:afInstanceId', (req: Request, res: Response) =
   }
 
   const ppDataEntry = ppDataStore.get(storeKey);
-  const response: any = { ...ppDataEntry };
+  const response: PpDataEntry = { ...ppDataEntry } as PpDataEntry;
 
   if (supportedFeatures) {
-    response.supportedFeatures = supportedFeatures;
+    response.supportedFeatures = supportedFeatures as string;
   }
 
   return res.status(200).json(response);
