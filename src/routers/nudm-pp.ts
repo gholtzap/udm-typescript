@@ -1,10 +1,12 @@
 import { Router, Request, Response } from 'express';
+import { PpData, FiveGVnGroupConfiguration, MulticastMbsGroupMemb, PpDataEntry } from '../types/nudm-pp-types';
+import { validateUeIdentity, createInvalidParameterError } from '../types/common-types';
 
 const router = Router();
 
-const ppDataStore = new Map<string, any>();
-const vnGroupStore = new Map<string, any>();
-const mbsGroupStore = new Map<string, any>();
+const ppDataStore = new Map<string, PpData>();
+const vnGroupStore = new Map<string, FiveGVnGroupConfiguration>();
+const mbsGroupStore = new Map<string, MulticastMbsGroupMemb>();
 
 const notImplemented = (req: Request, res: Response) => {
   res.status(501).json({
@@ -20,15 +22,8 @@ router.get('/:ueId/pp-data', (req: Request, res: Response) => {
   const mtcProviderInformation = req.query['mtc-provider-information'];
   const supportedFeatures = req.query['supported-features'];
 
-  const ueIdPattern = /^(msisdn-[0-9]{5,15}|extid-[^@]+@[^@]+|imsi-[0-9]{5,15}|nai-.+|gci-.+|gli-.+|extgroupid-[^@]+@[^@]+)$/;
-  if (!ueIdPattern.test(ueId)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid ueId format',
-      cause: 'INVALID_PARAMETER'
-    });
+  if (!validateUeIdentity(ueId, ['msisdn', 'extid', 'imsi', 'nai', 'gci', 'gli', 'extgroupid'])) {
+    return res.status(400).json(createInvalidParameterError('Invalid ueId format'));
   }
 
   let ppData = ppDataStore.get(ueId);
@@ -38,25 +33,25 @@ router.get('/:ueId/pp-data', (req: Request, res: Response) => {
       communicationCharacteristics: {
         ppSubsRegTimer: {
           subsRegTimer: 3600,
-          afInstanceId: afInstanceId || 'af-default',
+          afInstanceId: afInstanceId as string || 'af-default',
           referenceId: 1
         },
         ppActiveTime: {
           activeTime: 300,
-          afInstanceId: afInstanceId || 'af-default',
+          afInstanceId: afInstanceId as string || 'af-default',
           referenceId: 2
         },
         ppDlPacketCount: 10
       },
       expectedUeBehaviourParameters: {
-        afInstanceId: afInstanceId || 'af-default',
+        afInstanceId: afInstanceId as string || 'af-default',
         referenceId: 3,
         stationaryIndication: 'STATIONARY',
         communicationDurationTime: 600,
         periodicTime: 3600
       },
       ecRestriction: {
-        afInstanceId: afInstanceId || 'af-default',
+        afInstanceId: afInstanceId as string || 'af-default',
         referenceId: 4,
         plmnEcInfos: [
           {
@@ -72,10 +67,10 @@ router.get('/:ueId/pp-data', (req: Request, res: Response) => {
     ppDataStore.set(ueId, ppData);
   }
 
-  const response: any = { ...ppData };
+  const response: PpData = { ...ppData };
 
   if (supportedFeatures) {
-    response.supportedFeatures = supportedFeatures;
+    response.supportedFeatures = supportedFeatures as string;
   }
 
   return res.status(200).json(response);
@@ -88,25 +83,12 @@ router.patch('/:ueId/pp-data', (req: Request, res: Response) => {
   const supportedFeatures = req.query['supported-features'];
   const body = req.body;
 
-  const ueIdPattern = /^(msisdn-[0-9]{5,15}|extid-[^@]+@[^@]+|imsi-[0-9]{5,15}|nai-.+|gci-.+|gli-.+|extgroupid-[^@]+@[^@]+)$/;
-  if (!ueIdPattern.test(ueId)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid ueId format',
-      cause: 'INVALID_PARAMETER'
-    });
+  if (!validateUeIdentity(ueId, ['msisdn', 'extid', 'imsi', 'nai', 'gci', 'gli', 'extgroupid'])) {
+    return res.status(400).json(createInvalidParameterError('Invalid ueId format'));
   }
 
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Request body must be a valid JSON object',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Request body must be a valid JSON object'));
   }
 
   let ppData = ppDataStore.get(ueId);
@@ -116,25 +98,25 @@ router.patch('/:ueId/pp-data', (req: Request, res: Response) => {
       communicationCharacteristics: {
         ppSubsRegTimer: {
           subsRegTimer: 3600,
-          afInstanceId: afInstanceId || 'af-default',
+          afInstanceId: afInstanceId as string || 'af-default',
           referenceId: 1
         },
         ppActiveTime: {
           activeTime: 300,
-          afInstanceId: afInstanceId || 'af-default',
+          afInstanceId: afInstanceId as string || 'af-default',
           referenceId: 2
         },
         ppDlPacketCount: 10
       },
       expectedUeBehaviourParameters: {
-        afInstanceId: afInstanceId || 'af-default',
+        afInstanceId: afInstanceId as string || 'af-default',
         referenceId: 3,
         stationaryIndication: 'STATIONARY',
         communicationDurationTime: 600,
         periodicTime: 3600
       },
       ecRestriction: {
-        afInstanceId: afInstanceId || 'af-default',
+        afInstanceId: afInstanceId as string || 'af-default',
         referenceId: 4,
         plmnEcInfos: [
           {
@@ -169,7 +151,7 @@ router.patch('/:ueId/pp-data', (req: Request, res: Response) => {
     return result;
   };
 
-  ppData = deepMerge(ppData, body);
+  ppData = deepMerge(ppData!, body) as PpData;
   ppDataStore.set(ueId, ppData);
 
   return res.status(204).send();
@@ -181,23 +163,11 @@ router.put('/5g-vn-groups/:extGroupId', (req: Request, res: Response) => {
 
   const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid extGroupId format',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
 
   if (body === undefined || body === null || typeof body !== 'object' || Array.isArray(body)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Request body must be a valid JSON object',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Request body must be a valid JSON object'));
   }
 
   vnGroupStore.set(extGroupId, body);
@@ -212,13 +182,7 @@ router.delete('/5g-vn-groups/:extGroupId', (req: Request, res: Response) => {
 
   const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid extGroupId format',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
 
   if (!vnGroupStore.has(extGroupId)) {
@@ -243,13 +207,7 @@ router.patch('/5g-vn-groups/:extGroupId', (req: Request, res: Response) => {
 
   const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid extGroupId format',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
 
   if (!vnGroupStore.has(extGroupId)) {
@@ -263,13 +221,7 @@ router.patch('/5g-vn-groups/:extGroupId', (req: Request, res: Response) => {
   }
 
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Request body must be a valid JSON object',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Request body must be a valid JSON object'));
   }
 
   let vnGroupConfig = vnGroupStore.get(extGroupId);
@@ -294,7 +246,7 @@ router.patch('/5g-vn-groups/:extGroupId', (req: Request, res: Response) => {
     return result;
   };
 
-  vnGroupConfig = deepMerge(vnGroupConfig, body);
+  vnGroupConfig = deepMerge(vnGroupConfig!, body) as FiveGVnGroupConfiguration;
   vnGroupStore.set(extGroupId, vnGroupConfig);
 
   return res.status(204).send();
@@ -305,13 +257,7 @@ router.get('/5g-vn-groups/:extGroupId', (req: Request, res: Response) => {
 
   const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid extGroupId format',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
 
   if (!vnGroupStore.has(extGroupId)) {
@@ -333,35 +279,16 @@ router.put('/:ueId/pp-data-store/:afInstanceId', (req: Request, res: Response) =
   const { ueId, afInstanceId } = req.params;
   const body = req.body;
 
-  const ueIdPattern = /^(msisdn-[0-9]{5,15}|extid-[^@]+@[^@]+|imsi-[0-9]{5,15}|nai-.+|gci-.+|gli-.+|extgroupid-[^@]+@[^@]+|anyUE)$/;
-  if (!ueIdPattern.test(ueId)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid ueId format',
-      cause: 'INVALID_PARAMETER'
-    });
+  if (!validateUeIdentity(ueId, ['msisdn', 'extid', 'imsi', 'nai', 'gci', 'gli', 'extgroupid', 'anyUE'])) {
+    return res.status(400).json(createInvalidParameterError('Invalid ueId format'));
   }
 
   if (!afInstanceId || typeof afInstanceId !== 'string' || afInstanceId.trim() === '') {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid afInstanceId',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Invalid afInstanceId'));
   }
 
   if (body === undefined || body === null || typeof body !== 'object' || Array.isArray(body)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Request body must be a valid JSON object',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Request body must be a valid JSON object'));
   }
 
   const storeKey = `${ueId}:${afInstanceId}`;
@@ -380,25 +307,12 @@ router.delete('/:ueId/pp-data-store/:afInstanceId', (req: Request, res: Response
   const { ueId, afInstanceId } = req.params;
   const mtcProviderInformation = req.query['mtc-provider-information'];
 
-  const ueIdPattern = /^(msisdn-[0-9]{5,15}|extid-[^@]+@[^@]+|imsi-[0-9]{5,15}|nai-.+|gci-.+|gli-.+|extgroupid-[^@]+@[^@]+|anyUE)$/;
-  if (!ueIdPattern.test(ueId)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid ueId format',
-      cause: 'INVALID_PARAMETER'
-    });
+  if (!validateUeIdentity(ueId, ['msisdn', 'extid', 'imsi', 'nai', 'gci', 'gli', 'extgroupid', 'anyUE'])) {
+    return res.status(400).json(createInvalidParameterError('Invalid ueId format'));
   }
 
   if (!afInstanceId || typeof afInstanceId !== 'string' || afInstanceId.trim() === '') {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid afInstanceId',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Invalid afInstanceId'));
   }
 
   const storeKey = `${ueId}:${afInstanceId}`;
@@ -423,25 +337,12 @@ router.get('/:ueId/pp-data-store/:afInstanceId', (req: Request, res: Response) =
   const mtcProviderInformation = req.query['mtc-provider-information'];
   const supportedFeatures = req.query['supported-features'];
 
-  const ueIdPattern = /^(msisdn-[0-9]{5,15}|extid-[^@]+@[^@]+|imsi-[0-9]{5,15}|nai-.+|gci-.+|gli-.+|extgroupid-[^@]+@[^@]+|anyUE)$/;
-  if (!ueIdPattern.test(ueId)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid ueId format',
-      cause: 'INVALID_PARAMETER'
-    });
+  if (!validateUeIdentity(ueId, ['msisdn', 'extid', 'imsi', 'nai', 'gci', 'gli', 'extgroupid', 'anyUE'])) {
+    return res.status(400).json(createInvalidParameterError('Invalid ueId format'));
   }
 
   if (!afInstanceId || typeof afInstanceId !== 'string' || afInstanceId.trim() === '') {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid afInstanceId',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Invalid afInstanceId'));
   }
 
   const storeKey = `${ueId}:${afInstanceId}`;
@@ -472,33 +373,15 @@ router.put('/mbs-group-membership/:extGroupId', (req: Request, res: Response) =>
 
   const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid extGroupId format',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
 
   if (body === undefined || body === null || typeof body !== 'object' || Array.isArray(body)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Request body must be a valid JSON object',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Request body must be a valid JSON object'));
   }
 
   if (!body.multicastGroupMemb || !Array.isArray(body.multicastGroupMemb) || body.multicastGroupMemb.length === 0) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'multicastGroupMemb is required and must be a non-empty array',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('multicastGroupMemb is required and must be a non-empty array'));
   }
 
   mbsGroupStore.set(extGroupId, body);
@@ -511,13 +394,7 @@ router.delete('/mbs-group-membership/:extGroupId', (req: Request, res: Response)
 
   const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid extGroupId format',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
 
   if (!mbsGroupStore.has(extGroupId)) {
@@ -542,13 +419,7 @@ router.patch('/mbs-group-membership/:extGroupId', (req: Request, res: Response) 
 
   const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid extGroupId format',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
 
   if (!mbsGroupStore.has(extGroupId)) {
@@ -562,13 +433,7 @@ router.patch('/mbs-group-membership/:extGroupId', (req: Request, res: Response) 
   }
 
   if (!body || typeof body !== 'object' || Array.isArray(body)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Request body must be a valid JSON object',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Request body must be a valid JSON object'));
   }
 
   let mbsGroupConfig = mbsGroupStore.get(extGroupId);
@@ -593,7 +458,7 @@ router.patch('/mbs-group-membership/:extGroupId', (req: Request, res: Response) 
     return result;
   };
 
-  mbsGroupConfig = deepMerge(mbsGroupConfig, body);
+  mbsGroupConfig = deepMerge(mbsGroupConfig!, body) as MulticastMbsGroupMemb;
   mbsGroupStore.set(extGroupId, mbsGroupConfig);
 
   return res.status(204).send();
@@ -604,13 +469,7 @@ router.get('/mbs-group-membership/:extGroupId', (req: Request, res: Response) =>
 
   const extGroupIdPattern = /^[^@]+@[^@]+$/;
   if (!extGroupIdPattern.test(extGroupId)) {
-    return res.status(400).json({
-      type: 'urn:3gpp:error:invalid-parameter',
-      title: 'Bad Request',
-      status: 400,
-      detail: 'Invalid extGroupId format',
-      cause: 'INVALID_PARAMETER'
-    });
+    return res.status(400).json(createInvalidParameterError('Invalid extGroupId format'));
   }
 
   if (!mbsGroupStore.has(extGroupId)) {

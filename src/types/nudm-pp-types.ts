@@ -9,7 +9,7 @@ export type PpDlPacketCount = number | null;
 export interface PpData {
   supportedFeatures?: string;
   communicationCharacteristics?: CommunicationCharacteristics;
-  expectedUeBehaviour?: ExpectedUeBehaviour;
+  expectedUeBehaviourParameters?: ExpectedUeBehaviour;
   ecRestriction?: EcRestriction;
   acsInfo?: AcsInfoRm;
   stnSr?: string | null;
