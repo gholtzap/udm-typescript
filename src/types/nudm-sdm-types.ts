@@ -163,6 +163,12 @@ export enum UserConsent {
   CONSENT_GIVEN = "CONSENT_GIVEN"
 }
 
+export enum PruInd {
+  NON_PRU = "NON_PRU",
+  STATIONARY_PRU = "STATIONARY_PRU",
+  NON_STATIONARY_PRU = "NON_STATIONARY_PRU"
+}
+
 export interface Nssai {
   supportedFeatures?: string;
   defaultSingleNssais: Snssai[];
@@ -364,6 +370,7 @@ export interface SubscriptionDataSets {
   smsMngData?: SmsManagementSubscriptionData;
   lcsPrivacyData?: LcsPrivacyData;
   lcsMoData?: LcsMoData;
+  lcsSubscriptionData?: LcsSubscriptionData;
   v2xData?: V2xSubscriptionData;
   lcsBroadcastAssistanceTypesData?: LcsBroadcastAssistanceTypesData;
   proseData?: ProseSubscriptionData;
@@ -563,6 +570,13 @@ export interface ValidTimePeriod {
 export interface LcsMoData {
   allowedServiceClasses: LcsMoServiceClass[];
   moAssistanceDataTypes?: LcsBroadcastAssistanceTypesData;
+}
+
+export interface LcsSubscriptionData {
+  configuredLmfId?: string;
+  pruInd?: PruInd;
+  lpHapType?: string;
+  userPlanePosIndLmf?: boolean;
 }
 
 export interface EcRestrictionDataWb {
