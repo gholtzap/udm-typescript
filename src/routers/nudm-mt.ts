@@ -134,40 +134,43 @@ router.post('/:supi/loc-info/provide-loc-info', (req: Request, res: Response) =>
     supportedFeatures
   } = body;
 
-  const plmnId: PlmnId = {
-    mcc: '001',
-    mnc: '01'
-  };
-  
-  const response: Partial<LocationInfoResult> = {
-    vPlmnId: plmnId
-  };
+  const response: Partial<LocationInfoResult> = {};
 
-  if (req5gsLoc || reqCurrentLoc) {
-    const ncgi: Ncgi = {
-      plmnId,
-      nrCellId: '000000001'
+  const anyFlagSet = req5gsLoc || reqCurrentLoc || reqRatType || reqTimeZone || reqServingNode;
+
+  if (anyFlagSet) {
+    const plmnId: PlmnId = {
+      mcc: '001',
+      mnc: '01'
     };
-    const tai: Tai = {
-      plmnId,
-      tac: '000001'
-    };
-    
-    response.ncgi = ncgi;
-    response.tai = tai;
-    response.currentLoc = true;
-  }
+    response.vPlmnId = plmnId;
 
-  if (reqServingNode) {
-    response.amfInstanceId = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
-  }
+    if (req5gsLoc || reqCurrentLoc) {
+      const ncgi: Ncgi = {
+        plmnId,
+        nrCellId: '000000001'
+      };
+      const tai: Tai = {
+        plmnId,
+        tac: '000001'
+      };
+      
+      response.ncgi = ncgi;
+      response.tai = tai;
+      response.currentLoc = true;
+    }
 
-  if (reqRatType) {
-    response.ratType = RatType.NR;
-  }
+    if (reqServingNode) {
+      response.amfInstanceId = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
+    }
 
-  if (reqTimeZone) {
-    response.timezone = '+00:00';
+    if (reqRatType) {
+      response.ratType = RatType.NR;
+    }
+
+    if (reqTimeZone) {
+      response.timezone = '+00:00';
+    }
   }
 
   if (supportedFeatures) {
