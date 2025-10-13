@@ -37,14 +37,32 @@ import {
   LocationPrivacyInd,
   LcsClientClass,
   PrivacyCheckRelatedAction,
-  SdmSubscription
+  SdmSubscription,
+  SdmSubsModification,
+  IdTranslationResult,
+  GpsiType,
+  AppPortId,
+  AcknowledgeInfo,
+  SorUpdateInfo,
+  SorInfo,
+  SharedData,
+  SharedDataId,
+  GroupIdentifiers,
+  ExtGroupId,
+  UeId,
+  UeIdentifiers,
+  SupiInfo,
+  TimeSyncSubscriptionData
 } from '../types/nudm-sdm-types';
-import { validateUeIdentity, createInvalidParameterError, createMissingParameterError, PlmnId, Snssai, AccessType, PduSessionType } from '../types/common-types';
+import { validateUeIdentity, createInvalidParameterError, createMissingParameterError, createNotFoundError, PlmnId, Snssai, AccessType, PduSessionType } from '../types/common-types';
 
 const router = Router();
 
 const subscriptionDataStore = new Map<string, SubscriptionDataSets>();
 const sdmSubscriptionStore = new Map<string, Map<string, SdmSubscription>>();
+const sharedDataStore = new Map<SharedDataId, SharedData>();
+const sharedDataSubscriptionStore = new Map<string, SdmSubscription>();
+const groupIdentifiersStore = new Map<string, GroupIdentifiers>();
 
 const notImplemented = (req: Request, res: Response) => {
   res.status(501).json({
@@ -1932,33 +1950,866 @@ router.delete('/:ueId/sdm-subscriptions/:subscriptionId', (req: Request, res: Re
   res.status(204).send();
 });
 
-router.patch('/:ueId/sdm-subscriptions/:subscriptionId', notImplemented);
+router.patch('/:ueId/sdm-subscriptions/:subscriptionId', (req: Request, res: Response) => {
+  const { ueId, subscriptionId } = req.params;
+  const supportedFeatures = req.query['supported-features'] as string | undefined;
 
-router.get('/:ueId/id-translation-result', notImplemented);
+  if (!validateUeIdentity(ueId, undefined, true)) {
+    return res.status(400).json(createInvalidParameterError('Invalid ueId format'));
+  }
 
-router.put('/:supi/am-data/sor-ack', notImplemented);
+  const ueSubscriptions = sdmSubscriptionStore.get(ueId);
+  
+  if (!ueSubscriptions || !ueSubscriptions.has(subscriptionId)) {
+    return res.status(404).json({
+      title: 'Not Found',
+      status: 404,
+      detail: 'Subscription not found',
+      cause: 'SUBSCRIPTION_NOT_FOUND'
+    });
+  }
 
-router.put('/:supi/am-data/upu-ack', notImplemented);
+  const modification = req.body as SdmSubsModification;
 
-router.put('/:supi/am-data/subscribed-snssais-ack', notImplemented);
+  const currentSubscription = ueSubscriptions.get(subscriptionId)!;
 
-router.put('/:supi/am-data/cag-ack', notImplemented);
+  if (modification.expires !== undefined) {
+    currentSubscription.expires = modification.expires;
+  }
 
-router.post('/:supi/am-data/update-sor', notImplemented);
+  if (modification.monitoredResourceUris !== undefined) {
+    if (modification.monitoredResourceUris.length === 0) {
+      return res.status(403).json({
+        title: 'Forbidden',
+        status: 403,
+        detail: 'monitoredResourceUris cannot be empty',
+        cause: 'MODIFICATION_NOT_ALLOWED'
+      });
+    }
+    currentSubscription.monitoredResourceUris = modification.monitoredResourceUris;
+  }
 
-router.get('/shared-data', notImplemented);
+  ueSubscriptions.set(subscriptionId, currentSubscription);
 
-router.post('/shared-data-subscriptions', notImplemented);
+  if (supportedFeatures) {
+    currentSubscription.supportedFeatures = supportedFeatures;
+  }
 
-router.delete('/shared-data-subscriptions/:subscriptionId', notImplemented);
+  res.status(200).json(currentSubscription);
+});
 
-router.patch('/shared-data-subscriptions/:subscriptionId', notImplemented);
+router.get('/:ueId/id-translation-result', (req: Request, res: Response) => {
+  const { ueId } = req.params;
+  const supportedFeatures = req.query['supported-features'] as string | undefined;
+  const afId = req.query['af-id'] as string | undefined;
+  const appPortIdParam = req.query['app-port-id'] as string | undefined;
+  const afServiceId = req.query['af-service-id'] as string | undefined;
+  const mtcProviderInfoParam = req.query['mtc-provider-info'] as string | undefined;
+  const requestedGpsiType = req.query['requested-gpsi-type'] as GpsiType | undefined;
+  const ifNoneMatch = req.headers['if-none-match'] as string | undefined;
+  const ifModifiedSince = req.headers['if-modified-since'] as string | undefined;
 
-router.get('/group-data/group-identifiers', notImplemented);
+  if (!validateUeIdentity(ueId, ['imsi', 'nai', 'msisdn', 'extid', 'gci', 'gli'], true)) {
+    return res.status(400).json(createInvalidParameterError('Invalid ueId format'));
+  }
 
-router.get('/shared-data/:sharedDataId', notImplemented);
+  let appPortId: AppPortId | undefined;
+  if (appPortIdParam) {
+    try {
+      appPortId = JSON.parse(appPortIdParam) as AppPortId;
+    } catch (e) {
+      return res.status(400).json(createInvalidParameterError('Invalid app-port-id JSON format'));
+    }
+  }
 
-router.get('/multiple-identifiers', notImplemented);
+  if (requestedGpsiType && !Object.values(GpsiType).includes(requestedGpsiType)) {
+    return res.status(400).json(createInvalidParameterError('Invalid requested-gpsi-type value'));
+  }
+
+  const isSupi = ueId.startsWith('imsi-') || ueId.startsWith('nai-');
+  const isGpsi = ueId.startsWith('msisdn-') || ueId.startsWith('extid-');
+
+  if (!isSupi && !isGpsi) {
+    return res.status(404).json({
+      title: 'Not Found',
+      status: 404,
+      detail: 'User not found',
+      cause: 'USER_NOT_FOUND'
+    });
+  }
+
+  let result: IdTranslationResult;
+
+  if (isSupi) {
+    const supi = ueId;
+    
+    let storedData = subscriptionDataStore.get(supi);
+    
+    if (!storedData) {
+      storedData = {
+        amData: {
+          gpsis: [`msisdn-${supi.slice(-10)}`],
+          subscribedUeAmbr: {
+            uplink: '1000 Mbps',
+            downlink: '2000 Mbps'
+          },
+          nssai: {
+            defaultSingleNssais: [
+              { sst: 1, sd: '000001' }
+            ],
+            singleNssais: [
+              { sst: 1, sd: '000001' },
+              { sst: 2, sd: '000002' }
+            ]
+          },
+          ratRestrictions: []
+        },
+        smfSelData: {
+          subscribedSnssaiInfos: {
+            '1-000001': {
+              dnnInfos: [
+                {
+                  dnn: 'internet',
+                  defaultDnnIndicator: true
+                }
+              ]
+            }
+          }
+        },
+        smsSubsData: {
+          smsSubscribed: true
+        }
+      };
+      subscriptionDataStore.set(supi, storedData);
+    }
+
+    const gpsis = storedData.amData?.gpsis || [];
+    let primaryGpsi: string | undefined;
+
+    if (requestedGpsiType === GpsiType.MSISDN) {
+      primaryGpsi = gpsis.find(g => g.startsWith('msisdn-'));
+    } else if (requestedGpsiType === GpsiType.EXT_ID) {
+      primaryGpsi = gpsis.find(g => g.startsWith('extid-'));
+    } else if (requestedGpsiType === GpsiType.EXT_GROUP_ID) {
+      primaryGpsi = gpsis.find(g => g.startsWith('extgroupid-'));
+    } else {
+      primaryGpsi = gpsis[0];
+    }
+
+    result = {
+      supi: supi,
+      gpsi: primaryGpsi,
+      additionalGpsis: gpsis.filter(g => g !== primaryGpsi)
+    };
+
+    if (supportedFeatures) {
+      result.supportedFeatures = supportedFeatures;
+    }
+  } else {
+    const gpsi = ueId;
+    
+    let foundSupi: string | undefined;
+    
+    for (const [supi, data] of subscriptionDataStore.entries()) {
+      if (data.amData?.gpsis?.includes(gpsi)) {
+        foundSupi = supi;
+        break;
+      }
+    }
+
+    if (!foundSupi) {
+      foundSupi = `imsi-${gpsi.slice(-15).padStart(15, '0')}`;
+      
+      const storedData: SubscriptionDataSets = {
+        amData: {
+          gpsis: [gpsi],
+          subscribedUeAmbr: {
+            uplink: '1000 Mbps',
+            downlink: '2000 Mbps'
+          },
+          nssai: {
+            defaultSingleNssais: [
+              { sst: 1, sd: '000001' }
+            ],
+            singleNssais: [
+              { sst: 1, sd: '000001' },
+              { sst: 2, sd: '000002' }
+            ]
+          },
+          ratRestrictions: []
+        },
+        smfSelData: {
+          subscribedSnssaiInfos: {
+            '1-000001': {
+              dnnInfos: [
+                {
+                  dnn: 'internet',
+                  defaultDnnIndicator: true
+                }
+              ]
+            }
+          }
+        },
+        smsSubsData: {
+          smsSubscribed: true
+        }
+      };
+      subscriptionDataStore.set(foundSupi, storedData);
+    }
+
+    const storedData = subscriptionDataStore.get(foundSupi)!;
+    const allGpsis = storedData.amData?.gpsis || [];
+    const otherGpsis = allGpsis.filter(g => g !== gpsi);
+
+    result = {
+      supi: foundSupi,
+      gpsi: otherGpsis.length > 0 ? otherGpsis[0] : undefined,
+      additionalGpsis: otherGpsis.slice(1)
+    };
+
+    if (supportedFeatures) {
+      result.supportedFeatures = supportedFeatures;
+    }
+  }
+
+  const headers: Record<string, string> = {
+    'Cache-Control': 'max-age=3600',
+    'ETag': `"${ueId}-idtranslation-v1"`,
+    'Last-Modified': new Date().toUTCString()
+  };
+
+  res.set(headers);
+  return res.status(200).json(result);
+});
+
+router.put('/:supi/am-data/sor-ack', (req: Request, res: Response) => {
+  const { supi } = req.params;
+
+  if (!validateUeIdentity(supi, ['imsi', 'nai'])) {
+    return res.status(400).json(createInvalidParameterError('Invalid supi format'));
+  }
+
+  const acknowledgeInfo = req.body as AcknowledgeInfo;
+
+  if (!acknowledgeInfo.provisioningTime) {
+    return res.status(400).json(createMissingParameterError('provisioningTime is required'));
+  }
+
+  const storedData = subscriptionDataStore.get(supi);
+  
+  if (!storedData) {
+    return res.status(404).json({
+      title: 'Not Found',
+      status: 404,
+      detail: 'User not found',
+      cause: 'USER_NOT_FOUND'
+    });
+  }
+
+  return res.status(204).send();
+});
+
+router.put('/:supi/am-data/upu-ack', (req: Request, res: Response) => {
+  const { supi } = req.params;
+
+  if (!validateUeIdentity(supi, ['imsi', 'nai'])) {
+    return res.status(400).json(createInvalidParameterError('Invalid supi format'));
+  }
+
+  const acknowledgeInfo = req.body as AcknowledgeInfo;
+
+  if (!acknowledgeInfo.provisioningTime) {
+    return res.status(400).json(createMissingParameterError('provisioningTime is required'));
+  }
+
+  const storedData = subscriptionDataStore.get(supi);
+  
+  if (!storedData) {
+    return res.status(404).json({
+      title: 'Not Found',
+      status: 404,
+      detail: 'User not found',
+      cause: 'USER_NOT_FOUND'
+    });
+  }
+
+  return res.status(204).send();
+});
+
+router.put('/:supi/am-data/subscribed-snssais-ack', (req: Request, res: Response) => {
+  const { supi } = req.params;
+
+  if (!validateUeIdentity(supi, ['imsi', 'nai'])) {
+    return res.status(400).json(createInvalidParameterError('Invalid supi format'));
+  }
+
+  const acknowledgeInfo = req.body as AcknowledgeInfo;
+
+  if (!acknowledgeInfo.provisioningTime) {
+    return res.status(400).json(createMissingParameterError('provisioningTime is required'));
+  }
+
+  const storedData = subscriptionDataStore.get(supi);
+  
+  if (!storedData) {
+    return res.status(404).json({
+      title: 'Not Found',
+      status: 404,
+      detail: 'User not found',
+      cause: 'USER_NOT_FOUND'
+    });
+  }
+
+  return res.status(204).send();
+});
+
+router.put('/:supi/am-data/cag-ack', (req: Request, res: Response) => {
+  const { supi } = req.params;
+
+  if (!validateUeIdentity(supi, ['imsi', 'nai'])) {
+    return res.status(400).json(createInvalidParameterError('Invalid supi format'));
+  }
+
+  const acknowledgeInfo = req.body as AcknowledgeInfo;
+
+  if (!acknowledgeInfo.provisioningTime) {
+    return res.status(400).json(createMissingParameterError('provisioningTime is required'));
+  }
+
+  const storedData = subscriptionDataStore.get(supi);
+  
+  if (!storedData) {
+    return res.status(404).json({
+      title: 'Not Found',
+      status: 404,
+      detail: 'User not found',
+      cause: 'USER_NOT_FOUND'
+    });
+  }
+
+  return res.status(204).send();
+});
+
+router.post('/:supi/am-data/update-sor', (req: Request, res: Response) => {
+  const { supi } = req.params;
+
+  if (!validateUeIdentity(supi, ['imsi', 'nai'])) {
+    return res.status(400).json(createInvalidParameterError('Invalid supi format'));
+  }
+
+  const sorUpdateInfo = req.body as SorUpdateInfo;
+
+  if (!sorUpdateInfo.vplmnId) {
+    return res.status(400).json(createMissingParameterError('vplmnId is required'));
+  }
+
+  if (!sorUpdateInfo.vplmnId.mcc || !sorUpdateInfo.vplmnId.mnc) {
+    return res.status(400).json(createInvalidParameterError('vplmnId must contain mcc and mnc'));
+  }
+
+  const storedData = subscriptionDataStore.get(supi);
+  
+  if (!storedData || !storedData.amData) {
+    return res.status(404).json({
+      type: 'urn:3gpp:error:user-not-found',
+      title: 'Not Found',
+      status: 404,
+      detail: 'User not found',
+      cause: 'USER_NOT_FOUND'
+    });
+  }
+
+  if (!storedData.amData.sorInfo) {
+    storedData.amData.sorInfo = {
+      ackInd: true,
+      provisioningTime: new Date().toISOString(),
+      sorMacIausf: 'mock-sor-mac-iausf',
+      countersor: '1'
+    };
+  }
+
+  return res.status(200).json(storedData.amData.sorInfo);
+});
+
+router.get('/shared-data', (req: Request, res: Response) => {
+  const sharedDataIdsParam = req.query['shared-data-ids'] as string | undefined;
+  const supportedFeatures = req.query['supported-features'] as string | undefined;
+  const ifNoneMatch = req.headers['if-none-match'] as string | undefined;
+  const ifModifiedSince = req.headers['if-modified-since'] as string | undefined;
+
+  if (!sharedDataIdsParam) {
+    return res.status(400).json(createMissingParameterError('shared-data-ids query parameter is required'));
+  }
+
+  const sharedDataIds = sharedDataIdsParam.split(',').map(id => id.trim() as SharedDataId);
+
+  if (sharedDataIds.length === 0) {
+    return res.status(400).json(createInvalidParameterError('shared-data-ids must contain at least one ID'));
+  }
+
+  const result: SharedData[] = [];
+
+  for (const sharedDataId of sharedDataIds) {
+    const sharedData = sharedDataStore.get(sharedDataId);
+    if (sharedData) {
+      result.push(sharedData);
+    }
+  }
+
+  if (result.length === 0) {
+    return res.status(404).json({
+      title: 'Not Found',
+      status: 404,
+      detail: 'Shared data not found',
+      cause: 'DATA_NOT_FOUND'
+    });
+  }
+
+  const headers: Record<string, string> = {
+    'Cache-Control': 'max-age=3600',
+    'ETag': `"shared-data-${sharedDataIds.join('-')}-v1"`,
+    'Last-Modified': new Date().toUTCString()
+  };
+
+  res.set(headers);
+  return res.status(200).json(result);
+});
+
+router.post('/shared-data-subscriptions', (req: Request, res: Response) => {
+  const subscriptionRequest = req.body as SdmSubscription;
+
+  if (!subscriptionRequest.nfInstanceId) {
+    return res.status(400).json(createMissingParameterError('nfInstanceId is required'));
+  }
+
+  if (!subscriptionRequest.callbackReference) {
+    return res.status(400).json(createMissingParameterError('callbackReference is required'));
+  }
+
+  if (!subscriptionRequest.monitoredResourceUris || subscriptionRequest.monitoredResourceUris.length === 0) {
+    return res.status(400).json(createMissingParameterError('monitoredResourceUris is required and must not be empty'));
+  }
+
+  const subscriptionId = `sub-${Date.now()}-${Math.random().toString(36).substring(2, 15)}`;
+
+  const subscription: SdmSubscription = {
+    ...subscriptionRequest,
+    subscriptionId
+  };
+
+  sharedDataSubscriptionStore.set(subscriptionId, subscription);
+
+  const locationUri = `/nudm-sdm/v2/shared-data-subscriptions/${subscriptionId}`;
+
+  res.status(201).header('Location', locationUri).json(subscription);
+});
+
+router.delete('/shared-data-subscriptions/:subscriptionId', (req: Request, res: Response) => {
+  const { subscriptionId } = req.params;
+
+  if (!sharedDataSubscriptionStore.has(subscriptionId)) {
+    return res.status(404).json({
+      title: 'Not Found',
+      status: 404,
+      detail: 'Subscription not found',
+      cause: 'SUBSCRIPTION_NOT_FOUND'
+    });
+  }
+
+  sharedDataSubscriptionStore.delete(subscriptionId);
+
+  res.status(204).send();
+});
+
+router.patch('/shared-data-subscriptions/:subscriptionId', (req: Request, res: Response) => {
+  const { subscriptionId } = req.params;
+  const supportedFeatures = req.query['supported-features'] as string | undefined;
+
+  if (!sharedDataSubscriptionStore.has(subscriptionId)) {
+    return res.status(404).json({
+      title: 'Not Found',
+      status: 404,
+      detail: 'Subscription not found',
+      cause: 'SUBSCRIPTION_NOT_FOUND'
+    });
+  }
+
+  const modification = req.body as SdmSubsModification;
+
+  const currentSubscription = sharedDataSubscriptionStore.get(subscriptionId)!;
+
+  if (modification.expires !== undefined) {
+    currentSubscription.expires = modification.expires;
+  }
+
+  if (modification.monitoredResourceUris !== undefined) {
+    if (modification.monitoredResourceUris.length === 0) {
+      return res.status(403).json({
+        title: 'Forbidden',
+        status: 403,
+        detail: 'monitoredResourceUris cannot be empty',
+        cause: 'MODIFICATION_NOT_ALLOWED'
+      });
+    }
+    currentSubscription.monitoredResourceUris = modification.monitoredResourceUris;
+  }
+
+  if (supportedFeatures) {
+    currentSubscription.supportedFeatures = supportedFeatures;
+  }
+
+  sharedDataSubscriptionStore.set(subscriptionId, currentSubscription);
+
+  res.status(200).json(currentSubscription);
+});
+
+router.get('/group-data/group-identifiers', (req: Request, res: Response) => {
+  const extGroupId = req.query['ext-group-id'] as string | undefined;
+  const intGroupId = req.query['int-group-id'] as string | undefined;
+  const ueIdInd = req.query['ue-id-ind'] === 'true';
+  const supportedFeatures = req.query['supported-features'] as string | undefined;
+  const afId = req.query['af-id'] as string | undefined;
+  const ifNoneMatch = req.get('If-None-Match');
+  const ifModifiedSince = req.get('If-Modified-Since');
+
+  if (!extGroupId && !intGroupId) {
+    return res.status(400).json(createMissingParameterError('Either ext-group-id or int-group-id must be provided'));
+  }
+
+  const lookupKey = extGroupId || intGroupId!;
+  let groupData = groupIdentifiersStore.get(lookupKey);
+
+  if (!groupData) {
+    if (extGroupId) {
+      groupData = {
+        extGroupId: extGroupId,
+        intGroupId: `group-${extGroupId.split('@')[0]}`
+      };
+    } else if (intGroupId) {
+      groupData = {
+        intGroupId: intGroupId,
+        extGroupId: `${intGroupId.replace('group-', '')}@example.com` as ExtGroupId
+      };
+    }
+
+    if (ueIdInd && groupData) {
+      groupData.ueIdList = [
+        {
+          supi: `imsi-123456789012345`,
+          gpsiList: [`msisdn-1234567890`]
+        },
+        {
+          supi: `imsi-123456789012346`,
+          gpsiList: [`msisdn-1234567891`]
+        }
+      ];
+    }
+
+    if (groupData) {
+      groupIdentifiersStore.set(lookupKey, groupData);
+    }
+  } else {
+    if (ueIdInd && !groupData.ueIdList) {
+      groupData.ueIdList = [
+        {
+          supi: `imsi-123456789012345`,
+          gpsiList: [`msisdn-1234567890`]
+        },
+        {
+          supi: `imsi-123456789012346`,
+          gpsiList: [`msisdn-1234567891`]
+        }
+      ];
+      groupIdentifiersStore.set(lookupKey, groupData);
+    }
+  }
+
+  if (!groupData) {
+    return res.status(404).json({
+      title: 'Not Found',
+      status: 404,
+      detail: 'Group identifier not found',
+      cause: 'GROUP_IDENTIFIER_NOT_FOUND'
+    });
+  }
+
+  if (afId) {
+    const allowedAfIds = ['AF001', 'AF002', 'AF003'];
+    if (!allowedAfIds.includes(afId)) {
+      return res.status(403).json({
+        title: 'Forbidden',
+        status: 403,
+        detail: 'AF not allowed to access this group',
+        cause: 'AF_NOT_ALLOWED'
+      });
+    }
+  }
+
+  const responseData: GroupIdentifiers = { ...groupData };
+
+  const responseHeaders: Record<string, string> = {};
+  
+  const etag = `"${lookupKey}-${Date.now()}"`;
+  responseHeaders['ETag'] = etag;
+  
+  const lastModified = new Date().toUTCString();
+  responseHeaders['Last-Modified'] = lastModified;
+  
+  responseHeaders['Cache-Control'] = 'max-age=3600';
+
+  if (ifNoneMatch && ifNoneMatch === etag) {
+    return res.status(304).send();
+  }
+
+  if (ifModifiedSince) {
+    const modifiedSinceDate = new Date(ifModifiedSince);
+    const lastModifiedDate = new Date(lastModified);
+    if (lastModifiedDate <= modifiedSinceDate) {
+      return res.status(304).send();
+    }
+  }
+
+  res.set(responseHeaders).status(200).json(responseData);
+});
+
+router.get('/shared-data/:sharedDataId', (req: Request, res: Response) => {
+  const { sharedDataId } = req.params;
+  const supportedFeatures = req.query['supported-features'] as string | undefined;
+  const ifNoneMatch = req.headers['if-none-match'] as string | undefined;
+  const ifModifiedSince = req.headers['if-modified-since'] as string | undefined;
+
+  const sharedData = sharedDataStore.get(sharedDataId as SharedDataId);
+
+  if (!sharedData) {
+    return res.status(404).json(createNotFoundError(`Shared data not found for sharedDataId: ${sharedDataId}`));
+  }
+
+  const responseData: SharedData = {
+    ...sharedData,
+    ...(supportedFeatures && { supportedFeatures })
+  };
+
+  const responseHeaders: Record<string, string> = {};
+  
+  const etag = `"${Buffer.from(JSON.stringify(responseData)).toString('base64').substring(0, 32)}"`;
+  responseHeaders['ETag'] = etag;
+  
+  const lastModified = new Date().toUTCString();
+  responseHeaders['Last-Modified'] = lastModified;
+  
+  responseHeaders['Cache-Control'] = 'max-age=3600';
+
+  if (ifNoneMatch && ifNoneMatch === etag) {
+    return res.status(304).send();
+  }
+
+  if (ifModifiedSince) {
+    const modifiedSinceDate = new Date(ifModifiedSince);
+    const lastModifiedDate = new Date(lastModified);
+    if (lastModifiedDate <= modifiedSinceDate) {
+      return res.status(304).send();
+    }
+  }
+
+  res.set(responseHeaders).status(200).json(responseData);
+});
+
+router.get('/multiple-identifiers', (req: Request, res: Response) => {
+  const supportedFeatures = req.query['supported-features'] as string | undefined;
+  const gpsiListParam = req.query['gpsi-list'] as string | undefined;
+  const supiListParam = req.query['supi-list'] as string | undefined;
+  const afId = req.query['af-id'] as string | undefined;
+  const appPortIdParam = req.query['app-port-id'] as string | undefined;
+  const mtcProviderInfoParam = req.query['mtc-provider-info'] as string | undefined;
+  const requestedGpsiType = req.query['requested-gpsi-type'] as GpsiType | undefined;
+
+  if (!gpsiListParam && !supiListParam) {
+    return res.status(400).json(createMissingParameterError('Either gpsi-list or supi-list must be provided'));
+  }
+
+  let appPortId: AppPortId | undefined;
+  if (appPortIdParam) {
+    try {
+      appPortId = JSON.parse(appPortIdParam) as AppPortId;
+    } catch (e) {
+      return res.status(400).json(createInvalidParameterError('Invalid app-port-id JSON format'));
+    }
+  }
+
+  if (requestedGpsiType && !Object.values(GpsiType).includes(requestedGpsiType)) {
+    return res.status(400).json(createInvalidParameterError('Invalid requested-gpsi-type value'));
+  }
+
+  const ueIdList: Record<string, SupiInfo> = {};
+
+  if (gpsiListParam) {
+    const gpsiList = gpsiListParam.split(',').map(gpsi => gpsi.trim());
+
+    if (gpsiList.length === 0) {
+      return res.status(400).json(createInvalidParameterError('gpsi-list must contain at least one GPSI'));
+    }
+
+    for (const gpsi of gpsiList) {
+      if (!validateUeIdentity(gpsi, ['msisdn', 'extid', 'extgroupid'])) {
+        return res.status(400).json(createInvalidParameterError(`Invalid GPSI format: ${gpsi}`));
+      }
+
+      let foundSupis: string[] = [];
+
+      for (const [supi, data] of subscriptionDataStore.entries()) {
+        if (data.amData?.gpsis?.includes(gpsi)) {
+          foundSupis.push(supi);
+        }
+      }
+
+      if (foundSupis.length === 0) {
+        const generatedSupi = `imsi-${gpsi.slice(-15).padStart(15, '0')}`;
+        foundSupis.push(generatedSupi);
+
+        const storedData: SubscriptionDataSets = {
+          amData: {
+            gpsis: [gpsi],
+            subscribedUeAmbr: {
+              uplink: '1000 Mbps',
+              downlink: '2000 Mbps'
+            },
+            nssai: {
+              defaultSingleNssais: [
+                { sst: 1, sd: '000001' }
+              ],
+              singleNssais: [
+                { sst: 1, sd: '000001' },
+                { sst: 2, sd: '000002' }
+              ]
+            },
+            ratRestrictions: []
+          },
+          smfSelData: {
+            subscribedSnssaiInfos: {
+              '1-000001': {
+                dnnInfos: [
+                  {
+                    dnn: 'internet',
+                    defaultDnnIndicator: true
+                  }
+                ]
+              }
+            }
+          },
+          smsSubsData: {
+            smsSubscribed: true
+          }
+        };
+        subscriptionDataStore.set(generatedSupi, storedData);
+      }
+
+      ueIdList[gpsi] = {
+        supiList: foundSupis
+      };
+    }
+  }
+
+  if (supiListParam) {
+    const supiList = supiListParam.split(',').map(supi => supi.trim());
+
+    if (supiList.length === 0) {
+      return res.status(400).json(createInvalidParameterError('supi-list must contain at least one SUPI'));
+    }
+
+    for (const supi of supiList) {
+      if (!validateUeIdentity(supi, ['imsi', 'nai'])) {
+        return res.status(400).json(createInvalidParameterError(`Invalid SUPI format: ${supi}`));
+      }
+
+      let storedData = subscriptionDataStore.get(supi);
+
+      if (!storedData) {
+        storedData = {
+          amData: {
+            gpsis: [`msisdn-${supi.slice(-10)}`],
+            subscribedUeAmbr: {
+              uplink: '1000 Mbps',
+              downlink: '2000 Mbps'
+            },
+            nssai: {
+              defaultSingleNssais: [
+                { sst: 1, sd: '000001' }
+              ],
+              singleNssais: [
+                { sst: 1, sd: '000001' },
+                { sst: 2, sd: '000002' }
+              ]
+            },
+            ratRestrictions: []
+          },
+          smfSelData: {
+            subscribedSnssaiInfos: {
+              '1-000001': {
+                dnnInfos: [
+                  {
+                    dnn: 'internet',
+                    defaultDnnIndicator: true
+                  }
+                ]
+              }
+            }
+          },
+          smsSubsData: {
+            smsSubscribed: true
+          }
+        };
+        subscriptionDataStore.set(supi, storedData);
+      }
+
+      const gpsis = storedData.amData?.gpsis || [];
+      let primaryGpsi: string | undefined;
+
+      if (requestedGpsiType === GpsiType.MSISDN) {
+        primaryGpsi = gpsis.find(g => g.startsWith('msisdn-'));
+      } else if (requestedGpsiType === GpsiType.EXT_ID) {
+        primaryGpsi = gpsis.find(g => g.startsWith('extid-'));
+      } else if (requestedGpsiType === GpsiType.EXT_GROUP_ID) {
+        primaryGpsi = gpsis.find(g => g.startsWith('extgroupid-'));
+      } else {
+        primaryGpsi = gpsis[0];
+      }
+
+      if (primaryGpsi) {
+        if (!ueIdList[primaryGpsi]) {
+          ueIdList[primaryGpsi] = {
+            supiList: [supi]
+          };
+        } else {
+          if (!ueIdList[primaryGpsi].supiList.includes(supi)) {
+            ueIdList[primaryGpsi].supiList.push(supi);
+          }
+        }
+      }
+    }
+  }
+
+  if (Object.keys(ueIdList).length === 0) {
+    return res.status(404).json({
+      title: 'Not Found',
+      status: 404,
+      detail: 'No matching identifiers found',
+      cause: 'DATA_NOT_FOUND'
+    });
+  }
+
+  const response: UeIdentifiers = {
+    ueIdList
+  };
+
+  const headers: Record<string, string> = {
+    'Cache-Control': 'max-age=3600',
+    'ETag': `"multiple-identifiers-v1"`,
+    'Last-Modified': new Date().toUTCString()
+  };
+
+  res.set(headers);
+  return res.status(200).json(response);
+});
 
 router.get('/:supi/time-sync-data', notImplemented);
 

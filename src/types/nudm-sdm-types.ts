@@ -1207,3 +1207,51 @@ export interface MbsfnArea {
 export interface AreaConfiguration {
   [key: string]: any;
 }
+
+export interface TimeSyncSubscriptionData {
+  afReqAuthorizations: AfRequestAuthorization;
+  serviceIds: TimeSyncServiceId[];
+}
+
+export interface AfRequestAuthorization {
+  gptpAllowedInfoList?: GptpAllowedInfo[];
+  astiAllowedInfo?: AstiAllowedInfo;
+}
+
+export interface GptpAllowedInfo {
+  dnn?: string;
+  sNssai?: Snssai;
+  gptpAllowed: boolean;
+  coverageArea?: Tai[];
+  uuTimeSyncErrBdgt?: number;
+  tempVals?: TemporalValidity[];
+  acceptableInd?: boolean;
+  clockQualityAcceptanceCriteria?: ClockQualityAcceptanceCriterion;
+}
+
+export interface AstiAllowedInfo {
+  astiAllowed: boolean;
+  coverageArea?: Tai[];
+  uuTimeSyncErrBdgt?: number;
+  tempVals?: TemporalValidity[];
+  clockQualityMetricsInd?: boolean;
+  acceptableInd?: boolean;
+  clockQualityAcceptanceCriteria?: ClockQualityAcceptanceCriterion;
+}
+
+export interface TimeSyncServiceId {
+  reference: string;
+  dnn?: string;
+  sNssai?: Snssai;
+  tempVals?: TemporalValidity[];
+  coverageArea?: Tai[];
+  uuTimeSyncErrBdgt?: number;
+}
+
+export interface TemporalValidity {
+  [key: string]: any;
+}
+
+export interface ClockQualityAcceptanceCriterion {
+  [key: string]: any;
+}
