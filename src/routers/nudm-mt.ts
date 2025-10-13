@@ -1,4 +1,5 @@
 import { Router, Request, Response } from 'express';
+import { getCollection } from '../db/mongodb';
 import { 
   UeContextInfo, 
   FiveGSrvccInfo, 
@@ -13,6 +14,7 @@ import { PlmnId, RatType, createInvalidParameterError } from '../types/common-ty
 const router = Router();
 
 interface StoredUeInfo {
+  _id: string;
   tadsInfo?: {
     ueContextInfo?: UeContextInfo;
   };
@@ -23,17 +25,7 @@ interface StoredUeInfo {
   '5gSrvccInfo'?: FiveGSrvccInfo;
 }
 
-const ueInfoStore = new Map<string, StoredUeInfo>();
-
-const notImplemented = (req: Request, res: Response) => {
-  res.status(501).json({
-    title: 'Not Implemented',
-    status: 501,
-    detail: 'This endpoint is not yet implemented'
-  });
-};
-
-router.get('/:supi', (req: Request, res: Response) => {
+router.get('/:supi', async (req: Request, res: Response) => {
   const { supi } = req.params;
   const fields = req.query.fields;
   const supportedFeatures = req.query['supported-features'];
@@ -66,7 +58,8 @@ router.get('/:supi', (req: Request, res: Response) => {
     return res.status(400).json(createInvalidParameterError('fields parameter must contain at least one item'));
   }
 
-  let ueInfo = ueInfoStore.get(supi);
+  const collection = getCollection<StoredUeInfo>();
+  let ueInfo = await collection.findOne({ _id: supi });
   
   if (!ueInfo) {
     const contextInfo: UeContextInfo = {
@@ -81,6 +74,7 @@ router.get('/:supi', (req: Request, res: Response) => {
     };
     
     ueInfo = {
+      _id: supi,
       tadsInfo: {
         ueContextInfo: contextInfo
       },
@@ -90,7 +84,7 @@ router.get('/:supi', (req: Request, res: Response) => {
       },
       '5gSrvccInfo': srvccInfo
     };
-    ueInfoStore.set(supi, ueInfo);
+    await collection.insertOne(ueInfo);
   }
 
   const response: Record<string, any> = {};

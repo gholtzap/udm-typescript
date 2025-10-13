@@ -1,4 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express, { Request, Response } from 'express';
+import { initializeMongoDB } from './db/mongodb';
 import eeRouter from './routers/nudm-ee';
 import mtRouter from './routers/nudm-mt';
 import niddauRouter from './routers/nudm-niddau';
@@ -30,6 +34,18 @@ app.use('/nudm-ueau/v1', ueauRouter);
 app.use('/nudm-uecm/v1', uecmRouter);
 app.use('/nudm-ueid/v1', ueidRouter);
 
-app.listen(PORT, () => {
-  console.log(`nUDM server is running on port ${PORT}`);
-});
+const startServer = async () => {
+  try {
+    await initializeMongoDB();
+    console.log('MongoDB connected successfully');
+    
+    app.listen(PORT, () => {
+      console.log(`nUDM server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error('Failed to connect to MongoDB:', error);
+    process.exit(1);
+  }
+};
+
+startServer();

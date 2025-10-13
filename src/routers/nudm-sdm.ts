@@ -1906,7 +1906,31 @@ router.post('/:ueId/sdm-subscriptions', (req: Request, res: Response) => {
   res.status(201).header('Location', locationUri).json(subscription);
 });
 
-router.delete('/:ueId/sdm-subscriptions/:subscriptionId', notImplemented);
+router.delete('/:ueId/sdm-subscriptions/:subscriptionId', (req: Request, res: Response) => {
+  const { ueId, subscriptionId } = req.params;
+
+  if (!validateUeIdentity(ueId, undefined, true)) {
+    return res.status(400).json(createInvalidParameterError('Invalid ueId format'));
+  }
+
+  const ueSubscriptions = sdmSubscriptionStore.get(ueId);
+  
+  if (!ueSubscriptions || !ueSubscriptions.has(subscriptionId)) {
+    return res.status(404).json({
+      title: 'Not Found',
+      status: 404,
+      detail: 'Subscription not found'
+    });
+  }
+
+  ueSubscriptions.delete(subscriptionId);
+
+  if (ueSubscriptions.size === 0) {
+    sdmSubscriptionStore.delete(ueId);
+  }
+
+  res.status(204).send();
+});
 
 router.patch('/:ueId/sdm-subscriptions/:subscriptionId', notImplemented);
 
