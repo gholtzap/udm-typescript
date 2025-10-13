@@ -3,6 +3,8 @@ import { getCollection } from '../db/mongodb';
 import { 
   UeContextInfo, 
   FiveGSrvccInfo, 
+  FiveGsUserState,
+  UeInfo,
   LocationInfoRequest, 
   LocationInfoResult,
   Ncgi,
@@ -15,14 +17,10 @@ const router = Router();
 
 interface StoredUeInfo {
   _id: string;
-  tadsInfo?: {
-    ueContextInfo?: UeContextInfo;
-  };
-  userState?: {
-    accessType: string;
-    registrationState: string;
-  };
-  '5gSrvccInfo'?: FiveGSrvccInfo;
+  tadsInfo?: UeContextInfo;
+  userState?: FiveGsUserState;
+  fiveGSrvccInfo?: FiveGSrvccInfo;
+  locationInfo?: LocationInfoResult;
 }
 
 router.get('/:supi', async (req: Request, res: Response) => {
@@ -59,58 +57,52 @@ router.get('/:supi', async (req: Request, res: Response) => {
   }
 
   const collection = getCollection<StoredUeInfo>();
-  let ueInfo = await collection.findOne({ _id: supi });
+  const ueInfo = await collection.findOne({ _id: supi });
   
   if (!ueInfo) {
-    const contextInfo: UeContextInfo = {
-      supportVoPS: true,
-      lastActTime: new Date().toISOString()
-    };
-    
-    const srvccInfo: FiveGSrvccInfo = {
-      ue5GSrvccCapability: true,
-      stnSr: '1234567890',
-      cMsisdn: '0987654321'
-    };
-    
-    ueInfo = {
-      _id: supi,
-      tadsInfo: {
-        ueContextInfo: contextInfo
-      },
-      userState: {
-        accessType: '3GPP_ACCESS',
-        registrationState: 'REGISTERED'
-      },
-      '5gSrvccInfo': srvccInfo
-    };
-    await collection.insertOne(ueInfo);
+    return res.status(404).json({
+      type: 'urn:3gpp:error:user-not-found',
+      title: 'Not Found',
+      status: 404,
+      detail: 'User not found',
+      cause: 'USER_NOT_FOUND'
+    } as ProblemDetails);
   }
 
-  const response: Record<string, any> = {};
+  const response: Partial<UeInfo> = {};
+  let hasRequestedData = false;
   
   for (const field of fieldsArray) {
     if (field === 'tadsInfo' && ueInfo.tadsInfo) {
       response.tadsInfo = ueInfo.tadsInfo;
+      hasRequestedData = true;
     } else if (field === 'userState' && ueInfo.userState) {
       response.userState = ueInfo.userState;
-    } else if (field === '5gSrvccInfo' && ueInfo['5gSrvccInfo']) {
-      response['5gSrvccInfo'] = ueInfo['5gSrvccInfo'];
+      hasRequestedData = true;
+    } else if (field === 'fiveGSrvccInfo' && ueInfo.fiveGSrvccInfo) {
+      response.fiveGSrvccInfo = ueInfo.fiveGSrvccInfo;
+      hasRequestedData = true;
     }
   }
 
-  if (supportedFeatures) {
-    response.supportedFeatures = supportedFeatures;
+  if (!hasRequestedData) {
+    return res.status(404).json({
+      type: 'urn:3gpp:error:data-not-found',
+      title: 'Not Found',
+      status: 404,
+      detail: 'Requested data not found',
+      cause: 'DATA_NOT_FOUND'
+    } as ProblemDetails);
   }
 
   res.status(200).json(response);
 });
 
-router.post('/:supi/loc-info/provide-loc-info', (req: Request, res: Response) => {
+router.post('/:supi/loc-info/provide-loc-info', async (req: Request, res: Response) => {
   const { supi } = req.params;
   const body = req.body as LocationInfoRequest;
 
-  const supiPattern = /^(imsi-[0-9]{5,15}|nai-.+)$/;
+  const supiPattern = /^(imsi-[0-9]{5,15}|nai-.+|.+)$/;
   if (!supiPattern.test(supi)) {
     return res.status(400).json(createInvalidParameterError('Invalid supi format'));
   }
@@ -128,43 +120,70 @@ router.post('/:supi/loc-info/provide-loc-info', (req: Request, res: Response) =>
     supportedFeatures
   } = body;
 
-  const response: Partial<LocationInfoResult> = {};
+  const collection = getCollection<StoredUeInfo>();
+  const ueInfo = await collection.findOne({ _id: supi });
+  
+  if (!ueInfo) {
+    return res.status(404).json({
+      type: 'urn:3gpp:error:user-not-found',
+      title: 'Not Found',
+      status: 404,
+      detail: 'User not found',
+      cause: 'USER_NOT_FOUND'
+    } as ProblemDetails);
+  }
 
-  const anyFlagSet = req5gsLoc || reqCurrentLoc || reqRatType || reqTimeZone || reqServingNode;
+  if (!ueInfo.locationInfo) {
+    return res.status(404).json({
+      type: 'urn:3gpp:error:data-not-found',
+      title: 'Not Found',
+      status: 404,
+      detail: 'Location information not found',
+      cause: 'DATA_NOT_FOUND'
+    } as ProblemDetails);
+  }
 
-  if (anyFlagSet) {
-    const plmnId: PlmnId = {
-      mcc: '001',
-      mnc: '01'
-    };
-    response.vPlmnId = plmnId;
+  const storedLocation = ueInfo.locationInfo;
+  const response: Partial<LocationInfoResult> = {
+    vPlmnId: storedLocation.vPlmnId
+  };
 
-    if (req5gsLoc || reqCurrentLoc) {
-      const ncgi: Ncgi = {
-        plmnId,
-        nrCellId: '000000001'
-      };
-      const tai: Tai = {
-        plmnId,
-        tac: '000001'
-      };
-      
-      response.ncgi = ncgi;
-      response.tai = tai;
-      response.currentLoc = true;
+  if ((req5gsLoc || reqCurrentLoc) && (storedLocation.ncgi || storedLocation.tai || storedLocation.ecgi)) {
+    if (storedLocation.ncgi) {
+      response.ncgi = storedLocation.ncgi;
     }
-
-    if (reqServingNode) {
-      response.amfInstanceId = '3fa85f64-5717-4562-b3fc-2c963f66afa6';
+    if (storedLocation.ecgi) {
+      response.ecgi = storedLocation.ecgi;
     }
-
-    if (reqRatType) {
-      response.ratType = RatType.NR;
+    if (storedLocation.tai) {
+      response.tai = storedLocation.tai;
     }
-
-    if (reqTimeZone) {
-      response.timezone = '+00:00';
+    if (storedLocation.currentLoc !== undefined) {
+      response.currentLoc = storedLocation.currentLoc;
     }
+    if (storedLocation.geoInfo) {
+      response.geoInfo = storedLocation.geoInfo;
+    }
+    if (storedLocation.locationAge !== undefined) {
+      response.locationAge = storedLocation.locationAge;
+    }
+  }
+
+  if (reqServingNode) {
+    if (storedLocation.amfInstanceId) {
+      response.amfInstanceId = storedLocation.amfInstanceId;
+    }
+    if (storedLocation.smsfInstanceId) {
+      response.smsfInstanceId = storedLocation.smsfInstanceId;
+    }
+  }
+
+  if (reqRatType && storedLocation.ratType) {
+    response.ratType = storedLocation.ratType;
+  }
+
+  if (reqTimeZone && storedLocation.timezone) {
+    response.timezone = storedLocation.timezone;
   }
 
   if (supportedFeatures) {
