@@ -1,4 +1,4 @@
-import { MongoClient, Db, Collection } from 'mongodb';
+import { MongoClient, Db, Collection, Document } from 'mongodb';
 
 const MONGODB_URI = process.env.MONGODB_URI!;
 const DB_NAME = process.env.MONGODB_DB_NAME!;
@@ -20,7 +20,7 @@ export const getDatabase = (): Db => {
   return db;
 };
 
-export const getCollection = <T = any>(collectionName?: string): Collection<T> => {
+export const getCollection = <T extends Document = Document>(collectionName?: string): Collection<T> => {
   const name = collectionName || COLLECTION_NAME;
   return getDatabase().collection<T>(name);
 };
