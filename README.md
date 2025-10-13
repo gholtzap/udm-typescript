@@ -8,11 +8,11 @@ Here is the current status:
 
 | Status | Service | Implementation |
 |--------|---------|----------------|
-| 🟡 | nudm-ee | local storage implementation |
-| 🟡 | nudm-mt | local storage implementation |
-| 🟡 | nudm-niddau | local storage implementation |
+| 🟡 | nudm-ee | awaiting testing |
+| 🟡 | nudm-mt | awaiting testing |
+| 🟡 | nudm-niddau | awaiting testing |
 | 🟡 | nudm-pp | local storage implementation |
-| 🔴 | nudm-rsds | scaffolding |
+| 🟡 | nudm-rsds | local storage implementation |
 | 🔴 | nudm-sdm | scaffolding |
 | 🔴 | nudm-ssau | scaffolding |
 | 🔴 | nudm-ueau | scaffolding |
