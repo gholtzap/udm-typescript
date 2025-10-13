@@ -376,6 +376,8 @@ export interface SubscriptionDataSets {
   proseData?: ProseSubscriptionData;
   mbsData?: MbsSubscriptionData;
   ucData?: UcSubscriptionData;
+  a2xData?: A2xSubscriptionData;
+  rangingSlPrivacyData?: RangingSlPrivacyData;
 }
 
 export interface UeContextInSmfData {
@@ -1012,6 +1014,30 @@ export interface V2xPermission {
   v2xMessagingPermission?: boolean;
 }
 
+export interface A2xPermission {
+  a2xCommunicationPermission?: boolean;
+  a2xMessagingPermission?: boolean;
+}
+
+export interface NrA2xAuth {
+  vehicleUe?: boolean;
+  pedestrianUe?: boolean;
+  a2xPermission?: A2xPermission;
+}
+
+export interface LteA2xAuth {
+  vehicleUe?: boolean;
+  pedestrianUe?: boolean;
+  a2xPermission?: A2xPermission;
+}
+
+export interface A2xSubscriptionData {
+  nrA2xServicesAuth?: NrA2xAuth;
+  lteA2xServicesAuth?: LteA2xAuth;
+  nrUePc5Ambr?: string;
+  ltePc5Ambr?: string;
+}
+
 export interface ProseServiceAuth {
   proseDirectDiscoveryAuth?: boolean;
   proseDirectCommunicationAuth?: boolean;
@@ -1254,4 +1280,118 @@ export interface TemporalValidity {
 
 export interface ClockQualityAcceptanceCriterion {
   [key: string]: any;
+}
+
+export enum RangingSlPosAllowed {
+  PC5 = "PC5",
+  ANNOUNCE = "ANNOUNCE",
+  MONITOR = "MONITOR",
+  DISCOVERER = "DISCOVERER",
+  DISCOVEREE = "DISCOVEREE",
+  LOCATED_UE = "LOCATED_UE",
+  SL_SERVER_UE = "SL_SERVER_UE",
+  SL_CLIENT_UE = "SL_CLIENT_UE"
+}
+
+export interface RangingSlPosQos {
+  hAccuracy?: number;
+  vAccuracy?: number;
+  relativeHAccuracy?: number;
+  relativeVAccuracy?: number;
+  distanceAccuracy?: number;
+  directionAccuracy?: number;
+  verticalRequested?: boolean;
+  responseTime?: string;
+  lcsQosClass?: string;
+  rangingSlPosPriorityLevel?: number;
+  rangingSlPosDelayBudget?: number;
+}
+
+export interface RangingSlPosAuth {
+  rangingAllowed?: boolean;
+  sl1AllowedIndication?: boolean;
+  sl2AllowedIndication?: boolean;
+  sl3AllowedIndication?: boolean;
+}
+
+export interface RangingSlPosPlmn {
+  rangingSlPosPlmn: PlmnId;
+  rangingSlPosAllowed?: RangingSlPosAllowed[];
+}
+
+export interface RangingSlPosSubscriptionData {
+  rangingSlPosAuth?: RangingSlPosAuth;
+  rangingSlPosPlmn?: RangingSlPosPlmn[];
+  rangingSlPosQos?: RangingSlPosQos;
+}
+
+export enum RangingSlPrivacyInd {
+  RANGINGSL_DISALLOWED = "RANGINGSL_DISALLOWED",
+  RANGINGSL_ALLOWED = "RANGINGSL_ALLOWED"
+}
+
+export enum RangingSlPrivacyCheckRelatedAction {
+  RANGINGSL_NOT_ALLOWED = "RANGINGSL_NOT_ALLOWED",
+  RANGINGSL_ALLOWED_WITH_NOTIFICATION = "RANGINGSL_ALLOWED_WITH_NOTIFICATION",
+  RANGINGSL_ALLOWED_WITHOUT_NOTIFICATION = "RANGINGSL_ALLOWED_WITHOUT_NOTIFICATION",
+  RANGINGSL_ALLOWED_WITHOUT_RESPONSE = "RANGINGSL_ALLOWED_WITHOUT_RESPONSE",
+  RANGINGSL_RESTRICTED_WITHOUT_RESPONSE = "RANGINGSL_RESTRICTED_WITHOUT_RESPONSE"
+}
+
+export interface Rslppi {
+  rangingSlPrivacyInd: RangingSlPrivacyInd;
+  validTimePeriod?: ValidTimePeriod;
+}
+
+export interface RangingSlDefaultUnrelatedClass {
+  allowedGeographicArea?: GeographicArea[];
+  rangingSlPrivacyCheckRelatedAction?: RangingSlPrivacyCheckRelatedAction;
+  codeWordInd?: CodeWordInd;
+  validTimePeriod?: ValidTimePeriod;
+  codeWordList?: CodeWord[];
+}
+
+export interface RangingSlAfExternal {
+  afId?: AfId;
+  allowedGeographicArea?: GeographicArea[];
+  rangingSlPrivacyCheckRelatedAction?: RangingSlPrivacyCheckRelatedAction;
+  validTimePeriod?: ValidTimePeriod;
+}
+
+export interface RangingSlLcsClientExternal {
+  allowedGeographicArea?: GeographicArea[];
+  rangingSlPrivacyCheckRelatedAction?: RangingSlPrivacyCheckRelatedAction;
+  validTimePeriod?: ValidTimePeriod;
+}
+
+export interface RangingSlExternalUnrelatedClass {
+  rangingSlLcsClientExternals?: RangingSlLcsClientExternal[];
+  rangingSlAfExternals?: RangingSlAfExternal[];
+}
+
+export interface RangingSlAppIDUnrelatedClass {
+  rangingSlAppID: string;
+  allowedGeographicArea?: GeographicArea[];
+  rangingSlPrivacyCheckRelatedAction?: RangingSlPrivacyCheckRelatedAction;
+  codeWordInd?: CodeWordInd;
+  validTimePeriod?: ValidTimePeriod;
+  codeWordList?: CodeWord[];
+}
+
+export interface RangingSlUnrelatedClass {
+  rangingSlDefaultUnrelatedClass: RangingSlDefaultUnrelatedClass;
+  rangingSlExternalUnrelatedClass?: RangingSlExternalUnrelatedClass;
+  rangingSlAppIDUnrelatedClasses?: RangingSlAppIDUnrelatedClass[];
+}
+
+export interface RangingSlPlmnOperatorClass {
+  rangingSlLcsClientClass: LcsClientClass;
+  lcsClientIds: LcsClientId[];
+}
+
+export interface RangingSlPrivacyData {
+  rslppi?: Rslppi;
+  rangingSlUnrelatedClass?: RangingSlUnrelatedClass;
+  rangingSlPlmnOperatorClasses?: RangingSlPlmnOperatorClass[];
+  rangingSlEvtRptExpectedArea?: GeographicArea;
 }

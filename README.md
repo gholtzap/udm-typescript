@@ -13,12 +13,26 @@ Here is the current status:
 | 🟡 | nudm-niddau | awaiting testing |
 | 🟡 | nudm-pp | local storage implementation |
 | 🟡 | nudm-rsds | local storage implementation |
-| 🔴 | nudm-sdm | scaffolding |
+| 🟡 | nudm-sdm | local storage implementation |
 | 🔴 | nudm-ssau | scaffolding |
 | 🔴 | nudm-ueau | scaffolding |
 | 🔴 | nudm-uecm | scaffolding |
 | 🔴 | nudm-ueid | scaffolding |
 
+
+Test status:
+| Status | Service | Implementation |
+|--------|---------|----------------|
+| 🟡 | nudm-ee | first draft |
+| 🟡 | nudm-mt | first draft |
+| 🟡 | nudm-niddau | first draft |
+| 🟡 | nudm-pp | first draft |
+| 🟡 | nudm-rsds | first draft |
+| 🔴 | nudm-sdm | n/a |
+| 🔴 | nudm-ssau | n/a |
+| 🔴 | nudm-ueau | n/a |
+| 🔴 | nudm-uecm | n/a |
+| 🔴 | nudm-ueid | n/a |
 
 ### How to start this project
 1. `npm install`

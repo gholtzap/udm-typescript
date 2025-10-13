@@ -52,7 +52,12 @@ import {
   UeId,
   UeIdentifiers,
   SupiInfo,
-  TimeSyncSubscriptionData
+  TimeSyncSubscriptionData,
+  RangingSlPosSubscriptionData,
+  A2xSubscriptionData,
+  RangingSlPrivacyData,
+  RangingSlPrivacyInd,
+  RangingSlPrivacyCheckRelatedAction
 } from '../types/nudm-sdm-types';
 import { validateUeIdentity, createInvalidParameterError, createMissingParameterError, createNotFoundError, PlmnId, Snssai, AccessType, PduSessionType } from '../types/common-types';
 
@@ -2811,13 +2816,349 @@ router.get('/multiple-identifiers', (req: Request, res: Response) => {
   return res.status(200).json(response);
 });
 
-router.get('/:supi/time-sync-data', notImplemented);
+router.get('/:supi/time-sync-data', (req: Request, res: Response) => {
+  const { supi } = req.params;
+  const supportedFeatures = req.query['supported-features'] as string | undefined;
+  const ifNoneMatch = req.headers['if-none-match'] as string | undefined;
+  const ifModifiedSince = req.headers['if-modified-since'] as string | undefined;
 
-router.get('/:supi/ranging-slpos-data', notImplemented);
+  if (!validateUeIdentity(supi, ['imsi', 'nai', 'gci', 'gli'])) {
+    return res.status(400).json(createInvalidParameterError('Invalid supi format'));
+  }
 
-router.get('/:supi/a2x-data', notImplemented);
+  let storedData = subscriptionDataStore.get(supi);
+  
+  if (!storedData) {
+    storedData = {
+      amData: {
+        gpsis: [`msisdn-${supi.slice(-10)}`],
+        subscribedUeAmbr: {
+          uplink: '1000 Mbps',
+          downlink: '2000 Mbps'
+        },
+        nssai: {
+          defaultSingleNssais: [
+            { sst: 1, sd: '000001' }
+          ],
+          singleNssais: [
+            { sst: 1, sd: '000001' },
+            { sst: 2, sd: '000002' }
+          ]
+        },
+        ratRestrictions: []
+      },
+      smfSelData: {
+        subscribedSnssaiInfos: {
+          '1-000001': {
+            dnnInfos: [
+              {
+                dnn: 'internet',
+                defaultDnnIndicator: true
+              }
+            ]
+          }
+        }
+      },
+      smsSubsData: {
+        smsSubscribed: true
+      }
+    };
+    subscriptionDataStore.set(supi, storedData);
+  }
 
-router.get('/:ueId/rangingsl-privacy-data', notImplemented);
+  const response: TimeSyncSubscriptionData = {
+    afReqAuthorizations: {
+      gptpAllowedInfoList: [
+        {
+          dnn: 'internet',
+          sNssai: { sst: 1, sd: '000001' },
+          gptpAllowed: true,
+          acceptableInd: false
+        }
+      ]
+    },
+    serviceIds: [
+      {
+        reference: 'time-sync-service-1',
+        dnn: 'internet',
+        sNssai: { sst: 1, sd: '000001' }
+      }
+    ]
+  };
+
+  const headers: Record<string, string> = {
+    'Cache-Control': 'max-age=3600',
+    'ETag': `"${supi}-timesync-v1"`,
+    'Last-Modified': new Date().toUTCString()
+  };
+
+  res.set(headers);
+  return res.status(200).json(response);
+});
+
+router.get('/:supi/ranging-slpos-data', (req: Request, res: Response) => {
+  const { supi } = req.params;
+  const supportedFeatures = req.query['supported-features'] as string | undefined;
+  const ifNoneMatch = req.headers['if-none-match'] as string | undefined;
+  const ifModifiedSince = req.headers['if-modified-since'] as string | undefined;
+
+  if (!validateUeIdentity(supi, ['imsi', 'nai', 'gci', 'gli'])) {
+    return res.status(400).json(createInvalidParameterError('Invalid supi format'));
+  }
+
+  let storedData = subscriptionDataStore.get(supi);
+  
+  if (!storedData) {
+    storedData = {
+      amData: {
+        gpsis: [`msisdn-${supi.slice(-10)}`],
+        subscribedUeAmbr: {
+          uplink: '1000 Mbps',
+          downlink: '2000 Mbps'
+        },
+        nssai: {
+          defaultSingleNssais: [
+            { sst: 1, sd: '000001' }
+          ],
+          singleNssais: [
+            { sst: 1, sd: '000001' },
+            { sst: 2, sd: '000002' }
+          ]
+        },
+        ratRestrictions: []
+      },
+      smfSelData: {
+        subscribedSnssaiInfos: {
+          '1-000001': {
+            dnnInfos: [
+              {
+                dnn: 'internet',
+                defaultDnnIndicator: true
+              }
+            ]
+          }
+        }
+      },
+      smsSubsData: {
+        smsSubscribed: true
+      }
+    };
+    subscriptionDataStore.set(supi, storedData);
+  }
+
+  const response: RangingSlPosSubscriptionData = {
+    rangingSlPosAuth: {
+      rangingAllowed: true,
+      sl1AllowedIndication: true,
+      sl2AllowedIndication: false,
+      sl3AllowedIndication: false
+    },
+    rangingSlPosPlmn: [
+      {
+        rangingSlPosPlmn: {
+          mcc: '001',
+          mnc: '01'
+        }
+      }
+    ],
+    rangingSlPosQos: {
+      hAccuracy: 10,
+      vAccuracy: 10,
+      verticalRequested: false,
+      rangingSlPosPriorityLevel: 5,
+      rangingSlPosDelayBudget: 100
+    }
+  };
+
+  const headers: Record<string, string> = {
+    'Cache-Control': 'max-age=3600',
+    'ETag': `"${supi}-rangingslpos-v1"`,
+    'Last-Modified': new Date().toUTCString()
+  };
+
+  res.set(headers);
+  return res.status(200).json(response);
+});
+
+router.get('/:supi/a2x-data', (req: Request, res: Response) => {
+  const { supi } = req.params;
+  const supportedFeatures = req.query['supported-features'] as string | undefined;
+  const ifNoneMatch = req.headers['if-none-match'] as string | undefined;
+  const ifModifiedSince = req.headers['if-modified-since'] as string | undefined;
+
+  if (!validateUeIdentity(supi, ['imsi', 'nai', 'gci', 'gli'])) {
+    return res.status(400).json(createInvalidParameterError('Invalid supi format'));
+  }
+
+  let storedData = subscriptionDataStore.get(supi);
+  
+  if (!storedData) {
+    storedData = {
+      amData: {
+        gpsis: [`msisdn-${supi.slice(-10)}`],
+        subscribedUeAmbr: {
+          uplink: '1000 Mbps',
+          downlink: '2000 Mbps'
+        },
+        nssai: {
+          defaultSingleNssais: [
+            { sst: 1, sd: '000001' }
+          ],
+          singleNssais: [
+            { sst: 1, sd: '000001' },
+            { sst: 2, sd: '000002' }
+          ]
+        },
+        ratRestrictions: []
+      },
+      smfSelData: {
+        subscribedSnssaiInfos: {
+          '1-000001': {
+            dnnInfos: [
+              {
+                dnn: 'internet',
+                defaultDnnIndicator: true
+              }
+            ]
+          }
+        }
+      },
+      smsSubsData: {
+        smsSubscribed: true
+      }
+    };
+    subscriptionDataStore.set(supi, storedData);
+  }
+
+  if (!storedData.a2xData) {
+    storedData.a2xData = {
+      nrA2xServicesAuth: {
+        vehicleUe: true,
+        pedestrianUe: false,
+        a2xPermission: {
+          a2xCommunicationPermission: true,
+          a2xMessagingPermission: true
+        }
+      },
+      lteA2xServicesAuth: {
+        vehicleUe: true,
+        pedestrianUe: false,
+        a2xPermission: {
+          a2xCommunicationPermission: true,
+          a2xMessagingPermission: true
+        }
+      },
+      nrUePc5Ambr: '100 Mbps',
+      ltePc5Ambr: '50 Mbps'
+    };
+    subscriptionDataStore.set(supi, storedData);
+  }
+
+  const response: A2xSubscriptionData = {
+    ...storedData.a2xData
+  };
+
+  const headers: Record<string, string> = {
+    'Cache-Control': 'max-age=3600',
+    'ETag': `"${supi}-a2xdata-v1"`,
+    'Last-Modified': new Date().toUTCString()
+  };
+
+  res.set(headers);
+  return res.status(200).json(response);
+});
+
+router.get('/:ueId/rangingsl-privacy-data', (req: Request, res: Response) => {
+  const { ueId } = req.params;
+  const supportedFeatures = req.query['supported-features'] as string | undefined;
+  const ifNoneMatch = req.headers['if-none-match'] as string | undefined;
+  const ifModifiedSince = req.headers['if-modified-since'] as string | undefined;
+
+  if (!validateUeIdentity(ueId, ['imsi', 'nai', 'msisdn', 'extid', 'gci', 'gli'], true)) {
+    return res.status(400).json(createInvalidParameterError('Invalid ueId format'));
+  }
+
+  let storedData = subscriptionDataStore.get(ueId);
+  
+  if (!storedData) {
+    storedData = {
+      amData: {
+        gpsis: [`msisdn-${ueId.slice(-10)}`],
+        subscribedUeAmbr: {
+          uplink: '1000 Mbps',
+          downlink: '2000 Mbps'
+        },
+        nssai: {
+          defaultSingleNssais: [
+            { sst: 1, sd: '000001' }
+          ],
+          singleNssais: [
+            { sst: 1, sd: '000001' },
+            { sst: 2, sd: '000002' }
+          ]
+        },
+        ratRestrictions: []
+      },
+      smfSelData: {
+        subscribedSnssaiInfos: {
+          '1-000001': {
+            dnnInfos: [
+              {
+                dnn: 'internet',
+                defaultDnnIndicator: true
+              }
+            ]
+          }
+        }
+      },
+      smsSubsData: {
+        smsSubscribed: true
+      }
+    };
+    subscriptionDataStore.set(ueId, storedData);
+  }
+
+  if (!storedData.rangingSlPrivacyData) {
+    storedData.rangingSlPrivacyData = {
+      rslppi: {
+        rangingSlPrivacyInd: RangingSlPrivacyInd.RANGINGSL_ALLOWED,
+        validTimePeriod: {
+          startTime: new Date().toISOString(),
+          endTime: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000).toISOString()
+        }
+      },
+      rangingSlUnrelatedClass: {
+        rangingSlDefaultUnrelatedClass: {
+          rangingSlPrivacyCheckRelatedAction: RangingSlPrivacyCheckRelatedAction.RANGINGSL_ALLOWED_WITH_NOTIFICATION
+        }
+      },
+      rangingSlPlmnOperatorClasses: [
+        {
+          rangingSlLcsClientClass: LcsClientClass.BROADCAST_SERVICE,
+          lcsClientIds: ['broadcast-client-1']
+        },
+        {
+          rangingSlLcsClientClass: LcsClientClass.OM_IN_HPLMN,
+          lcsClientIds: ['om-hplmn-client-1', 'om-hplmn-client-2']
+        }
+      ]
+    };
+    subscriptionDataStore.set(ueId, storedData);
+  }
+
+  const response: RangingSlPrivacyData = {
+    ...storedData.rangingSlPrivacyData
+  };
+
+  const headers: Record<string, string> = {
+    'Cache-Control': 'max-age=3600',
+    'ETag': `"${ueId}-rangingslprivacy-v1"`,
+    'Last-Modified': new Date().toUTCString()
+  };
+
+  res.set(headers);
+  return res.status(200).json(response);
+});
 
 export default router;
 
