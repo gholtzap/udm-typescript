@@ -18,7 +18,8 @@ export type MtcProviderInformation = {
 };
 
 export enum ServiceType {
-  AF_GUIDANCE_FOR_URSP = "AF_GUIDANCE_FOR_URSP"
+  AF_GUIDANCE_FOR_URSP = "AF_GUIDANCE_FOR_URSP",
+  AF_REQUESTED_QOS = "AF_REQUESTED_QOS"
 }
 
 export enum InvalidCause {
