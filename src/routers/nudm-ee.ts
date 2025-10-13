@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { randomUUID } from 'crypto';
-import { EeSubscription, CreatedEeSubscription } from '../types/nudm-ee-types';
+import { getCollection } from '../db/mongodb';
+import { EeSubscription, CreatedEeSubscription, EventType } from '../types/nudm-ee-types';
 import { validateUeIdentity, createInvalidParameterError } from '../types/common-types';
 
 interface PatchOperation {
@@ -18,9 +19,12 @@ interface FailedPatchOperation extends PatchOperation {
   };
 }
 
-const router = Router();
+interface StoredEeSubscription extends EeSubscription {
+  _id: string;
+  ueIdentity: string;
+}
 
-const subscriptions = new Map<string, EeSubscription>();
+const router = Router();
 
 const notImplemented = (req: Request, res: Response) => {
   res.status(501).json({
@@ -30,11 +34,11 @@ const notImplemented = (req: Request, res: Response) => {
   });
 };
 
-router.post('/:ueIdentity/ee-subscriptions', (req: Request, res: Response) => {
+router.post('/:ueIdentity/ee-subscriptions', async (req: Request, res: Response) => {
   const { ueIdentity } = req.params;
   const eeSubscription: EeSubscription = req.body;
 
-  if (!validateUeIdentity(ueIdentity)) {
+  if (!validateUeIdentity(ueIdentity, undefined, true)) {
     return res.status(400).json(createInvalidParameterError('Invalid ueIdentity format'));
   }
 
@@ -59,12 +63,78 @@ router.post('/:ueIdentity/ee-subscriptions', (req: Request, res: Response) => {
     });
   }
 
+  const supportedEventTypes = Object.values(EventType);
+  const unsupportedEventTypes = Object.values(eeSubscription.monitoringConfigurations)
+    .filter(config => !supportedEventTypes.includes(config.eventType));
+  
+  if (unsupportedEventTypes.length > 0) {
+    return res.status(501).json({
+      type: 'urn:3gpp:error:not-implemented',
+      title: 'Not Implemented',
+      status: 501,
+      detail: 'One or more monitoring event types are not supported',
+      cause: 'UNSUPPORTED_MONITORING_EVENT_TYPE'
+    });
+  }
+
+  if (eeSubscription.reportingOptions) {
+    const { reportMode, maxNumOfReports, samplingRatio, guardTime, reportPeriod } = eeSubscription.reportingOptions;
+    const hasUnsupportedOptions = (samplingRatio !== undefined && samplingRatio > 1) || 
+                                   (guardTime !== undefined && guardTime > 0) ||
+                                   (reportPeriod !== undefined && reportPeriod > 0);
+    
+    if (hasUnsupportedOptions) {
+      return res.status(501).json({
+        type: 'urn:3gpp:error:not-implemented',
+        title: 'Not Implemented',
+        status: 501,
+        detail: 'One or more monitoring report options are not supported',
+        cause: 'UNSUPPORTED_MONITORING_REPORT_OPTIONS'
+      });
+    }
+  }
+
+  const hasAfId = Object.values(eeSubscription.monitoringConfigurations)
+    .some(config => config.afId !== undefined);
+  
+  if (hasAfId) {
+    return res.status(403).json({
+      type: 'urn:3gpp:error:forbidden',
+      title: 'Forbidden',
+      status: 403,
+      detail: 'AF is not allowed to monitor this UE',
+      cause: 'AF_NOT_ALLOWED'
+    });
+  }
+
+  const hasMtcProvider = Object.values(eeSubscription.monitoringConfigurations)
+    .some(config => config.mtcProviderInformation !== undefined);
+  
+  if (hasMtcProvider) {
+    return res.status(403).json({
+      type: 'urn:3gpp:error:forbidden',
+      title: 'Forbidden',
+      status: 403,
+      detail: 'MTC provider is not allowed to monitor this UE',
+      cause: 'MTC_PROVIDER_NOT_ALLOWED'
+    });
+  }
+
+
   const subscriptionId = randomUUID();
   
   eeSubscription.subscriptionId = subscriptionId;
 
   const key = `${ueIdentity}:${subscriptionId}`;
-  subscriptions.set(key, eeSubscription);
+  
+  const storedSubscription: StoredEeSubscription = {
+    _id: key,
+    ueIdentity,
+    ...eeSubscription
+  };
+
+  const collection = getCollection<StoredEeSubscription>('ee-subscriptions');
+  await collection.insertOne(storedSubscription);
 
   const location = `/nudm-ee/v1/${ueIdentity}/ee-subscriptions/${subscriptionId}`;
 
@@ -77,45 +147,52 @@ router.post('/:ueIdentity/ee-subscriptions', (req: Request, res: Response) => {
     .json(response);
 });
 
-router.delete('/:ueIdentity/ee-subscriptions/:subscriptionId', (req: Request, res: Response) => {
+router.delete('/:ueIdentity/ee-subscriptions/:subscriptionId', async (req: Request, res: Response) => {
   const { ueIdentity, subscriptionId } = req.params;
 
-  if (!validateUeIdentity(ueIdentity)) {
+  if (!validateUeIdentity(ueIdentity, undefined, true)) {
     return res.status(400).json(createInvalidParameterError('Invalid ueIdentity format'));
   }
 
   const key = `${ueIdentity}:${subscriptionId}`;
   
-  if (!subscriptions.has(key)) {
+  const collection = getCollection<StoredEeSubscription>('ee-subscriptions');
+  const result = await collection.deleteOne({ _id: key });
+  
+  if (result.deletedCount === 0) {
     return res.status(404).json({
       type: 'urn:3gpp:error:not-found',
       title: 'Not Found',
       status: 404,
-      detail: 'Subscription not found'
+      detail: 'Subscription not found',
+      cause: 'SUBSCRIPTION_NOT_FOUND'
     });
   }
-
-  subscriptions.delete(key);
   
   res.status(204).send();
 });
 
-router.patch('/:ueIdentity/ee-subscriptions/:subscriptionId', (req: Request, res: Response) => {
+router.patch('/:ueIdentity/ee-subscriptions/:subscriptionId', async (req: Request, res: Response) => {
   const { ueIdentity, subscriptionId } = req.params;
   const patchOperations: PatchOperation[] = req.body;
+  const supportedFeatures = req.query['supported-features'] as string;
 
-  if (!validateUeIdentity(ueIdentity)) {
+  if (!validateUeIdentity(ueIdentity, undefined, true)) {
     return res.status(400).json(createInvalidParameterError('Invalid ueIdentity format'));
   }
 
   const key = `${ueIdentity}:${subscriptionId}`;
   
-  if (!subscriptions.has(key)) {
+  const collection = getCollection<StoredEeSubscription>('ee-subscriptions');
+  const subscription = await collection.findOne({ _id: key });
+  
+  if (!subscription) {
     return res.status(404).json({
       type: 'urn:3gpp:error:not-found',
       title: 'Not Found',
       status: 404,
-      detail: 'Subscription not found'
+      detail: 'Subscription not found',
+      cause: 'SUBSCRIPTION_NOT_FOUND'
     });
   }
 
@@ -129,8 +206,8 @@ router.patch('/:ueIdentity/ee-subscriptions/:subscriptionId', (req: Request, res
     });
   }
 
-  const subscription = subscriptions.get(key);
   const failedOperations: FailedPatchOperation[] = [];
+  const hasPatchReportFeature = supportedFeatures?.includes('PatchReport') || false;
 
   for (let i = 0; i < patchOperations.length; i++) {
     const operation = patchOperations[i];
@@ -150,9 +227,6 @@ router.patch('/:ueIdentity/ee-subscriptions/:subscriptionId', (req: Request, res
     }
 
     try {
-      if (!subscription) {
-        throw new Error('Subscription not found');
-      }
       applyPatchOperation(subscription, operation);
     } catch (error: any) {
       failedOperations.push({
@@ -168,9 +242,9 @@ router.patch('/:ueIdentity/ee-subscriptions/:subscriptionId', (req: Request, res
     }
   }
 
-  subscriptions.set(key, subscription!);
+  await collection.replaceOne({ _id: key }, subscription);
 
-  if (failedOperations.length > 0) {
+  if (failedOperations.length > 0 && hasPatchReportFeature) {
     return res.status(200).json({
       report: failedOperations.map(op => ({
         op: op.op,
