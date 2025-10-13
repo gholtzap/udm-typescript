@@ -8,6 +8,8 @@ export type ExternalId = string;
 
 export type UeIdentity = string;
 
+export type Suci = string;
+
 export type Dnn = string;
 
 export type ReferenceId = number;
@@ -68,6 +70,8 @@ const UE_IDENTITY_PATTERNS = {
   gli: /^gli-.+$/,
   anyUE: /^anyUE$/
 };
+
+export const suciPattern = /^suci-\d+-\d+-\d+-\d+-\d+-[\dA-Fa-f]+$/;
 
 export function validateUeIdentity(ueIdentity: string, allowedTypes?: (keyof typeof UE_IDENTITY_PATTERNS)[], allowCatchAll: boolean = false): boolean {
   if (!ueIdentity || ueIdentity.trim() === '') {

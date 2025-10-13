@@ -14,10 +14,10 @@ Here is the current status:
 | 🟡 | nudm-pp | local storage implementation |
 | 🟡 | nudm-rsds | local storage implementation |
 | 🟡 | nudm-sdm | local storage implementation |
-| 🔴 | nudm-ssau | scaffolding |
+| 🟡 | nudm-ssau | awaiting testing |
 | 🔴 | nudm-ueau | scaffolding |
 | 🔴 | nudm-uecm | scaffolding |
-| 🔴 | nudm-ueid | scaffolding |
+| 🟡 | nudm-ueid | awaiting testing |
 
 
 Test status:
