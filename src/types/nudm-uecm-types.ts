@@ -284,6 +284,14 @@ export interface SmfRegistrationModification {
   pgwFqdn?: string | null;
 }
 
+export interface SmsfRegistrationModification {
+  smsfInstanceId: string;
+  smsfSetId?: string;
+  smsfMAPAddress?: E164Number | null;
+  smsfDiameterAddress?: NetworkNodeDiameterAddress | null;
+  smsfSbiSupInd?: boolean;
+}
+
 export interface RoamingInfoUpdate {
   servingPlmn: PlmnId;
   roaming?: boolean;
@@ -313,6 +321,7 @@ export interface NwdafRegistrationInfo {
 
 export interface RoutingInfoSmRequest {
   ipSmGwInd?: boolean;
+  correlationId?: string;
   supportedFeatures?: string;
 }
 
@@ -322,6 +331,7 @@ export interface RoutingInfoSmResponse {
   smsfNon3Gpp?: SmsfRegistration;
   ipSmGw?: IpSmGwInfo;
   smsRouter?: SmsRouterInfo;
+  mpsMsgIndication?: boolean;
 }
 
 export interface IpSmGwInfo {

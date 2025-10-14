@@ -153,3 +153,14 @@ export function deepMerge(target: any, source: any): any {
   
   return result;
 }
+
+export interface PatchItem {
+  op: string;
+  path: string;
+  from?: string;
+  value?: any;
+}
+
+export interface PatchResult {
+  report: PatchItem[];
+}
