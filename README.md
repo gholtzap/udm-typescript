@@ -1,8 +1,10 @@
 # udm-typescript
 
-This is a typescript implementation of 3GPP's UDM specification. The most recent specification can be found [here](https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3342).
-
 **This repo is not production-ready yet. I am still developing the core features.**
+
+The UDM is a core part of 5G architecture, as it stores subscriber data (profiles, keys, subscription). It is essentially a database-backed REST API.
+
+`udm-typescript` is a typescript implementation of 3GPP's 5G UDM specification. The most recent specification can be found [here](https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3342).
 
 Here is the current status:
 
