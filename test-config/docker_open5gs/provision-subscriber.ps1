@@ -89,3 +89,4 @@ Write-Host ""
 Write-Host "Next: Run 'npm run 5g:start' to start the 5G core" -ForegroundColor Yellow
 Write-Host ""
 
+
