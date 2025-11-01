@@ -90,3 +90,4 @@ Write-Host "2. Run: npm run 5g:provision (to add subscriber)" -ForegroundColor W
 Write-Host "3. Run: npm run 5g:start (to start everything)" -ForegroundColor White
 Write-Host ""
 
+

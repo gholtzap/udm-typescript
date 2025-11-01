@@ -187,3 +187,4 @@ If components can't communicate:
    docker-compose -f docker-compose.test.yml exec open5gs-ausf nslookup custom-udm
    ```
 
+

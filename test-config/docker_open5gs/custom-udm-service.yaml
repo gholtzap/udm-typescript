@@ -20,3 +20,4 @@
       - ../../tsconfig.json:/app/tsconfig.json
     command: npm run dev
 
+
