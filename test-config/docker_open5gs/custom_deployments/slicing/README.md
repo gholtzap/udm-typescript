@@ -8,14 +8,30 @@ Most of the steps to be followed are similar to the steps mentioned in the [READ
 
 ### Loading environmental variables for custom deployment
 
-**Warning**
-For custom deployments, you must modify/use only the [**.custom_env**](.custom_env) file rather than the [**.env** in the root folder](../../.env).
+**Setup**
+For custom deployments, you must create and configure your own `.custom_env` file:
 
-```
-set -a
-source .custom_env
-set +a
-```
+1. Copy the example file to create your configuration:
+   ```bash
+   cp .custom_env.example .custom_env
+   ```
+
+2. Edit `.custom_env` and replace placeholder values with your actual configuration:
+   - `DOCKER_HOST_IP`: Set to your host machine's IP address
+   - UE credentials (`UE1_KI`, `UE1_OP`, `UE2_KI`, `UE2_OP`): Set your test UE credentials
+   - `GRAFANA_USERNAME` and `GRAFANA_PASSWORD`: Set secure credentials
+
+3. Load the environment variables:
+   ```bash
+   set -a
+   source .custom_env
+   set +a
+   ```
+
+**Warning**
+- Do NOT commit your `.custom_env` file - it contains sensitive configuration
+- Use only the [**.custom_env**](.custom_env) file rather than the [**.env** in the root folder](../../.env)
+- The `.custom_env` file is gitignored for security
 
 ### Scenario deployment
 
