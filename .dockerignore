@@ -1,0 +1,15 @@
+node_modules
+npm-debug.log
+.env
+.env.test
+.git
+.gitignore
+README.md
+docs
+context
+test-config
+docker-compose.test.yml
+*.md
+.vscode
+.idea
+
