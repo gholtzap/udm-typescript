@@ -1,0 +1,10 @@
+log/
+**/*.log
+**/*.ctxt
+**/*.pcap
+**/*.db
+**/*.db-shm
+**/*.db-wal
+
+# Ignore custom environment files with sensitive configuration
+**/.custom_env
