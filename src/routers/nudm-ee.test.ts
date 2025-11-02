@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import request from 'supertest';
 import express from 'express';
+import '../test-setup';
 import router from './nudm-ee';
 
 const app = express();
@@ -1065,6 +1066,7 @@ describe('PATCH /:ueIdentity/ee-subscriptions/:subscriptionId', () => {
 
       const response = await request(app)
         .patch(`/nudm-ee/v1/${validUeIdentity}/ee-subscriptions/${subscriptionId}`)
+        .query({ 'supported-features': 'PatchReport' })
         .set('Content-Type', 'application/json-patch+json')
         .send(patchOperations)
         .expect(200);
@@ -1093,6 +1095,7 @@ describe('PATCH /:ueIdentity/ee-subscriptions/:subscriptionId', () => {
 
       const response = await request(app)
         .patch(`/nudm-ee/v1/${validUeIdentity}/ee-subscriptions/${subscriptionId}`)
+        .query({ 'supported-features': 'PatchReport' })
         .set('Content-Type', 'application/json-patch+json')
         .send(patchOperations)
         .expect(200);
@@ -1122,6 +1125,7 @@ describe('PATCH /:ueIdentity/ee-subscriptions/:subscriptionId', () => {
 
       const response = await request(app)
         .patch(`/nudm-ee/v1/${validUeIdentity}/ee-subscriptions/${subscriptionId}`)
+        .query({ 'supported-features': 'PatchReport' })
         .set('Content-Type', 'application/json-patch+json')
         .send(patchOperations)
         .expect(200);
@@ -1148,6 +1152,7 @@ describe('PATCH /:ueIdentity/ee-subscriptions/:subscriptionId', () => {
 
       const response = await request(app)
         .patch(`/nudm-ee/v1/${validUeIdentity}/ee-subscriptions/${subscriptionId}`)
+        .query({ 'supported-features': 'PatchReport' })
         .set('Content-Type', 'application/json-patch+json')
         .send(patchOperations)
         .expect(200);
@@ -1174,6 +1179,7 @@ describe('PATCH /:ueIdentity/ee-subscriptions/:subscriptionId', () => {
 
       const response = await request(app)
         .patch(`/nudm-ee/v1/${validUeIdentity}/ee-subscriptions/${subscriptionId}`)
+        .query({ 'supported-features': 'PatchReport' })
         .set('Content-Type', 'application/json-patch+json')
         .send(patchOperations)
         .expect(200);
@@ -1201,6 +1207,7 @@ describe('PATCH /:ueIdentity/ee-subscriptions/:subscriptionId', () => {
 
       const response = await request(app)
         .patch(`/nudm-ee/v1/${validUeIdentity}/ee-subscriptions/${subscriptionId}`)
+        .query({ 'supported-features': 'PatchReport' })
         .set('Content-Type', 'application/json-patch+json')
         .send(patchOperations)
         .expect(200);
@@ -1238,6 +1245,7 @@ describe('PATCH /:ueIdentity/ee-subscriptions/:subscriptionId', () => {
 
       const response = await request(app)
         .patch(`/nudm-ee/v1/${validUeIdentity}/ee-subscriptions/${subscriptionId}`)
+        .query({ 'supported-features': 'PatchReport' })
         .set('Content-Type', 'application/json-patch+json')
         .send(patchOperations)
         .expect(200);
@@ -1266,6 +1274,7 @@ describe('PATCH /:ueIdentity/ee-subscriptions/:subscriptionId', () => {
 
       const response = await request(app)
         .patch(`/nudm-ee/v1/${validUeIdentity}/ee-subscriptions/${subscriptionId}`)
+        .query({ 'supported-features': 'PatchReport' })
         .set('Content-Type', 'application/json-patch+json')
         .send(patchOperations)
         .expect(200);

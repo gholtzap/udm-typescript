@@ -1,9 +1,9 @@
 import { expect } from 'chai';
 import request from 'supertest';
 import express from 'express';
-import sinon from 'sinon';
+import '../test-setup';
+import { mockCollection } from '../test-setup';
 import router from './nudm-mt';
-import * as mongodb from '../db/mongodb';
 
 const app = express();
 app.use(express.json());
@@ -11,22 +11,9 @@ app.use('/nudm-mt/v1', router);
 
 describe('GET /:supi - Happy Path', () => {
   const validSupi = 'imsi-123456789012345';
-  let getCollectionStub: sinon.SinonStub;
-  let collectionStub: any;
-
-  beforeEach(() => {
-    collectionStub = {
-      findOne: sinon.stub()
-    };
-    getCollectionStub = sinon.stub(mongodb, 'getCollection').returns(collectionStub);
-  });
-
-  afterEach(() => {
-    getCollectionStub.restore();
-  });
 
   it('should return UE info with single field tadsInfo', async () => {
-    collectionStub.findOne.resolves({
+    await mockCollection.insertOne({
       _id: validSupi,
       tadsInfo: {
         ueContextInfo: { accessType: '3GPP_ACCESS' }
@@ -52,7 +39,7 @@ describe('GET /:supi - Happy Path', () => {
   });
 
   it('should return UE info with multiple fields', async () => {
-    collectionStub.findOne.resolves({
+    await mockCollection.insertOne({
       _id: validSupi,
       tadsInfo: {
         ueContextInfo: { accessType: '3GPP_ACCESS' }
@@ -78,7 +65,7 @@ describe('GET /:supi - Happy Path', () => {
   });
 
   it('should return userState field when requested', async () => {
-    collectionStub.findOne.resolves({
+    await mockCollection.insertOne({
       _id: validSupi,
       userState: {
         accessType: '3GPP_ACCESS',
@@ -98,7 +85,7 @@ describe('GET /:supi - Happy Path', () => {
 
   it('should accept nai format for supi', async () => {
     const naiSupi = 'nai-user@example.com';
-    collectionStub.findOne.resolves({
+    await mockCollection.insertOne({
       _id: naiSupi,
       tadsInfo: {
         ueContextInfo: { accessType: '3GPP_ACCESS' }
@@ -114,7 +101,7 @@ describe('GET /:supi - Happy Path', () => {
   });
 
   it('should handle fields as array parameter', async () => {
-    collectionStub.findOne.resolves({
+    await mockCollection.insertOne({
       _id: validSupi,
       tadsInfo: {
         ueContextInfo: { accessType: '3GPP_ACCESS' }
@@ -137,22 +124,9 @@ describe('GET /:supi - Happy Path', () => {
 
 describe('POST /:supi/loc-info/provide-loc-info - Happy Path', () => {
   const validSupi = 'imsi-123456789012345';
-  let getCollectionStub: sinon.SinonStub;
-  let collectionStub: any;
-
-  beforeEach(() => {
-    collectionStub = {
-      findOne: sinon.stub()
-    };
-    getCollectionStub = sinon.stub(mongodb, 'getCollection').returns(collectionStub);
-  });
-
-  afterEach(() => {
-    getCollectionStub.restore();
-  });
 
   it('should return location info when req5gsLoc is true', async () => {
-    collectionStub.findOne.resolves({
+    await mockCollection.insertOne({
       _id: validSupi,
       locationInfo: {
         vPlmnId: { mcc: '310', mnc: '410' },
@@ -187,7 +161,7 @@ describe('POST /:supi/loc-info/provide-loc-info - Happy Path', () => {
   });
 
   it('should return RAT type when reqRatType is true', async () => {
-    collectionStub.findOne.resolves({
+    await mockCollection.insertOne({
       _id: validSupi,
       locationInfo: {
         vPlmnId: { mcc: '310', mnc: '410' },
@@ -204,7 +178,7 @@ describe('POST /:supi/loc-info/provide-loc-info - Happy Path', () => {
   });
 
   it('should return timezone when reqTimeZone is true', async () => {
-    collectionStub.findOne.resolves({
+    await mockCollection.insertOne({
       _id: validSupi,
       locationInfo: {
         vPlmnId: { mcc: '310', mnc: '410' },
@@ -221,7 +195,7 @@ describe('POST /:supi/loc-info/provide-loc-info - Happy Path', () => {
   });
 
   it('should return serving node info when reqServingNode is true', async () => {
-    collectionStub.findOne.resolves({
+    await mockCollection.insertOne({
       _id: validSupi,
       locationInfo: {
         vPlmnId: { mcc: '310', mnc: '410' },
@@ -241,7 +215,7 @@ describe('POST /:supi/loc-info/provide-loc-info - Happy Path', () => {
   });
 
   it('should handle multiple request flags', async () => {
-    collectionStub.findOne.resolves({
+    await mockCollection.insertOne({
       _id: validSupi,
       locationInfo: {
         vPlmnId: { mcc: '310', mnc: '410' },
@@ -280,7 +254,7 @@ describe('POST /:supi/loc-info/provide-loc-info - Happy Path', () => {
   });
 
   it('should include supportedFeatures when provided', async () => {
-    collectionStub.findOne.resolves({
+    await mockCollection.insertOne({
       _id: validSupi,
       locationInfo: {
         vPlmnId: { mcc: '310', mnc: '410' },
@@ -309,7 +283,7 @@ describe('POST /:supi/loc-info/provide-loc-info - Happy Path', () => {
 
   it('should accept nai format for supi', async () => {
     const naiSupi = 'nai-user@example.com';
-    collectionStub.findOne.resolves({
+    await mockCollection.insertOne({
       _id: naiSupi,
       locationInfo: {
         vPlmnId: { mcc: '310', mnc: '410' },
@@ -333,7 +307,7 @@ describe('POST /:supi/loc-info/provide-loc-info - Happy Path', () => {
   });
 
   it('should handle empty request body with default values', async () => {
-    collectionStub.findOne.resolves({
+    await mockCollection.insertOne({
       _id: validSupi,
       locationInfo: {
         vPlmnId: { mcc: '310', mnc: '410' }

@@ -1,7 +1,9 @@
 import { expect } from 'chai';
 import request from 'supertest';
 import express from 'express';
+import '../test-setup';
 import router from './nudm-niddau';
+import { mockCollection } from '../test-setup';
 
 const app = express();
 app.use(express.json());
@@ -19,7 +21,64 @@ describe('POST /:ueIdentity/authorize', () => {
     authUpdateCallbackUri: 'http://example.com/callback'
   };
 
+  // Helper function to create test subscriber data
+  const createTestSubscriber = (customData = {}) => {
+    return {
+      _id: 'imsi-001010000000001',
+      gpsis: [
+        'msisdn-1234567890',
+        'msisdn-12345',  // Minimum length
+        'msisdn-123456789012345'  // Maximum length
+      ],
+      externalIds: [
+        'extid-user@example.com',
+        'extid-' + 'a'.repeat(100) + '@example.com',  // Very long
+        'extid-user.name+test@example.co.uk'  // Special characters
+      ],
+      externalGroupIds: [
+        'extgroupid-group@example.com',
+        'extgroupid-group123@subdomain.example.com'  // Subdomain
+      ],
+      nssai: {
+        defaultSingleNssais: [
+          { sst: 1, sd: '000001' }
+        ],
+        singleNssais: [
+          { sst: 1, sd: '000001' },
+          { sst: 2, sd: '000002' },
+          { sst: 2, sd: 'ABCDEF' }  // Complex snssai
+        ]
+      },
+      subscribedSnssaiInfos: {
+        '1-000001': {
+          dnnInfos: [
+            { dnn: 'internet', defaultDnnIndicator: true },
+            { dnn: 'ims' },
+            { dnn: 'a'.repeat(100) }  // Very long DNN
+          ]
+        },
+        '2-000002': {
+          dnnInfos: [
+            { dnn: 'enterprise' },
+            { dnn: 'internet' }
+          ]
+        },
+        '2-ABCDEF': {
+          dnnInfos: [
+            { dnn: 'internet' }
+          ]
+        }
+      },
+      allowedMtcProviders: ['12345', '67890'],
+      allowedAfIds: ['af-12345', 'af-67890'],
+      ...customData
+    };
+  };
+
   describe('Success cases', () => {
+    beforeEach(async () => {
+      await mockCollection.insertOne(createTestSubscriber());
+    });
     it('should authorize NIDD with valid msisdn format', async () => {
       const response = await request(app)
         .post(`/nudm-niddau/v1/${validMsisdn}/authorize`)
@@ -364,6 +423,10 @@ describe('POST /:ueIdentity/authorize', () => {
   });
 
   describe('Request body validation', () => {
+    beforeEach(async () => {
+      await mockCollection.insertOne(createTestSubscriber());
+    });
+
     it('should handle request body with undefined optional fields', async () => {
       const authInfoWithUndefined = {
         ...validAuthInfo,
@@ -437,6 +500,10 @@ describe('POST /:ueIdentity/authorize', () => {
   });
 
   describe('Response validation', () => {
+    beforeEach(async () => {
+      await mockCollection.insertOne(createTestSubscriber());
+    });
+
     it('should return valid AuthorizationData structure', async () => {
       const response = await request(app)
         .post(`/nudm-niddau/v1/${validMsisdn}/authorize`)
@@ -496,6 +563,37 @@ describe('POST /:ueIdentity/authorize', () => {
   });
 
   describe('Edge cases', () => {
+    beforeEach(async () => {
+      await mockCollection.insertOne(createTestSubscriber());
+
+      // Add test subscribers for different msisdn formats
+      await mockCollection.insertOne(createTestSubscriber({
+        _id: 'imsi-001010000000002',
+        gpsis: ['msisdn-12345678901']
+      }));
+
+      await mockCollection.insertOne(createTestSubscriber({
+        _id: 'imsi-001010000000003',
+        gpsis: ['msisdn-9876543210']
+      }));
+
+      await mockCollection.insertOne(createTestSubscriber({
+        _id: 'imsi-001010000000004',
+        gpsis: ['msisdn-555123456789']
+      }));
+
+      // Add test subscribers for multiple authorization test
+      await mockCollection.insertOne(createTestSubscriber({
+        _id: 'imsi-001010000000011',
+        gpsis: ['msisdn-1111111111']
+      }));
+
+      await mockCollection.insertOne(createTestSubscriber({
+        _id: 'imsi-001010000000012',
+        gpsis: ['msisdn-2222222222']
+      }));
+    });
+
     it('should handle very long external ID', async () => {
       const longExtId = 'extid-' + 'a'.repeat(100) + '@example.com';
       const response = await request(app)

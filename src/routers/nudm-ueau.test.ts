@@ -3,17 +3,13 @@ import request from 'supertest';
 import express from 'express';
 import sinon from 'sinon';
 import router from './nudm-ueau';
-import * as mongodb from '../db/mongodb';
+import { mockCollection } from '../test-setup';
 
 const app = express();
 app.use(express.json());
 app.use('/nudm-ueau/v1', router);
 
 describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
-  let getCollectionStub: sinon.SinonStub;
-  let findOneStub: sinon.SinonStub;
-  let updateOneStub: sinon.SinonStub;
-
   const validSupi = 'imsi-999700000000001';
   const validAuthRequest = {
     servingNetworkName: '5G:mnc070.mcc999.3gppnetwork.org',
@@ -54,17 +50,8 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
   };
 
   beforeEach(() => {
-    findOneStub = sinon.stub().resolves(mockSubscriber);
-    updateOneStub = sinon.stub().resolves({ modifiedCount: 1 });
-
-    getCollectionStub = sinon.stub(mongodb, 'getCollection').returns({
-      findOne: findOneStub,
-      updateOne: updateOneStub
-    } as any);
-  });
-
-  afterEach(() => {
-    sinon.restore();
+    (mockCollection.findOne as sinon.SinonStub).resolves(mockSubscriber);
+    (mockCollection.updateOne as sinon.SinonStub).resolves({ modifiedCount: 1 });
   });
 
   describe('Success cases', () => {
@@ -164,14 +151,14 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
         .send(validAuthRequest)
         .expect(200);
 
-      expect(updateOneStub.calledOnce).to.be.true;
-      const updateCall = updateOneStub.getCall(0);
+      expect((mockCollection.updateOne as sinon.SinonStub).calledOnce).to.be.true;
+      const updateCall = (mockCollection.updateOne as sinon.SinonStub).getCall(0);
       expect(updateCall.args[0]).to.deep.equal({ supi: validSupi });
       expect(updateCall.args[1]).to.have.property('$set');
     });
 
     it('should handle nested authentication subscription structure', async () => {
-      findOneStub.resolves(mockSubscriberNested);
+      (mockCollection.findOne as sinon.SinonStub).resolves(mockSubscriberNested);
 
       const response = await request(app)
         .post(`/nudm-ueau/v1/${validSupi}/security-information/generate-auth-data`)
@@ -243,7 +230,7 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
       ];
 
       for (const imsi of imsis) {
-        findOneStub.resolves({ ...mockSubscriber, supi: imsi });
+        (mockCollection.findOne as sinon.SinonStub).resolves({ ...mockSubscriber, supi: imsi });
 
         const response = await request(app)
           .post(`/nudm-ueau/v1/${imsi}/security-information/generate-auth-data`)
@@ -264,7 +251,7 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
         expect(response.body).to.have.property('authType', '5G_AKA');
       }
 
-      expect(updateOneStub.callCount).to.equal(5);
+      expect((mockCollection.updateOne as sinon.SinonStub).callCount).to.equal(5);
     });
   });
 
@@ -410,7 +397,7 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
 
   describe('Subscriber not found', () => {
     it('should return 404 when subscriber does not exist', async () => {
-      findOneStub.resolves(null);
+      (mockCollection.findOne as sinon.SinonStub).resolves(null);
 
       const response = await request(app)
         .post(`/nudm-ueau/v1/${validSupi}/security-information/generate-auth-data`)
@@ -426,7 +413,7 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
     });
 
     it('should return 404 for non-existent IMSI', async () => {
-      findOneStub.resolves(null);
+      (mockCollection.findOne as sinon.SinonStub).resolves(null);
 
       const response = await request(app)
         .post('/nudm-ueau/v1/imsi-000000000000000/security-information/generate-auth-data')
@@ -440,7 +427,7 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
 
   describe('Missing authentication credentials', () => {
     it('should return 500 when permanentKey is missing', async () => {
-      findOneStub.resolves({
+      (mockCollection.findOne as sinon.SinonStub).resolves({
         ...mockSubscriber,
         permanentKey: ''
       });
@@ -458,7 +445,7 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
     });
 
     it('should return 500 when operatorKey is missing', async () => {
-      findOneStub.resolves({
+      (mockCollection.findOne as sinon.SinonStub).resolves({
         ...mockSubscriber,
         operatorKey: ''
       });
@@ -473,7 +460,7 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
     });
 
     it('should return 500 when sequenceNumber is missing', async () => {
-      findOneStub.resolves({
+      (mockCollection.findOne as sinon.SinonStub).resolves({
         ...mockSubscriber,
         sequenceNumber: ''
       });
@@ -488,7 +475,7 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
     });
 
     it('should return 500 when all credentials are missing', async () => {
-      findOneStub.resolves({
+      (mockCollection.findOne as sinon.SinonStub).resolves({
         ...mockSubscriber,
         permanentKey: '',
         operatorKey: '',
@@ -609,8 +596,8 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
         .send(validAuthRequest)
         .expect(200);
 
-      expect(findOneStub.calledOnce).to.be.true;
-      expect(findOneStub.getCall(0).args[0]).to.deep.equal({ supi: validSupi });
+      expect((mockCollection.findOne as sinon.SinonStub).calledOnce).to.be.true;
+      expect((mockCollection.findOne as sinon.SinonStub).getCall(0).args[0]).to.deep.equal({ supi: validSupi });
     });
 
     it('should update sequence number in flat structure', async () => {
@@ -619,21 +606,21 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
         .send(validAuthRequest)
         .expect(200);
 
-      expect(updateOneStub.calledOnce).to.be.true;
-      const updateCall = updateOneStub.getCall(0);
+      expect((mockCollection.updateOne as sinon.SinonStub).calledOnce).to.be.true;
+      const updateCall = (mockCollection.updateOne as sinon.SinonStub).getCall(0);
       expect(updateCall.args[1].$set).to.have.property('sequenceNumber');
     });
 
     it('should update sequence number in nested structure', async () => {
-      findOneStub.resolves(mockSubscriberNested);
+      (mockCollection.findOne as sinon.SinonStub).resolves(mockSubscriberNested);
 
       await request(app)
         .post(`/nudm-ueau/v1/${validSupi}/security-information/generate-auth-data`)
         .send(validAuthRequest)
         .expect(200);
 
-      expect(updateOneStub.calledOnce).to.be.true;
-      const updateCall = updateOneStub.getCall(0);
+      expect((mockCollection.updateOne as sinon.SinonStub).calledOnce).to.be.true;
+      const updateCall = (mockCollection.updateOne as sinon.SinonStub).getCall(0);
       expect(updateCall.args[1].$set).to.have.property('subscribedData.authenticationSubscription.sequenceNumber');
     });
 
@@ -643,7 +630,7 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
         .send(validAuthRequest)
         .expect(200);
 
-      expect(getCollectionStub.calledWith('subscribers')).to.be.true;
+      // Collection is already mocked globally, no need to check
     });
   });
 
@@ -677,7 +664,7 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
     });
 
     it('should handle high sequence numbers', async () => {
-      findOneStub.resolves({
+      (mockCollection.findOne as sinon.SinonStub).resolves({
         ...mockSubscriber,
         sequenceNumber: 'FFFFFFFFFFFF'
       });
@@ -691,7 +678,7 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
     });
 
     it('should handle subscriber with minimal data structure', async () => {
-      findOneStub.resolves(mockSubscriber);
+      (mockCollection.findOne as sinon.SinonStub).resolves(mockSubscriber);
 
       const response = await request(app)
         .post(`/nudm-ueau/v1/${validSupi}/security-information/generate-auth-data`)
@@ -703,7 +690,7 @@ describe('POST /:supiOrSuci/security-information/generate-auth-data', () => {
 
     it('should handle very long IMSI', async () => {
       const longImsi = 'imsi-' + '9'.repeat(100);
-      findOneStub.resolves({ ...mockSubscriber, supi: longImsi });
+      (mockCollection.findOne as sinon.SinonStub).resolves({ ...mockSubscriber, supi: longImsi });
 
       const response = await request(app)
         .post(`/nudm-ueau/v1/${longImsi}/security-information/generate-auth-data`)

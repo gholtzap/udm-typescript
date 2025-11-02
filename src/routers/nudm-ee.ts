@@ -150,7 +150,7 @@ router.post('/:ueIdentity/ee-subscriptions', async (req: Request, res: Response)
 router.delete('/:ueIdentity/ee-subscriptions/:subscriptionId', async (req: Request, res: Response) => {
   const { ueIdentity, subscriptionId } = req.params;
 
-  if (!validateUeIdentity(ueIdentity, undefined, true)) {
+  if (!validateUeIdentity(ueIdentity)) {
     return res.status(400).json(createInvalidParameterError('Invalid ueIdentity format'));
   }
 
@@ -177,7 +177,7 @@ router.patch('/:ueIdentity/ee-subscriptions/:subscriptionId', async (req: Reques
   const patchOperations: PatchOperation[] = req.body;
   const supportedFeatures = req.query['supported-features'] as string;
 
-  if (!validateUeIdentity(ueIdentity, undefined, true)) {
+  if (!validateUeIdentity(ueIdentity)) {
     return res.status(400).json(createInvalidParameterError('Invalid ueIdentity format'));
   }
 
