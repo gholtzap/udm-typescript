@@ -121,7 +121,7 @@ export function computeCkPrimeIkPrime(ck: Buffer, ik: Buffer, servingNetworkName
   const snName = Buffer.from(servingNetworkName, 'utf8');
   const snNameLength = Buffer.alloc(2);
   snNameLength.writeUInt16BE(snName.length);
-  
+
   const s = Buffer.concat([
     Buffer.from([fc]),
     snName,
@@ -129,14 +129,33 @@ export function computeCkPrimeIkPrime(ck: Buffer, ik: Buffer, servingNetworkName
     sqnXorAk,
     Buffer.from([0x00, 0x06])
   ]);
-  
+
   const key = Buffer.concat([ck, ik]);
   const output = kdf(key, s);
-  
+
   const ckPrime = output.slice(0, 16).toString('hex').toUpperCase();
   const ikPrime = output.slice(16, 32).toString('hex').toUpperCase();
-  
+
   return { ckPrime, ikPrime };
+}
+
+export function computeKasme(ck: Buffer, ik: Buffer, plmnId: Buffer, sqnXorAk: Buffer): string {
+  const fc = 0x10;
+  const p0 = plmnId;
+  const l0 = Buffer.from([0x00, 0x03]);
+  const p1 = sqnXorAk;
+  const l1 = Buffer.from([0x00, 0x06]);
+
+  const s = Buffer.concat([
+    Buffer.from([fc]),
+    p0,
+    l0,
+    p1,
+    l1
+  ]);
+
+  const key = Buffer.concat([ck, ik]);
+  return kdf(key, s).toString('hex').toUpperCase();
 }
 
 

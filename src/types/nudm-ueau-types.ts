@@ -149,6 +149,8 @@ export interface AuthEvent {
   resetIds?: string[];
   dataRestorationCallbackUri?: string;
   udrRestartInd?: boolean;
+  lastSynchronizationTime?: string;
+  nswoInd?: boolean;
 }
 
 export type AuthenticationVector = AvEapAkaPrime | Av5GHeAka;
