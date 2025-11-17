@@ -4075,3 +4075,1011 @@ describe('GET /:supi/lcs-subscription-data', () => {
     });
   });
 });
+
+describe('GET /:supi/v2x-data', () => {
+  const validSupi = 'imsi-999700000000001';
+  const validNaiSupi = 'nai-user@example.com';
+  const validGciSupi = 'gci-ABC123';
+  const validGliSupi = 'gli-XYZ789';
+
+  describe('Success cases', () => {
+    it('should retrieve V2X data for valid IMSI supi', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/v2x-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+
+      expect(response.body).to.have.property('nrV2xServicesAuth');
+      expect(response.body).to.have.property('lteV2xServicesAuth');
+      expect(response.body).to.have.property('nrUePc5Ambr');
+      expect(response.body).to.have.property('ltePc5Ambr');
+    });
+
+    it('should retrieve V2X data for NAI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${encodeURIComponent(validNaiSupi)}/v2x-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('nrV2xServicesAuth');
+      expect(response.body).to.have.property('lteV2xServicesAuth');
+    });
+
+    it('should retrieve V2X data for GCI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validGciSupi}/v2x-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('nrV2xServicesAuth');
+    });
+
+    it('should retrieve V2X data for GLI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validGliSupi}/v2x-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('nrV2xServicesAuth');
+    });
+
+    it('should accept supported-features query parameter', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/v2x-data`)
+        .query({ 'supported-features': 'feature1' })
+        .expect(200);
+
+      expect(response.body).to.have.property('nrV2xServicesAuth');
+    });
+
+    it('should include proper HTTP headers', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/v2x-data`)
+        .expect(200);
+
+      expect(response.headers).to.have.property('cache-control');
+      expect(response.headers).to.have.property('etag');
+      expect(response.headers).to.have.property('last-modified');
+    });
+  });
+
+  describe('Error cases', () => {
+    it('should reject invalid supi format', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/invalid-supi/v2x-data')
+        .expect(400);
+    });
+
+    it('should reject empty supi', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1//v2x-data')
+        .expect(400);
+    });
+
+    it('should reject MSISDN format (not supported for this endpoint)', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/msisdn-1234567890/v2x-data')
+        .expect(400);
+    });
+
+    it('should reject unsupported supi prefix', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/unsupported-12345/v2x-data')
+        .expect(400);
+    });
+  });
+
+  describe('Data structure validation', () => {
+    it('should return properly structured V2X data', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/v2x-data`)
+        .expect(200);
+
+      expect(response.body).to.be.an('object');
+      expect(response.body.nrV2xServicesAuth).to.have.property('vehicleUe');
+      expect(response.body.nrV2xServicesAuth).to.have.property('pedestrianUe');
+      expect(response.body.nrV2xServicesAuth).to.have.property('v2xPermission');
+      expect(response.body.lteV2xServicesAuth).to.have.property('vehicleUe');
+      expect(response.body.lteV2xServicesAuth).to.have.property('pedestrianUe');
+      expect(response.body.lteV2xServicesAuth).to.have.property('v2xPermission');
+    });
+
+    it('should return JSON content type', async () => {
+      await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/v2x-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+    });
+
+    it('should return consistent data for same supi', async () => {
+      const response1 = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/v2x-data`)
+        .expect(200);
+
+      const response2 = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/v2x-data`)
+        .expect(200);
+
+      expect(response1.body).to.deep.equal(response2.body);
+    });
+  });
+});
+
+describe('GET /:supi/prose-data', () => {
+  const validSupi = 'imsi-999700000000001';
+  const validNaiSupi = 'nai-user@example.com';
+  const validGciSupi = 'gci-ABC123';
+  const validGliSupi = 'gli-XYZ789';
+
+  describe('Success cases', () => {
+    it('should retrieve ProSe data for valid IMSI supi', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/prose-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+
+      expect(response.body).to.have.property('proseServiceAuth');
+      expect(response.body).to.have.property('nrUePc5Ambr');
+      expect(response.body).to.have.property('proseAllowedPlmn');
+    });
+
+    it('should retrieve ProSe data for NAI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${encodeURIComponent(validNaiSupi)}/prose-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('proseServiceAuth');
+      expect(response.body).to.have.property('nrUePc5Ambr');
+    });
+
+    it('should retrieve ProSe data for GCI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validGciSupi}/prose-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('proseServiceAuth');
+    });
+
+    it('should retrieve ProSe data for GLI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validGliSupi}/prose-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('proseServiceAuth');
+    });
+
+    it('should accept supported-features query parameter', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/prose-data`)
+        .query({ 'supported-features': 'feature1' })
+        .expect(200);
+
+      expect(response.body).to.have.property('proseServiceAuth');
+    });
+
+    it('should include proper HTTP headers', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/prose-data`)
+        .expect(200);
+
+      expect(response.headers).to.have.property('cache-control');
+      expect(response.headers).to.have.property('etag');
+      expect(response.headers).to.have.property('last-modified');
+    });
+  });
+
+  describe('Error cases', () => {
+    it('should reject invalid supi format', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/invalid-supi/prose-data')
+        .expect(400);
+    });
+
+    it('should reject empty supi', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1//prose-data')
+        .expect(400);
+    });
+
+    it('should reject MSISDN format (not supported for this endpoint)', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/msisdn-1234567890/prose-data')
+        .expect(400);
+    });
+
+    it('should reject unsupported supi prefix', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/unsupported-12345/prose-data')
+        .expect(400);
+    });
+  });
+
+  describe('Data structure validation', () => {
+    it('should return properly structured ProSe data', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/prose-data`)
+        .expect(200);
+
+      expect(response.body).to.be.an('object');
+      expect(response.body.proseServiceAuth).to.have.property('proseDirectDiscoveryAuth');
+      expect(response.body.proseServiceAuth).to.have.property('proseDirectCommunicationAuth');
+      expect(response.body.proseServiceAuth).to.have.property('proseL2RelayAuth');
+      expect(response.body.proseServiceAuth).to.have.property('proseL2RemoteAuth');
+    });
+
+    it('should return JSON content type', async () => {
+      await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/prose-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+    });
+
+    it('should return consistent data for same supi', async () => {
+      const response1 = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/prose-data`)
+        .expect(200);
+
+      const response2 = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/prose-data`)
+        .expect(200);
+
+      expect(response1.body).to.deep.equal(response2.body);
+    });
+  });
+});
+
+describe('GET /:supi/5mbs-data', () => {
+  const validSupi = 'imsi-999700000000001';
+  const validNaiSupi = 'nai-user@example.com';
+  const validGciSupi = 'gci-ABC123';
+  const validGliSupi = 'gli-XYZ789';
+
+  describe('Success cases', () => {
+    it('should retrieve 5MBS data for valid IMSI supi', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/5mbs-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+
+      expect(response.body).to.have.property('mbsAllowed');
+      expect(response.body).to.have.property('mbsSessionIdList');
+    });
+
+    it('should retrieve 5MBS data for NAI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${encodeURIComponent(validNaiSupi)}/5mbs-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('mbsAllowed');
+      expect(response.body).to.have.property('mbsSessionIdList');
+    });
+
+    it('should retrieve 5MBS data for GCI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validGciSupi}/5mbs-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('mbsAllowed');
+    });
+
+    it('should retrieve 5MBS data for GLI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validGliSupi}/5mbs-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('mbsAllowed');
+    });
+
+    it('should accept supported-features query parameter', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/5mbs-data`)
+        .query({ 'supported-features': 'feature1' })
+        .expect(200);
+
+      expect(response.body).to.have.property('mbsAllowed');
+    });
+
+    it('should include proper HTTP headers', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/5mbs-data`)
+        .expect(200);
+
+      expect(response.headers).to.have.property('cache-control');
+      expect(response.headers).to.have.property('etag');
+      expect(response.headers).to.have.property('last-modified');
+    });
+  });
+
+  describe('Error cases', () => {
+    it('should reject invalid supi format', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/invalid-supi/5mbs-data')
+        .expect(400);
+    });
+
+    it('should reject empty supi', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1//5mbs-data')
+        .expect(400);
+    });
+
+    it('should reject MSISDN format (not supported for this endpoint)', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/msisdn-1234567890/5mbs-data')
+        .expect(400);
+    });
+
+    it('should reject unsupported supi prefix', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/unsupported-12345/5mbs-data')
+        .expect(400);
+    });
+  });
+
+  describe('Data structure validation', () => {
+    it('should return properly structured 5MBS data', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/5mbs-data`)
+        .expect(200);
+
+      expect(response.body).to.be.an('object');
+      expect(response.body.mbsAllowed).to.be.a('boolean');
+      expect(response.body.mbsSessionIdList).to.be.an('array');
+      expect(response.body.mbsSessionIdList).to.have.length.above(0);
+    });
+
+    it('should return JSON content type', async () => {
+      await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/5mbs-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+    });
+
+    it('should return consistent data for same supi', async () => {
+      const response1 = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/5mbs-data`)
+        .expect(200);
+
+      const response2 = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/5mbs-data`)
+        .expect(200);
+
+      expect(response1.body).to.deep.equal(response2.body);
+    });
+  });
+});
+
+describe('GET /:supi/uc-data', () => {
+  const validSupi = 'imsi-999700000000001';
+  const validNaiSupi = 'nai-user@example.com';
+  const validGciSupi = 'gci-ABC123';
+  const validGliSupi = 'gli-XYZ789';
+
+  describe('Success cases', () => {
+    it('should retrieve UC data for valid IMSI supi', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/uc-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+
+      expect(response.body).to.have.property('userConsentPerPurposeList');
+    });
+
+    it('should retrieve UC data for NAI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${encodeURIComponent(validNaiSupi)}/uc-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('userConsentPerPurposeList');
+    });
+
+    it('should retrieve UC data for GCI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validGciSupi}/uc-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('userConsentPerPurposeList');
+    });
+
+    it('should retrieve UC data for GLI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validGliSupi}/uc-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('userConsentPerPurposeList');
+    });
+
+    it('should accept supported-features query parameter', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/uc-data`)
+        .query({ 'supported-features': 'feature1' })
+        .expect(200);
+
+      expect(response.body).to.have.property('userConsentPerPurposeList');
+    });
+
+    it('should filter by uc-purpose query parameter', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/uc-data`)
+        .query({ 'uc-purpose': 'ANALYTICS' })
+        .expect(200);
+
+      expect(response.body).to.have.property('userConsentPerPurposeList');
+      expect(response.body.userConsentPerPurposeList).to.have.property('ANALYTICS');
+      expect(Object.keys(response.body.userConsentPerPurposeList)).to.have.length(1);
+    });
+
+    it('should return all consent purposes without uc-purpose filter', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/uc-data`)
+        .expect(200);
+
+      expect(response.body.userConsentPerPurposeList).to.be.an('object');
+      expect(Object.keys(response.body.userConsentPerPurposeList).length).to.be.greaterThan(1);
+    });
+  });
+
+  describe('Error cases', () => {
+    it('should reject invalid supi format', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/invalid-supi/uc-data')
+        .expect(400);
+    });
+
+    it('should reject empty supi', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1//uc-data')
+        .expect(400);
+    });
+
+    it('should reject MSISDN format (not supported for this endpoint)', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/msisdn-1234567890/uc-data')
+        .expect(400);
+    });
+
+    it('should reject unsupported supi prefix', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/unsupported-12345/uc-data')
+        .expect(400);
+    });
+
+    it('should reject invalid uc-purpose value', async () => {
+      await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/uc-data`)
+        .query({ 'uc-purpose': 'INVALID_PURPOSE' })
+        .expect(400);
+    });
+  });
+
+  describe('Data structure validation', () => {
+    it('should return properly structured UC data', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/uc-data`)
+        .expect(200);
+
+      expect(response.body).to.be.an('object');
+      expect(response.body.userConsentPerPurposeList).to.be.an('object');
+    });
+
+    it('should return JSON content type', async () => {
+      await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/uc-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+    });
+
+    it('should return consistent data for same supi', async () => {
+      const response1 = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/uc-data`)
+        .expect(200);
+
+      const response2 = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/uc-data`)
+        .expect(200);
+
+      expect(response1.body).to.deep.equal(response2.body);
+    });
+  });
+});
+
+describe('GET /:supi/time-sync-data', () => {
+  const validSupi = 'imsi-999700000000001';
+  const validNaiSupi = 'nai-user@example.com';
+  const validGciSupi = 'gci-ABC123';
+  const validGliSupi = 'gli-XYZ789';
+
+  describe('Success cases', () => {
+    it('should retrieve time sync data for valid IMSI supi', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/time-sync-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+
+      expect(response.body).to.have.property('afReqAuthorizations');
+      expect(response.body).to.have.property('serviceIds');
+    });
+
+    it('should retrieve time sync data for NAI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${encodeURIComponent(validNaiSupi)}/time-sync-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('afReqAuthorizations');
+      expect(response.body).to.have.property('serviceIds');
+    });
+
+    it('should retrieve time sync data for GCI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validGciSupi}/time-sync-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('afReqAuthorizations');
+    });
+
+    it('should retrieve time sync data for GLI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validGliSupi}/time-sync-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('afReqAuthorizations');
+    });
+
+    it('should accept supported-features query parameter', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/time-sync-data`)
+        .query({ 'supported-features': 'feature1' })
+        .expect(200);
+
+      expect(response.body).to.have.property('afReqAuthorizations');
+    });
+
+    it('should include proper HTTP headers', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/time-sync-data`)
+        .expect(200);
+
+      expect(response.headers).to.have.property('cache-control');
+      expect(response.headers).to.have.property('etag');
+      expect(response.headers).to.have.property('last-modified');
+    });
+  });
+
+  describe('Error cases', () => {
+    it('should reject invalid supi format', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/invalid-supi/time-sync-data')
+        .expect(400);
+    });
+
+    it('should reject empty supi', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1//time-sync-data')
+        .expect(400);
+    });
+
+    it('should reject MSISDN format (not supported for this endpoint)', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/msisdn-1234567890/time-sync-data')
+        .expect(400);
+    });
+
+    it('should reject unsupported supi prefix', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/unsupported-12345/time-sync-data')
+        .expect(400);
+    });
+  });
+
+  describe('Data structure validation', () => {
+    it('should return properly structured time sync data', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/time-sync-data`)
+        .expect(200);
+
+      expect(response.body).to.be.an('object');
+      expect(response.body.afReqAuthorizations).to.have.property('gptpAllowedInfoList');
+      expect(response.body.afReqAuthorizations.gptpAllowedInfoList).to.be.an('array');
+      expect(response.body.serviceIds).to.be.an('array');
+    });
+
+    it('should return JSON content type', async () => {
+      await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/time-sync-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+    });
+
+    it('should return consistent data for same supi', async () => {
+      const response1 = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/time-sync-data`)
+        .expect(200);
+
+      const response2 = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/time-sync-data`)
+        .expect(200);
+
+      expect(response1.body).to.deep.equal(response2.body);
+    });
+  });
+});
+
+describe('GET /:supi/ranging-slpos-data', () => {
+  const validSupi = 'imsi-999700000000001';
+  const validNaiSupi = 'nai-user@example.com';
+  const validGciSupi = 'gci-ABC123';
+  const validGliSupi = 'gli-XYZ789';
+
+  describe('Success cases', () => {
+    it('should retrieve ranging SLPOS data for valid IMSI supi', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/ranging-slpos-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+
+      expect(response.body).to.have.property('rangingSlPosAuth');
+      expect(response.body).to.have.property('rangingSlPosPlmn');
+      expect(response.body).to.have.property('rangingSlPosQos');
+    });
+
+    it('should retrieve ranging SLPOS data for NAI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${encodeURIComponent(validNaiSupi)}/ranging-slpos-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('rangingSlPosAuth');
+      expect(response.body).to.have.property('rangingSlPosPlmn');
+    });
+
+    it('should retrieve ranging SLPOS data for GCI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validGciSupi}/ranging-slpos-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('rangingSlPosAuth');
+    });
+
+    it('should retrieve ranging SLPOS data for GLI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validGliSupi}/ranging-slpos-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('rangingSlPosAuth');
+    });
+
+    it('should accept supported-features query parameter', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/ranging-slpos-data`)
+        .query({ 'supported-features': 'feature1' })
+        .expect(200);
+
+      expect(response.body).to.have.property('rangingSlPosAuth');
+    });
+
+    it('should include proper HTTP headers', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/ranging-slpos-data`)
+        .expect(200);
+
+      expect(response.headers).to.have.property('cache-control');
+      expect(response.headers).to.have.property('etag');
+      expect(response.headers).to.have.property('last-modified');
+    });
+  });
+
+  describe('Error cases', () => {
+    it('should reject invalid supi format', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/invalid-supi/ranging-slpos-data')
+        .expect(400);
+    });
+
+    it('should reject empty supi', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1//ranging-slpos-data')
+        .expect(400);
+    });
+
+    it('should reject MSISDN format (not supported for this endpoint)', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/msisdn-1234567890/ranging-slpos-data')
+        .expect(400);
+    });
+
+    it('should reject unsupported supi prefix', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/unsupported-12345/ranging-slpos-data')
+        .expect(400);
+    });
+  });
+
+  describe('Data structure validation', () => {
+    it('should return properly structured ranging SLPOS data', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/ranging-slpos-data`)
+        .expect(200);
+
+      expect(response.body).to.be.an('object');
+      expect(response.body.rangingSlPosAuth).to.have.property('rangingAllowed');
+      expect(response.body.rangingSlPosAuth).to.have.property('sl1AllowedIndication');
+      expect(response.body.rangingSlPosQos).to.have.property('hAccuracy');
+      expect(response.body.rangingSlPosQos).to.have.property('vAccuracy');
+    });
+
+    it('should return JSON content type', async () => {
+      await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/ranging-slpos-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+    });
+
+    it('should return consistent data for same supi', async () => {
+      const response1 = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/ranging-slpos-data`)
+        .expect(200);
+
+      const response2 = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/ranging-slpos-data`)
+        .expect(200);
+
+      expect(response1.body).to.deep.equal(response2.body);
+    });
+  });
+});
+
+describe('GET /:supi/a2x-data', () => {
+  const validSupi = 'imsi-999700000000001';
+  const validNaiSupi = 'nai-user@example.com';
+  const validGciSupi = 'gci-ABC123';
+  const validGliSupi = 'gli-XYZ789';
+
+  describe('Success cases', () => {
+    it('should retrieve A2X data for valid IMSI supi', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/a2x-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+
+      expect(response.body).to.have.property('nrA2xServicesAuth');
+      expect(response.body).to.have.property('lteA2xServicesAuth');
+      expect(response.body).to.have.property('nrUePc5Ambr');
+      expect(response.body).to.have.property('ltePc5Ambr');
+    });
+
+    it('should retrieve A2X data for NAI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${encodeURIComponent(validNaiSupi)}/a2x-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('nrA2xServicesAuth');
+      expect(response.body).to.have.property('lteA2xServicesAuth');
+    });
+
+    it('should retrieve A2X data for GCI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validGciSupi}/a2x-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('nrA2xServicesAuth');
+    });
+
+    it('should retrieve A2X data for GLI supi format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validGliSupi}/a2x-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('nrA2xServicesAuth');
+    });
+
+    it('should accept supported-features query parameter', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/a2x-data`)
+        .query({ 'supported-features': 'feature1' })
+        .expect(200);
+
+      expect(response.body).to.have.property('nrA2xServicesAuth');
+    });
+
+    it('should include proper HTTP headers', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/a2x-data`)
+        .expect(200);
+
+      expect(response.headers).to.have.property('cache-control');
+      expect(response.headers).to.have.property('etag');
+      expect(response.headers).to.have.property('last-modified');
+    });
+  });
+
+  describe('Error cases', () => {
+    it('should reject invalid supi format', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/invalid-supi/a2x-data')
+        .expect(400);
+    });
+
+    it('should reject empty supi', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1//a2x-data')
+        .expect(400);
+    });
+
+    it('should reject MSISDN format (not supported for this endpoint)', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/msisdn-1234567890/a2x-data')
+        .expect(400);
+    });
+
+    it('should reject unsupported supi prefix', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1/unsupported-12345/a2x-data')
+        .expect(400);
+    });
+  });
+
+  describe('Data structure validation', () => {
+    it('should return properly structured A2X data', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/a2x-data`)
+        .expect(200);
+
+      expect(response.body).to.be.an('object');
+      expect(response.body.nrA2xServicesAuth).to.have.property('vehicleUe');
+      expect(response.body.nrA2xServicesAuth).to.have.property('pedestrianUe');
+      expect(response.body.nrA2xServicesAuth).to.have.property('a2xPermission');
+      expect(response.body.lteA2xServicesAuth).to.have.property('vehicleUe');
+      expect(response.body.lteA2xServicesAuth).to.have.property('pedestrianUe');
+      expect(response.body.lteA2xServicesAuth).to.have.property('a2xPermission');
+    });
+
+    it('should return JSON content type', async () => {
+      await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/a2x-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+    });
+
+    it('should return consistent data for same supi', async () => {
+      const response1 = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/a2x-data`)
+        .expect(200);
+
+      const response2 = await request(app)
+        .get(`/nudm-sdm/v1/${validSupi}/a2x-data`)
+        .expect(200);
+
+      expect(response1.body).to.deep.equal(response2.body);
+    });
+  });
+});
+
+describe('GET /:ueId/rangingsl-privacy-data', () => {
+  const validUeIdImsi = 'imsi-999700000000001';
+  const validUeIdNai = 'nai-user@example.com';
+  const validUeIdMsisdn = 'msisdn-1234567890';
+  const validUeIdExtid = 'extid-user@example.com';
+  const validUeIdGci = 'gci-ABC123';
+  const validUeIdGli = 'gli-XYZ789';
+
+  describe('Success cases', () => {
+    it('should retrieve ranging SL privacy data for valid IMSI ueId', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validUeIdImsi}/rangingsl-privacy-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+
+      expect(response.body).to.have.property('rslppi');
+      expect(response.body).to.have.property('rangingSlUnrelatedClass');
+      expect(response.body).to.have.property('rangingSlPlmnOperatorClasses');
+    });
+
+    it('should retrieve ranging SL privacy data for NAI ueId format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${encodeURIComponent(validUeIdNai)}/rangingsl-privacy-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('rslppi');
+      expect(response.body).to.have.property('rangingSlUnrelatedClass');
+    });
+
+    it('should retrieve ranging SL privacy data for MSISDN ueId format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validUeIdMsisdn}/rangingsl-privacy-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('rslppi');
+    });
+
+    it('should retrieve ranging SL privacy data for EXTID ueId format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validUeIdExtid}/rangingsl-privacy-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('rslppi');
+    });
+
+    it('should retrieve ranging SL privacy data for GCI ueId format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validUeIdGci}/rangingsl-privacy-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('rslppi');
+    });
+
+    it('should retrieve ranging SL privacy data for GLI ueId format', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validUeIdGli}/rangingsl-privacy-data`)
+        .expect(200);
+
+      expect(response.body).to.have.property('rslppi');
+    });
+
+    it('should accept supported-features query parameter', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validUeIdImsi}/rangingsl-privacy-data`)
+        .query({ 'supported-features': 'feature1' })
+        .expect(200);
+
+      expect(response.body).to.have.property('rslppi');
+    });
+
+    it('should include proper HTTP headers', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validUeIdImsi}/rangingsl-privacy-data`)
+        .expect(200);
+
+      expect(response.headers).to.have.property('cache-control');
+      expect(response.headers).to.have.property('etag');
+      expect(response.headers).to.have.property('last-modified');
+    });
+  });
+
+  describe('Error cases', () => {
+    it('should reject empty ueId', async () => {
+      await request(app)
+        .get('/nudm-sdm/v1//rangingsl-privacy-data')
+        .expect(400);
+    });
+  });
+
+  describe('Data structure validation', () => {
+    it('should return properly structured ranging SL privacy data', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validUeIdImsi}/rangingsl-privacy-data`)
+        .expect(200);
+
+      expect(response.body).to.be.an('object');
+      expect(response.body.rslppi).to.have.property('rangingSlPrivacyInd');
+      expect(response.body.rslppi).to.have.property('validTimePeriod');
+      expect(response.body.rangingSlUnrelatedClass).to.have.property('rangingSlDefaultUnrelatedClass');
+      expect(response.body.rangingSlPlmnOperatorClasses).to.be.an('array');
+    });
+
+    it('should have valid time period with start and end time', async () => {
+      const response = await request(app)
+        .get(`/nudm-sdm/v1/${validUeIdImsi}/rangingsl-privacy-data`)
+        .expect(200);
+
+      expect(response.body.rslppi.validTimePeriod).to.have.property('startTime');
+      expect(response.body.rslppi.validTimePeriod).to.have.property('endTime');
+      expect(response.body.rslppi.validTimePeriod.startTime).to.be.a('string');
+      expect(response.body.rslppi.validTimePeriod.endTime).to.be.a('string');
+    });
+
+    it('should return JSON content type', async () => {
+      await request(app)
+        .get(`/nudm-sdm/v1/${validUeIdImsi}/rangingsl-privacy-data`)
+        .expect(200)
+        .expect('Content-Type', /json/);
+    });
+
+    it('should return consistent data for same ueId', async () => {
+      const response1 = await request(app)
+        .get(`/nudm-sdm/v1/${validUeIdImsi}/rangingsl-privacy-data`)
+        .expect(200);
+
+      const response2 = await request(app)
+        .get(`/nudm-sdm/v1/${validUeIdImsi}/rangingsl-privacy-data`)
+        .expect(200);
+
+      expect(response1.body).to.deep.equal(response2.body);
+    });
+  });
+});
