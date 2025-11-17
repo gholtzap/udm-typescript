@@ -17,8 +17,8 @@ Here is the current status:
 | 🟡 | nudm-rsds | local storage implementation |
 | 🟡 | nudm-sdm | local storage implementation |
 | 🟡 | nudm-ssau | awaiting testing |
-| 🔴 | nudm-ueau | scaffolding |
-| 🔴 | nudm-uecm | scaffolding |
+| 🟡 | nudm-ueau | scaffolding |
+| 🟡 | nudm-uecm | scaffolding |
 | 🟡 | nudm-ueid | awaiting testing |
 
 
