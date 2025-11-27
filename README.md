@@ -1,4 +1,4 @@
-# udm-typescript
+# UDM
 
 **This repo is not production-ready yet. I am still developing the core features.**
 
@@ -6,37 +6,19 @@ The UDM is a core part of 5G architecture, as it stores subscriber data (profile
 
 `udm-typescript` is a typescript implementation of 3GPP's 5G UDM specification. The most recent specification can be found [here](https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3342).
 
-Here is the current status:
 
-| Status | Service | Implementation |
-|--------|---------|----------------|
-| 🟡 | nudm-ee | awaiting testing |
-| 🟡 | nudm-mt | awaiting testing |
-| 🟡 | nudm-niddau | awaiting testing |
-| 🟡 | nudm-pp | local storage implementation |
-| 🟡 | nudm-rsds | local storage implementation |
-| 🟡 | nudm-sdm | local storage implementation |
-| 🟡 | nudm-ssau | awaiting testing |
-| 🟡 | nudm-ueau | scaffolding |
-| 🟡 | nudm-uecm | scaffolding |
-| 🟡 | nudm-ueid | awaiting testing |
+### pre-reqs
 
+1. Set up MongoDB
 
-Test status:
-| Status | Service | Implementation |
-|--------|---------|----------------|
-| 🟡 | nudm-ee | first draft |
-| 🟡 | nudm-mt | first draft |
-| 🟡 | nudm-niddau | first draft |
-| 🟡 | nudm-pp | first draft |
-| 🟡 | nudm-rsds | first draft |
-| 🔴 | nudm-sdm | n/a |
-| 🔴 | nudm-ssau | n/a |
-| 🔴 | nudm-ueau | n/a |
-| 🔴 | nudm-uecm | n/a |
-| 🔴 | nudm-ueid | n/a |
+in ``.env``:
+```
+MONGODB_URI=mongodb+srv://...
+MONGODB_DB_NAME=nrf
+PORT=8080
+```
 
-### How to start this project
+### Start UDM
 1. `npm install`
 2. `npm run dev`
 
