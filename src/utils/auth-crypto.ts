@@ -1,35 +1,8 @@
-import { createHash, createCipheriv, randomBytes } from 'crypto';
+import { createHash, createHmac, randomBytes } from 'crypto';
+import Milenage from 'milenage';
 
 export function generateRand(): string {
   return randomBytes(16).toString('hex').toUpperCase();
-}
-
-export function xor(a: Buffer, b: Buffer): Buffer {
-  const result = Buffer.alloc(a.length);
-  for (let i = 0; i < a.length; i++) {
-    result[i] = a[i] ^ b[i];
-  }
-  return result;
-}
-
-export function rotateLeft(input: Buffer, bits: number): Buffer {
-  const bytes = Math.floor(bits / 8);
-  const bitShift = bits % 8;
-  const result = Buffer.alloc(input.length);
-  
-  for (let i = 0; i < input.length; i++) {
-    const currentByte = input[(i + bytes) % input.length];
-    const nextByte = input[(i + bytes + 1) % input.length];
-    result[i] = ((currentByte << bitShift) | (nextByte >> (8 - bitShift))) & 0xFF;
-  }
-  
-  return result;
-}
-
-export function aesEncrypt(key: Buffer, data: Buffer): Buffer {
-  const cipher = createCipheriv('aes-128-ecb', key, null);
-  cipher.setAutoPadding(false);
-  return Buffer.concat([cipher.update(data), cipher.final()]);
 }
 
 export interface MilenageOutput {
@@ -41,29 +14,20 @@ export interface MilenageOutput {
   ak: Buffer;
 }
 
-export function milenage(k: Buffer, op: Buffer, rand: Buffer, sqn: Buffer, amf: Buffer): MilenageOutput {
-  const opc = aesEncrypt(k, op);
-  const temp = xor(rand, opc);
-  const out1 = aesEncrypt(k, temp);
-  
-  const in2 = xor(out1, rotateLeft(xor(rand, opc), 0));
-  const out2 = aesEncrypt(k, in2);
-  const res = xor(out2, opc).slice(8, 16);
-  const ck = xor(aesEncrypt(k, xor(out1, rotateLeft(xor(rand, opc), 64))), opc);
-  const ik = xor(aesEncrypt(k, xor(out1, rotateLeft(xor(rand, opc), 128))), opc);
-  
-  const in5 = xor(out1, rotateLeft(xor(rand, opc), 64));
-  const out5 = aesEncrypt(k, in5);
-  const ak = xor(out5, opc).slice(0, 6);
-  
-  const sqnXorAk = xor(sqn, ak);
-  const macInput = Buffer.concat([sqnXorAk, amf, sqnXorAk, amf]);
-  const macTemp = xor(aesEncrypt(k, xor(rand, opc)), Buffer.concat([macInput, Buffer.alloc(8)]));
-  const mac_a = aesEncrypt(k, xor(macTemp.slice(0, 16), opc)).slice(0, 8);
-  
-  const mac_s = Buffer.alloc(8);
-  
-  return { mac_a, mac_s, res, ck, ik, ak };
+export function milenage(k: Buffer, opc: Buffer, rand: Buffer, sqn: Buffer, amf: Buffer): MilenageOutput {
+  const mil = new Milenage({ op_c: new Uint8Array(opc), key: new Uint8Array(k) });
+
+  const f1Result = mil.f1(new Uint8Array(rand), new Uint8Array(sqn), new Uint8Array(amf));
+  const f2345Result = mil.f2345(new Uint8Array(rand));
+
+  return {
+    mac_a: Buffer.from(f1Result.mac_a),
+    mac_s: Buffer.alloc(8),
+    res: Buffer.from(f2345Result.res),
+    ck: Buffer.from(f2345Result.ck),
+    ik: Buffer.from(f2345Result.ik),
+    ak: Buffer.from(f2345Result.ak)
+  };
 }
 
 export function computeKausf(ck: Buffer, ik: Buffer, servingNetworkName: string, sqnXorAk: Buffer): string {
@@ -88,11 +52,11 @@ export function computeKausf(ck: Buffer, ik: Buffer, servingNetworkName: string,
   return hash.digest('hex').toUpperCase();
 }
 
-export function computeXresStar(res: Buffer, rand: Buffer, servingNetworkName: string): string {
+export function computeXresStar(res: Buffer, rand: Buffer, servingNetworkName: string, ck: Buffer, ik: Buffer): string {
   const snName = Buffer.from(servingNetworkName, 'utf8');
   const snNameLength = Buffer.alloc(2);
   snNameLength.writeUInt16BE(snName.length);
-  
+
   const s = Buffer.concat([
     Buffer.from([0x6B]),
     snName,
@@ -102,18 +66,16 @@ export function computeXresStar(res: Buffer, rand: Buffer, servingNetworkName: s
     res,
     Buffer.from([0x00, res.length])
   ]);
-  
-  const hash = createHash('sha256');
-  hash.update(s);
-  
-  return hash.digest().slice(0, 16).toString('hex').toUpperCase();
+
+  const key = Buffer.concat([ck, ik]);
+  const kdfOut = kdf(key, s);
+  return kdfOut.slice(kdfOut.length - 16).toString('hex').toUpperCase();
 }
 
 export function kdf(key: Buffer, s: Buffer): Buffer {
-  const hash = createHash('sha256');
-  hash.update(s);
-  hash.update(key);
-  return hash.digest();
+  const hmac = createHmac('sha256', key);
+  hmac.update(s);
+  return hmac.digest();
 }
 
 export function computeCkPrimeIkPrime(ck: Buffer, ik: Buffer, servingNetworkName: string, sqnXorAk: Buffer): { ckPrime: string, ikPrime: string } {

@@ -140,6 +140,8 @@ router.post('/:supiOrSuci/security-information/generate-auth-data', async (req: 
 
   const autn = Buffer.concat([sqnXorAk, amfBuf, milenageOutput.mac_a]).toString('hex').toUpperCase();
 
+  console.log('[UDM AUTN] SQN:', sqnBuf.toString('hex').toUpperCase(), '| SQN⊕AK:', sqnXorAk.toString('hex').toUpperCase(), '| AMF:', amfBuf.toString('hex').toUpperCase(), '| MAC-A:', milenageOutput.mac_a.toString('hex').toUpperCase(), '| AUTN:', autn);
+
   const kausf = computeKausf(
     milenageOutput.ck, 
     milenageOutput.ik, 
@@ -148,10 +150,14 @@ router.post('/:supiOrSuci/security-information/generate-auth-data', async (req: 
   );
 
   const xresStar = computeXresStar(
-    milenageOutput.res, 
-    randBuf, 
-    authRequest.servingNetworkName
+    milenageOutput.res,
+    randBuf,
+    authRequest.servingNetworkName,
+    milenageOutput.ck,
+    milenageOutput.ik
   );
+
+  console.log('[UDM AUTH] RAND:', rand, '| RES:', milenageOutput.res.toString('hex').toUpperCase(), '| CK:', milenageOutput.ck.toString('hex').toUpperCase(), '| IK:', milenageOutput.ik.toString('hex').toUpperCase(), '| XRES*:', xresStar, '| SNN:', authRequest.servingNetworkName);
 
   const authVector: Av5GHeAka = {
     avType: AvType.FIVE_G_HE_AKA,
