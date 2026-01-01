@@ -1,4 +1,4 @@
-import { createHash, createHmac, randomBytes } from 'crypto';
+import { createHmac, randomBytes } from 'crypto';
 import Milenage from 'milenage';
 
 export function generateRand(): string {
@@ -14,15 +14,15 @@ export interface MilenageOutput {
   ak: Buffer;
 }
 
-export function milenage(k: Buffer, opc: Buffer, rand: Buffer, sqn: Buffer, amf: Buffer): MilenageOutput {
-  const mil = new Milenage({ op_c: new Uint8Array(opc), key: new Uint8Array(k) });
+export function milenage(k: Buffer, op: Buffer, rand: Buffer, sqn: Buffer, amf: Buffer): MilenageOutput {
+  const mil = new Milenage({ op_c: new Uint8Array(op), key: new Uint8Array(k) });
 
   const f1Result = mil.f1(new Uint8Array(rand), new Uint8Array(sqn), new Uint8Array(amf));
   const f2345Result = mil.f2345(new Uint8Array(rand));
 
   return {
     mac_a: Buffer.from(f1Result.mac_a),
-    mac_s: Buffer.alloc(8),
+    mac_s: f1Result.mac_s ? Buffer.from(f1Result.mac_s) : Buffer.alloc(8),
     res: Buffer.from(f2345Result.res),
     ck: Buffer.from(f2345Result.ck),
     ik: Buffer.from(f2345Result.ik),
@@ -32,11 +32,11 @@ export function milenage(k: Buffer, opc: Buffer, rand: Buffer, sqn: Buffer, amf:
 
 export function computeKausf(ck: Buffer, ik: Buffer, servingNetworkName: string, sqnXorAk: Buffer): string {
   const key = Buffer.concat([ck, ik]);
-  
+
   const snName = Buffer.from(servingNetworkName, 'utf8');
   const snNameLength = Buffer.alloc(2);
   snNameLength.writeUInt16BE(snName.length);
-  
+
   const s = Buffer.concat([
     Buffer.from([0x6A]),
     snName,
@@ -44,12 +44,8 @@ export function computeKausf(ck: Buffer, ik: Buffer, servingNetworkName: string,
     sqnXorAk,
     Buffer.from([0x00, 0x06])
   ]);
-  
-  const hash = createHash('sha256');
-  hash.update(s);
-  hash.update(key);
-  
-  return hash.digest('hex').toUpperCase();
+
+  return kdf(key, s).toString('hex').toUpperCase();
 }
 
 export function computeXresStar(res: Buffer, rand: Buffer, servingNetworkName: string, ck: Buffer, ik: Buffer): string {
@@ -118,6 +114,49 @@ export function computeKasme(ck: Buffer, ik: Buffer, plmnId: Buffer, sqnXorAk: B
 
   const key = Buffer.concat([ck, ik]);
   return kdf(key, s).toString('hex').toUpperCase();
+}
+
+export function processAuts(k: Buffer, op: Buffer, rand: Buffer, auts: Buffer, amf: Buffer): string | null {
+  console.log('[UDM AUTS] Processing AUTS with:');
+  console.log('[UDM AUTS]   K:', k.toString('hex').toUpperCase());
+  console.log('[UDM AUTS]   OPC:', op.toString('hex').toUpperCase());
+  console.log('[UDM AUTS]   RAND:', rand.toString('hex').toUpperCase());
+  console.log('[UDM AUTS]   AUTS:', auts.toString('hex').toUpperCase());
+
+  if (auts.length !== 14) {
+    console.error('[UDM AUTS] Invalid AUTS length:', auts.length, '(expected 14)');
+    return null;
+  }
+
+  const sqnMsXorAkStar = auts.slice(0, 6);
+  const receivedMacS = auts.slice(6, 14);
+
+  const mil = new Milenage({ op_c: new Uint8Array(op), key: new Uint8Array(k) }) as any;
+  const f5starResult = mil.f5star(new Uint8Array(rand));
+  const akStar = Buffer.from(f5starResult.ak_s);
+
+  const sqnMs = Buffer.alloc(6);
+  for (let i = 0; i < 6; i++) {
+    sqnMs[i] = sqnMsXorAkStar[i] ^ akStar[i];
+  }
+
+  console.log('[UDM AUTS] Extracted UE SQN from AUTS:', sqnMs.toString('hex').toUpperCase());
+
+  const dummyAmf = Buffer.alloc(2);
+  const f1starResult = mil.f1star(new Uint8Array(rand), new Uint8Array(sqnMs), new Uint8Array(dummyAmf));
+  const expectedMacS = Buffer.from(f1starResult.mac_s);
+
+  if (!receivedMacS.equals(expectedMacS)) {
+    console.error('[UDM AUTS] MAC-S validation FAILED!');
+    console.error('[UDM AUTS] Expected MAC-S:', expectedMacS.toString('hex').toUpperCase());
+    console.error('[UDM AUTS] Received MAC-S:', receivedMacS.toString('hex').toUpperCase());
+    return null;
+  }
+
+  console.log('[UDM AUTS] MAC-S validation successful');
+  const sqnMsHex = sqnMs.toString('hex').toUpperCase();
+  console.log('[UDM AUTS] Successfully processed AUTS, UE SQN_MS:', sqnMsHex);
+  return sqnMsHex;
 }
 
 

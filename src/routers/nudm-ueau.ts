@@ -30,7 +30,8 @@ import {
   computeKausf,
   computeXresStar,
   computeCkPrimeIkPrime,
-  computeKasme
+  computeKasme,
+  processAuts
 } from '../utils/auth-crypto';
 import { randomUUID } from 'crypto';
 
@@ -122,6 +123,31 @@ router.post('/:supiOrSuci/security-information/generate-auth-data', async (req: 
       status: 500,
       detail: 'Missing authentication credentials for subscriber'
     });
+  }
+
+  if (authRequest.resynchronizationInfo) {
+    console.log('[UDM RESYNC] Resynchronization requested');
+    const kBuf = Buffer.from(permanentKey, 'hex');
+    const opBuf = Buffer.from(operatorKey, 'hex');
+    const randBuf = Buffer.from(authRequest.resynchronizationInfo.rand, 'hex');
+    const autsBuf = Buffer.from(authRequest.resynchronizationInfo.auts, 'hex');
+    const amfBuf = Buffer.from(amf, 'hex');
+
+    const sqnMs = processAuts(kBuf, opBuf, randBuf, autsBuf, amfBuf);
+
+    if (!sqnMs) {
+      return res.status(403).json({
+        type: 'urn:3gpp:error:authentication-rejected',
+        title: 'Authentication Rejected',
+        status: 403,
+        detail: 'AUTS validation failed'
+      });
+    }
+
+    const sqnMsInt = parseInt(sqnMs, 16);
+    const newSqnInt = (sqnMsInt + 32);
+    sequenceNumber = newSqnInt.toString(16).padStart(12, '0').toUpperCase();
+    console.log('[UDM RESYNC] Synchronized to UE SQN_MS', sqnMs, '-> using SQN', sequenceNumber, 'for next auth (added 32 for IND array)');
   }
 
   const rand = generateRand();

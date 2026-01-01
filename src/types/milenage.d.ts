@@ -1,6 +1,7 @@
 declare module 'milenage' {
   interface MilenageOptions {
-    op_c: Uint8Array;
+    op_c?: Uint8Array;
+    op?: Uint8Array;
     key: Uint8Array;
   }
 
