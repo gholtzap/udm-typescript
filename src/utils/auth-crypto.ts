@@ -117,12 +117,6 @@ export function computeKasme(ck: Buffer, ik: Buffer, plmnId: Buffer, sqnXorAk: B
 }
 
 export function processAuts(k: Buffer, op: Buffer, rand: Buffer, auts: Buffer, amf: Buffer): string | null {
-  console.log('[UDM AUTS] Processing AUTS with:');
-  console.log('[UDM AUTS]   K:', k.toString('hex').toUpperCase());
-  console.log('[UDM AUTS]   OPC:', op.toString('hex').toUpperCase());
-  console.log('[UDM AUTS]   RAND:', rand.toString('hex').toUpperCase());
-  console.log('[UDM AUTS]   AUTS:', auts.toString('hex').toUpperCase());
-
   if (auts.length !== 14) {
     console.error('[UDM AUTS] Invalid AUTS length:', auts.length, '(expected 14)');
     return null;
@@ -140,22 +134,16 @@ export function processAuts(k: Buffer, op: Buffer, rand: Buffer, auts: Buffer, a
     sqnMs[i] = sqnMsXorAkStar[i] ^ akStar[i];
   }
 
-  console.log('[UDM AUTS] Extracted UE SQN from AUTS:', sqnMs.toString('hex').toUpperCase());
-
   const dummyAmf = Buffer.alloc(2);
   const f1starResult = mil.f1star(new Uint8Array(rand), new Uint8Array(sqnMs), new Uint8Array(dummyAmf));
   const expectedMacS = Buffer.from(f1starResult.mac_s);
 
   if (!receivedMacS.equals(expectedMacS)) {
-    console.error('[UDM AUTS] MAC-S validation FAILED!');
-    console.error('[UDM AUTS] Expected MAC-S:', expectedMacS.toString('hex').toUpperCase());
-    console.error('[UDM AUTS] Received MAC-S:', receivedMacS.toString('hex').toUpperCase());
+    console.error('[UDM AUTS] MAC-S validation failed');
     return null;
   }
 
-  console.log('[UDM AUTS] MAC-S validation successful');
   const sqnMsHex = sqnMs.toString('hex').toUpperCase();
-  console.log('[UDM AUTS] Successfully processed AUTS, UE SQN_MS:', sqnMsHex);
   return sqnMsHex;
 }
 
