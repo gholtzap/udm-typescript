@@ -34,6 +34,7 @@ import {
   processAuts
 } from '../utils/auth-crypto';
 import { randomUUID } from 'crypto';
+import { auditLog } from '../utils/logger';
 
 const router = Router();
 
@@ -65,6 +66,12 @@ router.post('/:supiOrSuci/security-information/generate-auth-data', async (req: 
   const { supiOrSuci } = req.params;
   const authRequest: AuthenticationInfoRequest = req.body;
 
+  auditLog('auth_vector_generation_request', {
+    supi_or_suci: supiOrSuci,
+    serving_network: authRequest?.servingNetworkName,
+    ausf_instance: authRequest?.ausfInstanceId
+  }, 'Received authentication vector generation request');
+
   if (!authRequest || typeof authRequest !== 'object') {
     return res.status(400).json(createInvalidParameterError('Request body must be a valid JSON object'));
   }
@@ -78,8 +85,12 @@ router.post('/:supiOrSuci/security-information/generate-auth-data', async (req: 
   }
 
   let supi = supiOrSuci;
-  
+
   if (suciPattern.test(supiOrSuci)) {
+    auditLog('auth_vector_generation_failed', {
+      supi_or_suci: supiOrSuci,
+      reason: 'suci_not_implemented'
+    }, 'Auth vector generation failed: SUCI de-concealment not implemented');
     return res.status(501).json({
       type: 'urn:3gpp:error:not-implemented',
       title: 'Not Implemented',
@@ -96,6 +107,10 @@ router.post('/:supiOrSuci/security-information/generate-auth-data', async (req: 
   const subscriber = await subscribersCollection.findOne({ supi });
 
   if (!subscriber) {
+    auditLog('auth_vector_generation_failed', {
+      supi: supi,
+      reason: 'subscriber_not_found'
+    }, 'Auth vector generation failed: Subscriber not found');
     return res.status(404).json(createNotFoundError(`Subscriber with SUPI ${supi} not found`));
   }
 
@@ -117,6 +132,10 @@ router.post('/:supiOrSuci/security-information/generate-auth-data', async (req: 
   }
 
   if (!permanentKey || !operatorKey || !sequenceNumber) {
+    auditLog('auth_vector_generation_failed', {
+      supi: supi,
+      reason: 'missing_credentials'
+    }, 'Auth vector generation failed: Missing authentication credentials');
     return res.status(500).json({
       type: 'urn:3gpp:error:internal-error',
       title: 'Internal Server Error',
@@ -125,8 +144,18 @@ router.post('/:supiOrSuci/security-information/generate-auth-data', async (req: 
     });
   }
 
+  auditLog('key_access', {
+    supi: supi,
+    key_types: ['permanentKey', 'operatorKey'],
+    purpose: 'auth_vector_generation'
+  }, 'Accessed subscriber cryptographic keys for authentication');
+
   if (authRequest.resynchronizationInfo) {
     console.log('[UDM RESYNC] Resynchronization requested');
+    auditLog('resynchronization_request', {
+      supi: supi,
+      rand: authRequest.resynchronizationInfo.rand
+    }, 'Sequence number resynchronization requested');
     const kBuf = Buffer.from(permanentKey, 'hex');
     const opBuf = Buffer.from(operatorKey, 'hex');
     const randBuf = Buffer.from(authRequest.resynchronizationInfo.rand, 'hex');
@@ -136,6 +165,10 @@ router.post('/:supiOrSuci/security-information/generate-auth-data', async (req: 
     const sqnMs = processAuts(kBuf, opBuf, randBuf, autsBuf, amfBuf);
 
     if (!sqnMs) {
+      auditLog('resynchronization_failed', {
+        supi: supi,
+        reason: 'auts_validation_failed'
+      }, 'Resynchronization failed: AUTS validation failed');
       return res.status(403).json({
         type: 'urn:3gpp:error:authentication-rejected',
         title: 'Authentication Rejected',
@@ -148,6 +181,10 @@ router.post('/:supiOrSuci/security-information/generate-auth-data', async (req: 
     const newSqnInt = (sqnMsInt + 32);
     sequenceNumber = newSqnInt.toString(16).padStart(12, '0').toUpperCase();
     console.log('[UDM RESYNC] Sequence number resynchronized');
+    auditLog('resynchronization_success', {
+      supi: supi,
+      new_sequence_number: sequenceNumber
+    }, 'Sequence number resynchronization completed successfully');
   }
 
   const rand = generateRand();
@@ -210,6 +247,12 @@ router.post('/:supiOrSuci/security-information/generate-auth-data', async (req: 
     supi: supi
   };
 
+  auditLog('auth_vector_generation_success', {
+    supi: supi,
+    serving_network: authRequest.servingNetworkName,
+    ausf_instance: authRequest.ausfInstanceId
+  }, 'Authentication vector generated successfully');
+
   return res.status(200).json(authResult);
 });
 
@@ -267,12 +310,10 @@ router.post('/:supi/auth-events', async (req: Request, res: Response) => {
   const { supi } = req.params;
   const authEvent: AuthEvent = req.body;
 
-  // Validate request body
   if (!authEvent || typeof authEvent !== 'object') {
     return res.status(400).json(createInvalidParameterError('Request body must be a valid JSON object'));
   }
 
-  // Validate required fields
   if (!authEvent.nfInstanceId) {
     return res.status(400).json(createInvalidParameterError('nfInstanceId is required'));
   }
@@ -297,12 +338,19 @@ router.post('/:supi/auth-events', async (req: Request, res: Response) => {
     return res.status(400).json(createInvalidParameterError('servingNetworkName is required'));
   }
 
-  // Validate SUPI format
   if (!supi.startsWith('imsi-')) {
     return res.status(400).json(createInvalidParameterError('Invalid SUPI format, must start with imsi-'));
   }
 
-  // Check if subscriber exists
+  auditLog('auth_event_received', {
+    supi: supi,
+    success: authEvent.success,
+    auth_type: authEvent.authType,
+    serving_network: authEvent.servingNetworkName,
+    nf_instance: authEvent.nfInstanceId,
+    timestamp: authEvent.timeStamp
+  }, `Authentication event received: ${authEvent.success ? 'SUCCESS' : 'FAILURE'}`);
+
   const subscribersCollection = getCollection<SubscriberData>('subscribers');
   const subscriber = await subscribersCollection.findOne({ supi });
 
